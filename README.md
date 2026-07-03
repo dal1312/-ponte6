@@ -22,7 +22,7 @@ Il progetto combina:
 ├── js/menu-data.js
 ├── data/restaurant.json
 ├── data/menu.csv
-├── assets/dishcovery-images/
+├── assets/menu-images/
 ├── tools/refresh_menu.py
 └── manifest.json
 ```
@@ -66,7 +66,7 @@ Output aggiornati:
 - `data/restaurant.json`
 - `data/menu.csv`
 - `js/menu-data.js`
-- `assets/dishcovery-images/`
+- `assets/menu-images/`
 
 ## Deploy
 

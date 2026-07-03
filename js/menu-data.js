@@ -17,7 +17,7 @@ window.menuData = {
       "allergens": [
         "Senape"
       ],
-      "image": "assets/dishcovery-images/307352_Tartare_di_Controfiletto_Irlandese_con_Senape_al_Miele_e_Frutta_Fresca.jpeg",
+      "image": "assets/menu-images/307352_Tartare_di_Controfiletto_Irlandese_con_Senape_al_Miele_e_Frutta_Fresca.jpeg",
       "payoff": "",
       "order": 0
     },
@@ -31,7 +31,7 @@ window.menuData = {
         "Pesce",
         "Latte e derivati"
       ],
-      "image": "assets/dishcovery-images/307633_Acciughe_del_Mar_Cantabrico_e_Burrata.jpeg",
+      "image": "assets/menu-images/307633_Acciughe_del_Mar_Cantabrico_e_Burrata.jpeg",
       "payoff": "",
       "order": 1
     },
@@ -42,7 +42,7 @@ window.menuData = {
       "description": "I Bruciatini sono un piatto tipico della tradizione culinaria della Romagna, a base di radicchio fresco e pancetta cotta in padella con aceto balsamico. Questi ingredienti vengono abilmente combinati per creare un'esplosione di sapori e profumi unici della cucina romagnola. Il radicchio fresco, croccante e leggermente amarognolo, si sposa perfettamente con la dolcezza della pancetta cotta e il sapore acidulo dell'aceto balsamico, creando un equilibrio di sapori unico. Il nome \"Bruciatini\" deriva dal fatto che la pancetta viene cotta fino a diventare croccante e bruciata, aggiungendo una nota croccante al piatto.",
       "ingredients": "",
       "allergens": [],
-      "image": "assets/dishcovery-images/generated_bruciatini.png",
+      "image": "assets/menu-images/generated_bruciatini.png",
       "payoff": "",
       "order": 2
     },
@@ -55,7 +55,7 @@ window.menuData = {
       "allergens": [
         "Latte e derivati"
       ],
-      "image": "assets/dishcovery-images/493656_Flan_di_Zucca_e_Porri_su_Crema_di_Gorgonzola.jpeg",
+      "image": "assets/menu-images/493656_Flan_di_Zucca_e_Porri_su_Crema_di_Gorgonzola.jpeg",
       "payoff": "",
       "order": 3
     },
@@ -83,7 +83,7 @@ window.menuData = {
         "Glutine",
         "Latte e derivati"
       ],
-      "image": "assets/dishcovery-images/307616_Degustazione_di_Formaggi_del_Territorio_e_Piadina_Romagnola.jpeg",
+      "image": "assets/menu-images/307616_Degustazione_di_Formaggi_del_Territorio_e_Piadina_Romagnola.jpeg",
       "payoff": "",
       "order": 5
     },
@@ -96,7 +96,7 @@ window.menuData = {
       "allergens": [
         "Molluschi"
       ],
-      "image": "assets/dishcovery-images/307627_Cozze_alla_Tarantina.jpeg",
+      "image": "assets/menu-images/307627_Cozze_alla_Tarantina.jpeg",
       "payoff": "",
       "order": 6
     }
@@ -113,7 +113,7 @@ window.menuData = {
         "Glutine",
         "Uova e derivati"
       ],
-      "image": "assets/dishcovery-images/307635_Tagliatelle_al_Rag_della_Nonna_Franca.jpeg",
+      "image": "assets/menu-images/307635_Tagliatelle_al_Rag_della_Nonna_Franca.jpeg",
       "payoff": "",
       "order": 0
     },
@@ -128,7 +128,7 @@ window.menuData = {
         "Uova e derivati",
         "Latte e derivati"
       ],
-      "image": "assets/dishcovery-images/307643_Cappelletti_al_Crudo_di_Parma_Ciliegini_e_Pesto_di_Rucola.jpeg",
+      "image": "assets/menu-images/307643_Cappelletti_al_Crudo_di_Parma_Ciliegini_e_Pesto_di_Rucola.jpeg",
       "payoff": "",
       "order": 1
     },
@@ -144,7 +144,7 @@ window.menuData = {
         "Uova e derivati",
         "Latte e derivati"
       ],
-      "image": "assets/dishcovery-images/304039_Cappelletti_al_Rag_della_Nonna_Franca.jpeg",
+      "image": "assets/menu-images/304039_Cappelletti_al_Rag_della_Nonna_Franca.jpeg",
       "payoff": "",
       "order": 2
     },
@@ -159,7 +159,7 @@ window.menuData = {
         "Uova e derivati",
         "Latte e derivati"
       ],
-      "image": "assets/dishcovery-images/307651_Tortelli_di_Ricotta_e_Spinaci_con_Guanciale_Salvia_Crema_di_Burro_Chiarificato.jpeg",
+      "image": "assets/menu-images/307651_Tortelli_di_Ricotta_e_Spinaci_con_Guanciale_Salvia_Crema_di_Burro_Chiarificato.jpeg",
       "payoff": "",
       "order": 3
     },
@@ -172,7 +172,7 @@ window.menuData = {
       "allergens": [
         "Glutine"
       ],
-      "image": "assets/dishcovery-images/307660_Strozzapreti_ai_Porcini_con_Scaglie_di_Pecorino_di_Fossa_di_Sogliano.jpeg",
+      "image": "assets/menu-images/307660_Strozzapreti_ai_Porcini_con_Scaglie_di_Pecorino_di_Fossa_di_Sogliano.jpeg",
       "payoff": "",
       "order": 4
     },
@@ -186,7 +186,7 @@ window.menuData = {
         "Cereali",
         "Molluschi"
       ],
-      "image": "assets/dishcovery-images/307678_Gnocchetti_alle_Vongole_su_Crema_di_Zucchine_e_Datterini.jpeg",
+      "image": "assets/menu-images/307678_Gnocchetti_alle_Vongole_su_Crema_di_Zucchine_e_Datterini.jpeg",
       "payoff": "",
       "order": 5
     },
@@ -204,7 +204,7 @@ window.menuData = {
         "Uova e derivati",
         "Molluschi"
       ],
-      "image": "assets/dishcovery-images/generated_tagliolini_scoglio.png",
+      "image": "assets/menu-images/generated_tagliolini_scoglio.png",
       "payoff": "",
       "order": 6
     },
@@ -219,7 +219,7 @@ window.menuData = {
         "Uova e derivati",
         "Latte e derivati"
       ],
-      "image": "assets/dishcovery-images/generated_lasagne_romagnola.png",
+      "image": "assets/menu-images/generated_lasagne_romagnola.png",
       "payoff": "",
       "order": 8
     }
@@ -659,7 +659,7 @@ window.menuData = {
       "allergens": [
         "Soia"
       ],
-      "image": "assets/dishcovery-images/improved_galletto_agrumi.png",
+      "image": "assets/menu-images/improved_galletto_agrumi.png",
       "payoff": "",
       "order": 0
     },
@@ -670,7 +670,7 @@ window.menuData = {
       "description": "",
       "ingredients": "Controfiletto Di Manzo, Aglio, Rosmarino, Patata",
       "allergens": [],
-      "image": "assets/dishcovery-images/307947_Tagliata_di_Controfiletto_di_Manzo_Argentino_al_Sale_di_Cervia_con_Patate_Rustiche_al_Forno.jpeg",
+      "image": "assets/menu-images/307947_Tagliata_di_Controfiletto_di_Manzo_Argentino_al_Sale_di_Cervia_con_Patate_Rustiche_al_Forno.jpeg",
       "payoff": "",
       "order": 1
     },
@@ -683,7 +683,7 @@ window.menuData = {
       "allergens": [
         "Pesce"
       ],
-      "image": "assets/dishcovery-images/improved_baccala_white.png",
+      "image": "assets/menu-images/improved_baccala_white.png",
       "payoff": "",
       "order": 2
     },
@@ -694,7 +694,7 @@ window.menuData = {
       "description": "Un pregiato filetto di manzo Angus, cotto lentamente a bassa temperatura per preservarne tutta la tenerezza e i sapori naturali. Accompagnato da un ricco e aromatico condimento di funghi porcini, che esalta la succosità della carne, questo piatto offre un’esperienza culinaria intensa e raffinata. Una scelta perfetta per gli amanti della carne, dove la delicatezza della cottura sous-vide incontra la robustezza dei funghi porcini, in un’armonia di sapori autentici e avvolgenti.",
       "ingredients": "Filetto Di Manzo, Aglio, Porcini",
       "allergens": [],
-      "image": "assets/dishcovery-images/generated_filetto_porcini.png",
+      "image": "assets/menu-images/generated_filetto_porcini.png",
       "payoff": "",
       "order": 3
     },
@@ -705,7 +705,7 @@ window.menuData = {
       "description": "",
       "ingredients": "Filetto Di Manzo, Cognac, Pepe Verde",
       "allergens": [],
-      "image": "assets/dishcovery-images/generated_filetto_pepe_rosa_clean.png",
+      "image": "assets/menu-images/generated_filetto_pepe_rosa_clean.png",
       "payoff": "",
       "order": 4
     },
@@ -719,7 +719,7 @@ window.menuData = {
         "Sedano",
         "Pesce"
       ],
-      "image": "assets/dishcovery-images/307953_Polpo_Cotto_a_Bassa_Temperatura_su_Crema_di_Patate_e_Gocce_di_Prezzemolo.jpeg",
+      "image": "assets/menu-images/307953_Polpo_Cotto_a_Bassa_Temperatura_su_Crema_di_Patate_e_Gocce_di_Prezzemolo.jpeg",
       "payoff": "",
       "order": 5
     },
@@ -735,7 +735,7 @@ window.menuData = {
         "Pesce",
         "Molluschi"
       ],
-      "image": "assets/dishcovery-images/generated_fritto_mare_verdure.png",
+      "image": "assets/menu-images/generated_fritto_mare_verdure.png",
       "payoff": "",
       "order": 6
     },
@@ -746,7 +746,7 @@ window.menuData = {
       "description": "Salsiccia, Petto di Pollo, Pancetta, Lonza e Patate al Forno",
       "ingredients": "Salsiccia, Petto di Pollo, Lonza di Maiale, Pancetta, Patate al Forno",
       "allergens": [],
-      "image": "assets/dishcovery-images/generated_grigliata_carne.png",
+      "image": "assets/menu-images/generated_grigliata_carne.png",
       "payoff": "",
       "order": 7
     },
@@ -757,7 +757,7 @@ window.menuData = {
       "description": "",
       "ingredients": "",
       "allergens": [],
-      "image": "assets/dishcovery-images/generated_cotoletta_milanese.png",
+      "image": "assets/menu-images/generated_cotoletta_milanese.png",
       "payoff": "",
       "order": 8
     }

@@ -18,7 +18,7 @@ DEFAULT_LANG = "it"
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA_DIR = ROOT / "data"
-IMAGE_DIR = ROOT / "assets" / "dishcovery-images"
+IMAGE_DIR = ROOT / "assets" / "menu-images"
 MENU_DATA_JS = ROOT / "js" / "menu-data.js"
 
 CATEGORY_MAP = {
@@ -79,7 +79,7 @@ def download_image(client: httpx.Client, item: dict[str, Any]) -> str:
     )
     target = IMAGE_DIR / filename
     if target.exists():
-        return f"assets/dishcovery-images/{target.name}"
+        return f"assets/menu-images/{target.name}"
 
     try:
         response = client.get(image_url, timeout=60)
@@ -88,7 +88,7 @@ def download_image(client: httpx.Client, item: dict[str, Any]) -> str:
         return ""
 
     target.write_bytes(response.content)
-    return f"assets/dishcovery-images/{target.name}"
+    return f"assets/menu-images/{target.name}"
 
 
 def item_to_app_entry(
