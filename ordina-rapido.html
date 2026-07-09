@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ordina Pizza a Forlì | Al Ponte di Schiavonia</title>
+    <meta name="description" content="Ordina pizza, cucina romagnola e piatti da asporto a Forlì direttamente da Al Ponte di Schiavonia. Ritiro o consegna, zero commissioni.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://dal1312.github.io/-ponte6/ordina-rapido.html">
+    <link rel="icon" href="favicon.ico" sizes="any">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FoodEstablishment",
+      "name": "Al Ponte di Schiavonia",
+      "servesCuisine": ["Pizza", "Romagnola", "Italiana"],
+      "telephone": "+39054329448",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Viale Salinatore 86",
+        "addressLocality": "Forlì",
+        "addressRegion": "FC",
+        "postalCode": "47121",
+        "addressCountry": "IT"
+      },
+      "url": "https://dal1312.github.io/-ponte6/ordina-rapido.html",
+      "acceptsReservations": true
+    }
+    </script>
+</head>
+<body>
+<nav class="navbar" id="navbar">
+    <div class="container nav-container">
+        <a href="index.html" class="logo">
+            <span class="logo-icon">🍷</span>
+            <span class="logo-text">Al Ponte<br><small>di Schiavonia</small></span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="menu.html">Menu</a></li>
+            <li><a href="ordina.html" class="active">Ordina</a></li>
+            <li><a href="contatti.html">Contatti</a></li>
+        </ul>
+        <a href="https://wa.me/39054329448" class="btn-prenota-nav" target="_blank" rel="noopener">WhatsApp</a>
+        <button class="mobile-menu-btn" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+    <a href="index.html">Home</a>
+    <a href="menu.html">Menu</a>
+    <a href="ordina.html">Ordina</a>
+    <a href="contatti.html">Contatti</a>
+    <a href="https://wa.me/39054329448" class="btn-whatsapp">WhatsApp</a>
+</div>
+
+<header class="page-hero">
+    <div class="container">
+        <span class="section-label light">ORDINE DIRETTO • ZERO COMMISSIONI</span>
+        <h1 class="page-title">Ordina Pizza e Cucina Romagnola a <em>Forlì</em></h1>
+        <p class="page-subtitle">Scegli dal menu, compila i dati e invia l'ordine su WhatsApp. Ritiro in loco o consegna a domicilio.</p>
+        <div class="hero-cta" style="justify-content:center;margin-top:1.5rem">
+            <a href="#ordine" class="btn btn-primary">Inizia l'ordine</a>
+            <a href="tel:+39054329448" class="btn btn-outline">Chiama il locale</a>
+        </div>
+    </div>
+</header>
+
+<section class="section-order" aria-label="Vantaggi ordine diretto">
+    <div class="container">
+        <div class="order-grid">
+            <div class="order-card animate-on-scroll">
+                <div class="order-icon">💸</div>
+                <h3>Zero commissioni</h3>
+                <p>Ordine diretto al ristorante: niente piattaforme esterne e nessun costo nascosto.</p>
+            </div>
+            <div class="order-card animate-on-scroll" data-delay="100">
+                <div class="order-icon">🍕</div>
+                <h3>Pizza personalizzabile</h3>
+                <p>Aggiungi extra, togli ingredienti e inserisci note direttamente nel carrello.</p>
+            </div>
+            <div class="order-card animate-on-scroll" data-delay="200">
+                <div class="order-icon">📲</div>
+                <h3>Conferma WhatsApp</h3>
+                <p>L'ordine viene preparato come messaggio WhatsApp leggibile e pronto da inviare.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<main class="order-page" id="ordine">
+    <div class="container">
+        <div class="section-header animate-on-scroll">
+            <span class="section-label">MENU ORDINE RAPIDO</span>
+            <h2 class="section-title">Componi il tuo <em>ordine</em></h2>
+            <p class="section-subtitle">Aggiungi i prodotti al carrello e invia tutto al locale in un messaggio unico.</p>
+        </div>
+
+        <div class="order-layout">
+            <div class="order-menu">
+                <h2>🍕 Pizze</h2>
+                <div class="order-items" id="pizze-list"></div>
+
+                <h2>🥗 Antipasti</h2>
+                <div class="order-items" id="antipasti-list"></div>
+
+                <h2>🍝 Primi</h2>
+                <div class="order-items" id="primi-list"></div>
+
+                <h2>🥩 Secondi</h2>
+                <div class="order-items" id="secondi-list"></div>
+
+                <h2>🥔 Contorni</h2>
+                <div class="order-items" id="contorni-list"></div>
+
+                <h2>🍰 Dessert</h2>
+                <div class="order-items" id="dessert-list"></div>
+            </div>
+
+            <aside class="order-cart" id="cart">
+                <div class="cart-header">
+                    <h3>🛒 Il tuo ordine</h3>
+                    <button class="cart-clear" id="clearCart" type="button">Svuota</button>
+                </div>
+                <div class="cart-items" id="cartItems">
+                    <div class="cart-empty"><p>Il carrello è vuoto.<br>Aggiungi qualcosa di buono!</p></div>
+                </div>
+                <div class="cart-summary">
+                    <div class="summary-row"><span>Subtotale</span><span id="subtotal">€0,00</span></div>
+                    <div class="summary-row total"><span>Totale</span><span id="total">€0,00</span></div>
+                </div>
+                <form class="cart-form" id="orderForm">
+                    <h4>I tuoi dati</h4>
+                    <div class="form-group">
+                        <label>Nome e Cognome *</label>
+                        <input type="text" name="name" required placeholder="Mario Rossi">
+                    </div>
+                    <div class="form-group">
+                        <label>Telefono *</label>
+                        <input type="tel" name="phone" required placeholder="+39 333 1234567">
+                    </div>
+                    <div class="form-group">
+                        <label>Modalità *</label>
+                        <div class="radio-group">
+                            <label class="radio-label"><input type="radio" name="mode" value="ritiro" checked><span>🏠 Ritiro in loco</span></label>
+                            <label class="radio-label"><input type="radio" name="mode" value="consegna"><span>🛵 Consegna a domicilio</span></label>
+                        </div>
+                    </div>
+                    <div class="form-group" id="addressField" style="display:none">
+                        <label>Indirizzo consegna *</label>
+                        <input type="text" name="address" placeholder="Via, numero civico, Forlì">
+                    </div>
+                    <div class="form-group">
+                        <label>Note ordine</label>
+                        <textarea name="notes" rows="3" placeholder="Orario desiderato, citofono, allergie, richieste speciali..."></textarea>
+                    </div>
+                    <button class="btn btn-primary" id="submitOrder" type="submit" disabled>Invia ordine su WhatsApp</button>
+                    <p style="font-size:.85rem;opacity:.8;margin-top:.75rem">Il messaggio WhatsApp viene preparato automaticamente: controllalo e premi invio.</p>
+                </form>
+            </aside>
+        </div>
+    </div>
+</main>
+
+<script src="js/menu-data.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
