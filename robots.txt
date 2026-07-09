@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://dal1312.github.io/-ponte6/sitemap.xml
