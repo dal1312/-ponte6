@@ -655,7 +655,7 @@ window.menuData = {
       "name": "Galletto a Bassa Temperatura agli Agrumi con Spinaci al Vapore e Riduzione alla Soia",
       "price": 15.0,
       "description": "",
-      "ingredients": "Galletto cotto a bassa temperatura con salsa agli agrumi, Erbette fresche al vapore con glassa \talla salsa di soia",
+      "ingredients": "Galletto cotto a bassa temperatura con salsa agli agrumi, Erbette fresche al vapore con glassa alla salsa di soia",
       "allergens": [
         "Soia"
       ],
@@ -700,7 +700,7 @@ window.menuData = {
     },
     {
       "id": 307950,
-      "name": "Filetto di Manzo \"Angus\" al Pepe Rosa",
+      "name": "Filetto di Manzo \"Angus\" al Pepe Verde",
       "price": 19.0,
       "description": "",
       "ingredients": "Filetto Di Manzo, Cognac, Pepe Verde",
@@ -876,3 +876,27 @@ window.menuData = {
   "vini_bianchi": [],
   "bevande": []
 };
+
+
+// Conservative allergen completion for legacy Dishcovery entries.
+(() => {
+  const rules = [
+    ["Glutine", /pizza|pasta|tagliatell|cappellet|tortell|strozzapret|gnocch|lasagn|spaghetti|pane|farina|impanat|cotoletta|fritt/i],
+    ["Latte e derivati", /mozzarella|fior di latte|latte|burro|panna|formagg|pecorino|grana|gorgonzola|mascarpone|burrat|squacquerone|scamorza/i],
+    ["Uova e derivati", /uov|maionese|mascarpone|tiramis|pasta fresca|cotoletta/i],
+    ["Pesce", /pesce|baccal|alice|acciug|tonno|salmone|bottarga/i],
+    ["Crostacei", /gamber|mazzancoll|scampo|crostace/i],
+    ["Molluschi", /polpo|calamar|cozz|vongol|seppia|mollusch/i],
+    ["Sedano", /sedano/i], ["Soia", /soia/i], ["Frutta a guscio", /noce|noci|mandorl|pistacch|nocciol/i],
+    ["Senape", /senape/i], ["Solfiti", /vino|aceto balsamico/i]
+  ];
+  Object.entries(window.menuData || {}).forEach(([category, items]) => {
+    items.forEach((item) => {
+      const text = [item.name, item.description, item.ingredients].filter(Boolean).join(" ");
+      const allergens = new Set(item.allergens || []);
+      if (category === "pizze") { allergens.add("Glutine"); allergens.add("Latte e derivati"); }
+      rules.forEach(([label, pattern]) => { if (pattern.test(text)) allergens.add(label); });
+      item.allergens = [...allergens];
+    });
+  });
+})();

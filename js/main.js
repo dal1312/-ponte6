@@ -746,7 +746,7 @@ document.head.appendChild(style);
 ======================================== */
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sw.js')
+        navigator.serviceWorker.register('./service-worker.js')
             .then(reg => console.log('✓ Service Worker registrato'))
             .catch(err => console.log('✗ SW error:', err));
     });

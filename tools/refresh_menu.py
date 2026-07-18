@@ -21,6 +21,18 @@ DATA_DIR = ROOT / "data"
 IMAGE_DIR = ROOT / "assets" / "menu-images"
 MENU_DATA_JS = ROOT / "js" / "menu-data.js"
 
+ALLERGEN_RULES = {
+    "Glutine": r"pizza|pasta|tagliatell|cappellet|tortell|strozzapret|gnocch|lasagn|spaghetti|pane|farina|impanat|cotoletta|fritt",
+    "Latte e derivati": r"mozzarella|fior di latte|latte|burro|panna|formagg|pecorino|grana|gorgonzola|mascarpone|burrat|squacquerone|scamorza",
+    "Uova e derivati": r"uov|maionese|mascarpone|tiramis|pasta fresca|cotoletta",
+    "Pesce": r"pesce|baccal|alice|acciug|tonno|salmone|bottarga",
+    "Crostacei": r"gamber|mazzancoll|scampo|crostace",
+    "Molluschi": r"polpo|calamar|cozz|vongol|seppia|mollusch",
+    "Sedano": r"sedano", "Soia": r"soia",
+    "Frutta a guscio": r"noce|noci|mandorl|pistacch|nocciol",
+    "Senape": r"senape", "Solfiti": r"vino|aceto balsamico",
+}
+
 CATEGORY_MAP = {
     "Antipasti": "antipasti",
     "Primi Piatti": "primi",
@@ -94,6 +106,7 @@ def download_image(client: httpx.Client, item: dict[str, Any]) -> str:
 def item_to_app_entry(
     item: dict[str, Any],
     image_path: str,
+    category: str,
 ) -> dict[str, Any]:
     allergens = [
         tag.get("name")
@@ -105,6 +118,12 @@ def item_to_app_entry(
         for ingredient in item.get("ingredients", [])
         if ingredient.get("name")
     ]
+
+    text = " ".join([item.get("name") or "", clean_html(item.get("description")), " ".join(ingredients)])
+    inferred = {name for name, pattern in ALLERGEN_RULES.items() if re.search(pattern, text, re.I)}
+    if category == "pizze":
+        inferred.update({"Glutine", "Latte e derivati"})
+    allergens = sorted(set(allergens) | inferred)
 
     return {
         "id": item.get("id"),
@@ -147,7 +166,7 @@ def build_menu_data(data: dict[str, Any], download_images: bool) -> dict[str, li
             entries = []
             for item in category.get("menuentries", []):
                 image_path = download_image(client, item) if download_images else ""
-                entries.append(item_to_app_entry(item, image_path))
+                entries.append(item_to_app_entry(item, image_path, target_category))
 
             entries.sort(key=lambda entry: (entry["order"], entry["name"]))
             menu_data[target_category].extend(entries)
