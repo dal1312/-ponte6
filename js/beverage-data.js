@@ -161,7 +161,7 @@
       price,
       description: [format && `Formato: ${format}`, detail].filter(Boolean).join(" • "),
       ingredients: "",
-      allergens: [],
+      allergens: category === "birre" ? ["Glutine"] : (category.startsWith("vini_") ? ["Solfiti"] : []),
       image: "",
       payoff: "",
       order: index
