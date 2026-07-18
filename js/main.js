@@ -516,8 +516,9 @@ function renderOrderItems() {
             if (isPizza) {
                 const ingredientsJson = escapeHtml(JSON.stringify(ingredientsArray));
                 return `
-                    <div class="order-item">
+                    <div class="order-item order-item-pizza">
                         <div class="order-item-name">${escapeHtml(item.name)}</div>
+                        ${item.ingredients ? `<div class="order-item-ingredients">${escapeHtml(item.ingredients)}</div>` : '<div class="order-item-ingredients order-item-ingredients-missing">Ingredienti da confermare</div>'}
                         <div class="order-item-bottom">
                             <span class="order-item-price">${formatPrice(item.price)}</span>
                             <button class="btn-add-small btn-customize-order" type="button" data-name="${escapeHtml(item.name)}" data-price="${item.price}" data-ingredients='${ingredientsJson}' aria-label="Personalizza ${escapeHtml(item.name)}">🍕</button>
