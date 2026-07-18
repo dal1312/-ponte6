@@ -504,20 +504,36 @@ createPizzaModal();
    ORDER CATEGORY NAVIGATION
 ======================================== */
 const orderCategoryButtons = document.querySelectorAll('[data-order-target]');
+const orderCategorySections = document.querySelectorAll('.order-category-section');
+
+function showOrderCategory(targetId) {
+    orderCategorySections.forEach(section => {
+        section.hidden = section.id !== targetId;
+    });
+
+    orderCategoryButtons.forEach(button => {
+        const selected = button.dataset.orderTarget === targetId;
+        button.classList.toggle('active', selected);
+        button.setAttribute('aria-pressed', String(selected));
+    });
+}
 
 orderCategoryButtons.forEach(button => {
     button.addEventListener('click', () => {
-        const target = document.getElementById(button.dataset.orderTarget);
-        if (!target) return;
+        showOrderCategory(button.dataset.orderTarget);
 
-        orderCategoryButtons.forEach(item => item.classList.remove('active'));
-        button.classList.add('active');
-
-        const stickyOffset = 145;
-        const top = target.getBoundingClientRect().top + window.scrollY - stickyOffset;
-        window.scrollTo({ top, behavior: 'smooth' });
+        const orderMenu = document.querySelector('.order-menu');
+        if (orderMenu) {
+            const stickyOffset = 145;
+            const top = orderMenu.getBoundingClientRect().top + window.scrollY - stickyOffset;
+            window.scrollTo({ top, behavior: 'smooth' });
+        }
     });
 });
+
+if (orderCategoryButtons.length > 0 && orderCategorySections.length > 0) {
+    showOrderCategory(orderCategoryButtons[0].dataset.orderTarget);
+}
 
 /* ========================================
    ORDER PAGE - Genera items dalle categorie
