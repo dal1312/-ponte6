@@ -3,372 +3,222 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#741d18">
+  <meta name="theme-color" content="#171310">
   <title>Al Ponte di Schiavonia | Trattoria e Pizzeria a Forlì</title>
-  <meta name="description" content="Al Ponte di Schiavonia, trattoria e pizzeria a Forlì dal 1978. Menu completo e ordini diretti.">
+  <meta name="description" content="Al Ponte di Schiavonia, trattoria e pizzeria a Forlì dal 1978. Cucina romagnola, pasta fresca e pizza.">
   <link rel="canonical" href="https://dal1312.github.io/-ponte6/">
   <link rel="manifest" href="manifest.json">
   <link rel="icon" href="favicon.ico" sizes="any">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Italiana&display=swap" rel="stylesheet">
   <style>
     :root {
-      --wine: #741d18;
-      --wine-dark: #48110e;
-      --gold: #d39b3d;
-      --ink: #241917;
-      --muted: #72645f;
-      --cream: #f6efe5;
-      --paper: #fffdf9;
-      --line: rgba(79, 49, 39, .16);
-      --shadow: 0 22px 55px rgba(64, 38, 28, .12);
+      --ink: #171310;
+      --paper: #f4efe6;
+      --wine: #8c2d24;
+      --gold: #d7a84c;
+      --line: rgba(23,19,16,.18);
+      --serif: "Italiana", Georgia, serif;
+      --sans: "DM Sans", sans-serif;
     }
-
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      color: var(--ink);
-      background: var(--paper);
-      font-family: "DM Sans", sans-serif;
-      line-height: 1.6;
-    }
-    img { display: block; max-width: 100%; }
+    body { margin: 0; color: var(--ink); background: var(--paper); font-family: var(--sans); }
+    img { display: block; width: 100%; }
     a { color: inherit; text-decoration: none; }
-    button, a { -webkit-tap-highlight-color: transparent; }
-    .container { width: min(1180px, calc(100% - 40px)); margin: 0 auto; }
+    .wrap { width: min(1380px, calc(100% - 64px)); margin: 0 auto; }
 
-    .site-header {
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      background: rgba(255, 253, 249, .94);
-      border-bottom: 1px solid var(--line);
-      backdrop-filter: blur(16px);
+    header {
+      position: absolute; inset: 0 0 auto; z-index: 10;
+      color: white; border-bottom: 1px solid rgba(255,255,255,.22);
     }
-    .nav {
-      min-height: 82px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 24px;
-    }
-    .brand { display: flex; align-items: center; gap: 12px; }
-    .brand img { width: 68px; height: 68px; object-fit: contain; }
-    .brand-copy strong {
-      display: block;
-      font-family: "Playfair Display", serif;
-      font-size: 1.18rem;
-      line-height: 1.05;
-      color: var(--wine-dark);
-    }
-    .brand-copy span {
-      display: block;
-      margin-top: 5px;
-      color: var(--muted);
-      font-size: .72rem;
-      letter-spacing: .16em;
-      text-transform: uppercase;
-    }
-    .nav-links { display: flex; align-items: center; gap: 30px; }
-    .nav-links a { font-weight: 600; font-size: .93rem; }
-    .nav-links a:hover, .nav-links a.active { color: var(--wine); }
-    .nav-order {
-      color: white !important;
-      background: var(--wine);
-      padding: 10px 18px;
-      border-radius: 999px;
-    }
+    .nav { height: 94px; display: flex; align-items: center; justify-content: space-between; gap: 28px; }
+    .brand { display: flex; align-items: center; gap: 14px; }
+    .brand img { width: 70px; height: 70px; object-fit: contain; filter: drop-shadow(0 4px 12px rgba(0,0,0,.3)); }
+    .brand strong { display: block; font: 400 1.18rem/1.05 var(--serif); letter-spacing: .02em; }
+    .brand span { display: block; margin-top: 5px; opacity: .68; font-size: .66rem; letter-spacing: .22em; text-transform: uppercase; }
+    nav { display: flex; align-items: center; gap: 30px; font-size: .84rem; font-weight: 600; }
+    nav a { position: relative; }
+    nav a:not(.order)::after { content: ""; position: absolute; left: 0; right: 100%; bottom: -8px; height: 1px; background: white; transition: .25s; }
+    nav a:hover::after { right: 0; }
+    .order { padding: 12px 20px; border: 1px solid rgba(255,255,255,.7); border-radius: 99px; }
+    .order:hover { color: var(--ink); background: white; }
 
-    .hero {
-      min-height: 650px;
-      display: grid;
-      align-items: center;
-      color: white;
-      background:
-        linear-gradient(90deg, rgba(28, 16, 13, .92) 0%, rgba(43, 20, 16, .72) 42%, rgba(24, 15, 13, .18) 74%),
-        url("assets/home/sala.jpg") center / cover no-repeat;
-    }
-    .hero-inner { padding: 90px 0; }
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      color: #f2c979;
-      font-size: .78rem;
-      font-weight: 700;
-      letter-spacing: .18em;
-      text-transform: uppercase;
-    }
-    .eyebrow::before { content: ""; width: 34px; height: 1px; background: currentColor; }
-    h1, h2, h3 { font-family: "Playfair Display", serif; line-height: 1.08; }
-    h1 {
-      max-width: 720px;
-      margin: 18px 0 20px;
-      font-size: clamp(3rem, 6vw, 5.8rem);
-      font-weight: 600;
-      letter-spacing: -.035em;
-    }
-    .hero p {
-      max-width: 590px;
-      margin: 0 0 34px;
-      color: rgba(255, 255, 255, .88);
-      font-size: 1.14rem;
-    }
-    .actions { display: flex; flex-wrap: wrap; gap: 14px; }
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 50px;
-      padding: 0 24px;
-      border: 1px solid transparent;
-      border-radius: 999px;
-      font-weight: 700;
-      transition: .25s ease;
-    }
-    .btn-primary { background: var(--wine); color: white; }
-    .btn-primary:hover { background: #92271f; transform: translateY(-2px); }
-    .btn-outline { border-color: rgba(255,255,255,.65); color: white; }
-    .btn-outline:hover { background: white; color: var(--ink); }
+    .hero { position: relative; min-height: 820px; display: grid; align-items: end; color: white; overflow: hidden; }
+    .hero-bg { position: absolute; inset: 0; height: 100%; object-fit: cover; object-position: center 55%; filter: saturate(.74) contrast(1.08); }
+    .hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(15,12,10,.88) 0%, rgba(15,12,10,.57) 44%, rgba(15,12,10,.08) 77%), linear-gradient(0deg, rgba(15,12,10,.66), transparent 45%); }
+    .hero-content { position: relative; z-index: 2; padding: 180px 0 82px; display: grid; grid-template-columns: minmax(0, 860px) 1fr; align-items: end; gap: 50px; }
+    .kicker { display: flex; align-items: center; gap: 14px; color: #f0ca7e; font-size: .72rem; font-weight: 700; letter-spacing: .24em; text-transform: uppercase; }
+    .kicker::before { content: ""; width: 42px; height: 1px; background: currentColor; }
+    h1 { max-width: 900px; margin: 22px 0 28px; font: 400 clamp(4.2rem, 8.4vw, 8.5rem)/.87 var(--serif); letter-spacing: -.045em; }
+    .hero-lead { max-width: 610px; margin: 0; color: rgba(255,255,255,.78); font-size: 1.06rem; line-height: 1.7; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 34px; }
+    .btn { min-height: 52px; display: inline-flex; align-items: center; justify-content: center; padding: 0 25px; border-radius: 99px; font-size: .86rem; font-weight: 700; transition: .25s; }
+    .btn-red { color: white; background: var(--wine); }
+    .btn-red:hover { background: #a83c31; transform: translateY(-2px); }
+    .btn-ghost { color: white; border: 1px solid rgba(255,255,255,.55); }
+    .btn-ghost:hover { color: var(--ink); background: white; }
+    .hero-note { justify-self: end; width: min(100%, 240px); padding: 22px 0 0; border-top: 1px solid rgba(255,255,255,.35); }
+    .hero-note strong { display: block; font: 400 1.5rem/1.15 var(--serif); }
+    .hero-note span { display: block; margin-top: 8px; color: rgba(255,255,255,.6); font-size: .76rem; line-height: 1.55; }
 
-    section { padding: 92px 0; }
-    .story { background: var(--cream); }
-    .story-grid {
-      display: grid;
-      grid-template-columns: 1.02fr .98fr;
-      gap: 64px;
-      align-items: center;
-    }
-    .story-media {
-      position: relative;
-      min-height: 520px;
-    }
-    .story-media .outside {
-      width: 82%;
-      height: 440px;
-      object-fit: cover;
-      border-radius: 22px;
-      filter: saturate(.84) contrast(1.04);
-      box-shadow: var(--shadow);
-    }
-    .story-media .pasta {
-      position: absolute;
-      right: 0;
-      bottom: 0;
-      width: 48%;
-      height: 245px;
-      object-fit: cover;
-      border: 8px solid var(--cream);
-      border-radius: 18px;
-      box-shadow: var(--shadow);
-    }
-    .section-label {
-      color: var(--wine);
-      font-size: .76rem;
-      font-weight: 800;
-      letter-spacing: .18em;
-      text-transform: uppercase;
-    }
-    h2 {
-      margin: 12px 0 22px;
-      font-size: clamp(2.4rem, 4vw, 4.3rem);
-      font-weight: 600;
-      letter-spacing: -.025em;
-    }
-    .story-copy p { color: var(--muted); font-size: 1.03rem; }
-    .facts {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1px;
-      margin-top: 34px;
-      overflow: hidden;
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      background: var(--line);
-    }
-    .fact { padding: 20px; background: rgba(255,255,255,.62); }
-    .fact strong { display: block; color: var(--wine); font-size: 1.15rem; }
-    .fact span { color: var(--muted); font-size: .84rem; }
+    .strip { overflow: hidden; color: white; background: var(--wine); }
+    .strip-track { min-width: max-content; display: flex; align-items: center; gap: 30px; padding: 16px 0; font: 400 1rem var(--serif); letter-spacing: .06em; }
+    .strip i { width: 5px; height: 5px; border-radius: 50%; background: var(--gold); }
 
-    .specialties-head {
-      display: flex;
-      align-items: end;
-      justify-content: space-between;
-      gap: 30px;
-      margin-bottom: 42px;
-    }
-    .specialties-head h2 { margin-bottom: 0; }
-    .text-link { color: var(--wine); font-weight: 800; border-bottom: 1px solid currentColor; }
-    .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
-    .card {
-      overflow: hidden;
-      border: 1px solid var(--line);
-      border-radius: 20px;
-      background: white;
-      box-shadow: 0 14px 38px rgba(62, 36, 28, .08);
-    }
-    .card img { width: 100%; height: 310px; object-fit: cover; }
-    .card:nth-child(1) img { object-position: center 34%; }
-    .card:nth-child(2) img { object-position: center; }
-    .card:nth-child(3) img { object-position: center 58%; }
-    .card-body { padding: 23px; }
-    .card small { color: var(--wine); font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
-    .card h3 { margin: 7px 0 0; font-size: 1.6rem; }
+    .intro { padding: 120px 0; }
+    .intro-grid { display: grid; grid-template-columns: .78fr 1.22fr; gap: 9vw; align-items: start; }
+    .vertical-title { display: flex; align-items: center; gap: 15px; color: var(--wine); font-size: .7rem; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; }
+    .vertical-title::before { content: ""; width: 38px; height: 1px; background: currentColor; }
+    h2 { margin: 0; font: 400 clamp(3.1rem, 6vw, 6.5rem)/.98 var(--serif); letter-spacing: -.035em; }
+    .intro-copy h2 em { color: var(--wine); font-style: normal; }
+    .intro-copy p { max-width: 690px; margin: 30px 0 0; color: #665c55; font-size: 1.05rem; line-height: 1.8; }
+    .signature { margin-top: 38px; display: flex; gap: 35px; align-items: center; }
+    .signature strong { font: 400 2rem var(--serif); }
+    .signature span { padding-left: 35px; border-left: 1px solid var(--line); color: #746860; font-size: .76rem; line-height: 1.55; text-transform: uppercase; letter-spacing: .1em; }
 
-    .venue { padding-top: 0; }
-    .venue-panel {
-      display: grid;
-      grid-template-columns: 1.18fr .82fr;
-      min-height: 430px;
-      overflow: hidden;
-      border-radius: 24px;
-      background: var(--wine-dark);
-      color: white;
-      box-shadow: var(--shadow);
-    }
-    .venue-panel img { width: 100%; height: 100%; object-fit: cover; }
-    .venue-copy { display: flex; flex-direction: column; justify-content: center; padding: 56px; }
-    .venue-copy h2 { margin: 10px 0 18px; font-size: clamp(2.2rem, 3vw, 3.6rem); }
-    .venue-copy p { color: rgba(255,255,255,.72); }
-    .contact-list { display: grid; gap: 11px; margin: 20px 0 28px; font-size: .95rem; }
+    .gallery { padding: 0 0 120px; }
+    .gallery-grid { display: grid; grid-template-columns: 1.15fr .85fr; grid-template-rows: 340px 340px; gap: 18px; }
+    .shot { position: relative; overflow: hidden; background: #d9d0c5; }
+    .shot:first-child { grid-row: 1 / 3; }
+    .shot img { height: 100%; object-fit: cover; transition: transform .7s ease; }
+    .shot:hover img { transform: scale(1.025); }
+    .shot::after { content: ""; position: absolute; inset: auto 0 0; height: 44%; background: linear-gradient(transparent, rgba(15,12,10,.62)); }
+    .shot-label { position: absolute; z-index: 2; left: 28px; bottom: 24px; color: white; }
+    .shot-label small { display: block; margin-bottom: 5px; color: #efca83; font-size: .65rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; }
+    .shot-label strong { font: 400 1.7rem var(--serif); }
 
-    footer { padding: 28px 0; border-top: 1px solid var(--line); color: var(--muted); }
-    .footer-row { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+    .menu-callout { padding: 120px 0; color: white; background: var(--ink); }
+    .menu-head { display: grid; grid-template-columns: 1.2fr .8fr; gap: 60px; align-items: end; }
+    .menu-head h2 { max-width: 780px; }
+    .menu-side { padding-left: 34px; border-left: 1px solid rgba(255,255,255,.2); }
+    .menu-side p { margin: 0 0 26px; color: rgba(255,255,255,.6); line-height: 1.7; }
+    .menu-side a { color: #f0ca7e; font-weight: 700; border-bottom: 1px solid currentColor; }
+    .plates { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-top: 70px; }
+    .plate { position: relative; height: 390px; overflow: hidden; }
+    .plate img { height: 100%; object-fit: cover; filter: saturate(.85); transition: .6s; }
+    .plate:hover img { transform: scale(1.03); filter: saturate(1); }
+    .plate span { position: absolute; left: 20px; bottom: 18px; padding: 8px 13px; color: white; background: rgba(23,19,16,.78); font: 400 1.05rem var(--serif); backdrop-filter: blur(8px); }
+
+    .visit { padding: 110px 0; }
+    .visit-grid { display: grid; grid-template-columns: .9fr 1.1fr; gap: 8vw; align-items: center; }
+    .visit img { height: 530px; object-fit: cover; }
+    .visit h2 { margin: 12px 0 25px; font-size: clamp(3rem, 5vw, 5.4rem); }
+    .details { display: grid; gap: 14px; margin: 30px 0; padding: 25px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); color: #5f554e; font-size: .93rem; }
+    .details a { color: var(--wine); font-weight: 700; }
+    footer { padding: 30px 0; color: #7a6e65; border-top: 1px solid var(--line); font-size: .78rem; }
+    .footer-row { display: flex; justify-content: space-between; gap: 20px; }
 
     @media (max-width: 900px) {
-      .nav-links a:not(.nav-order) { display: none; }
-      .hero { min-height: 600px; background-position: 58% center; }
-      .story-grid, .venue-panel { grid-template-columns: 1fr; }
-      .story-grid { gap: 42px; }
-      .cards { grid-template-columns: 1fr; }
-      .card img { height: 340px; }
-      .venue-panel img { height: 360px; }
+      .hero { min-height: 760px; }
+      .hero-content, .intro-grid, .menu-head, .visit-grid { grid-template-columns: 1fr; }
+      .hero-note { display: none; }
+      .gallery-grid { grid-template-columns: 1fr 1fr; grid-template-rows: 500px 300px; }
+      .shot:first-child { grid-column: 1 / 3; grid-row: auto; }
+      .plates { grid-template-columns: 1fr 1fr; }
+      .plate:last-child { display: none; }
+      .menu-side { padding-left: 0; border-left: 0; }
     }
-    @media (max-width: 580px) {
-      .container { width: min(100% - 28px, 1180px); }
-      .brand-copy { display: none; }
-      .brand img { width: 58px; height: 58px; }
-      .nav { min-height: 70px; }
-      .hero { min-height: 620px; background-position: 61% center; }
-      .hero-inner { padding: 74px 0; }
-      .hero p { font-size: 1rem; }
-      .actions { flex-direction: column; align-items: stretch; }
-      section { padding: 68px 0; }
-      .story-media { min-height: 430px; }
-      .story-media .outside { height: 360px; }
-      .story-media .pasta { height: 190px; width: 58%; }
-      .specialties-head { display: block; }
-      .specialties-head .text-link { display: inline-block; margin-top: 18px; }
-      .venue-copy { padding: 34px 26px; }
+    @media (max-width: 620px) {
+      .wrap { width: min(100% - 28px, 1380px); }
+      .nav { height: 76px; }
+      .brand img { width: 56px; height: 56px; }
+      .brand div, nav a:not(.order) { display: none; }
+      .order { padding: 10px 17px; }
+      .hero { min-height: 720px; }
+      .hero-bg { object-position: 64% center; }
+      .hero::after { background: linear-gradient(90deg, rgba(15,12,10,.9), rgba(15,12,10,.35)), linear-gradient(0deg, rgba(15,12,10,.75), transparent 55%); }
+      .hero-content { padding: 145px 0 58px; }
+      h1 { font-size: clamp(3.7rem, 18vw, 5.6rem); }
+      .hero-lead { font-size: .96rem; }
+      .hero-actions { flex-direction: column; align-items: stretch; }
+      .intro, .menu-callout, .visit { padding: 78px 0; }
+      .intro-grid { gap: 35px; }
+      .signature { align-items: flex-start; gap: 20px; }
+      .signature strong { font-size: 1.55rem; }
+      .signature span { padding-left: 20px; }
+      .gallery { padding-bottom: 78px; }
+      .gallery-grid { display: block; }
+      .shot { height: 380px; margin-bottom: 12px; }
+      .shot:not(:first-child) { height: 260px; }
+      .plates { grid-template-columns: 1fr; margin-top: 45px; }
+      .plate { height: 360px; }
+      .plate:nth-child(2) { display: none; }
+      .visit-grid { gap: 42px; }
+      .visit img { height: 390px; }
+      .footer-row { display: grid; }
     }
   </style>
 </head>
 <body>
-  <header class="site-header">
-    <div class="container nav">
-      <a class="brand" href="#home" aria-label="Al Ponte di Schiavonia, Home">
+  <header>
+    <div class="wrap nav">
+      <a class="brand" href="index.html" aria-label="Al Ponte di Schiavonia, Home">
         <img src="assets/home/logo.png" alt="Logo Al Ponte di Schiavonia">
-        <span class="brand-copy">
-          <strong>Al Ponte di Schiavonia</strong>
-          <span>Trattoria e Pizzeria</span>
-        </span>
+        <div><strong>Al Ponte di Schiavonia</strong><span>Trattoria e Pizzeria</span></div>
       </a>
-      <nav class="nav-links" aria-label="Navigazione principale">
-        <a class="active" href="index.html">Home</a>
-        <a href="menu.html">Menu</a>
-        <a href="#locale">Il locale</a>
-        <a class="nav-order" href="ordina.html">Ordina</a>
+      <nav aria-label="Navigazione principale">
+        <a href="menu.html">Menu</a><a href="#locale">Il locale</a><a href="contatti.html">Contatti</a><a class="order" href="ordina.html">Ordina online</a>
       </nav>
     </div>
   </header>
 
   <main>
-    <section class="hero" id="home">
-      <div class="container hero-inner">
-        <span class="eyebrow">Forlì · dal 1978</span>
-        <h1>La nostra cucina,<br>senza artifici.</h1>
-        <p>Trattoria e pizzeria nel cuore di Schiavonia. Piatti della tradizione, pasta fresca e un’accoglienza semplice, come a casa.</p>
-        <div class="actions">
-          <a class="btn btn-primary" href="menu.html">Scopri il menu</a>
-          <a class="btn btn-outline" href="ordina.html">Ordina</a>
+    <section class="hero">
+      <img class="hero-bg" src="assets/home/sala.jpg" alt="La sala di Al Ponte di Schiavonia">
+      <div class="wrap hero-content">
+        <div>
+          <div class="kicker">Forlì · dal 1978</div>
+          <h1>La tavola<br>di casa.</h1>
+          <p class="hero-lead">Cucina romagnola, pasta fresca e pizza. Un posto vero, nel cuore di Schiavonia.</p>
+          <div class="hero-actions"><a class="btn btn-red" href="menu.html">Guarda il menu</a><a class="btn btn-ghost" href="ordina.html">Ordina da asporto</a></div>
+        </div>
+        <div class="hero-note"><strong>Tradizione, ogni giorno.</strong><span>Piatti preparati con cura e un’accoglienza senza formalità.</span></div>
+      </div>
+    </section>
+
+    <div class="strip" aria-hidden="true"><div class="strip-track"><span>CUCINA ROMAGNOLA</span><i></i><span>PASTA FRESCA</span><i></i><span>PIZZA</span><i></i><span>DAL 1978</span><i></i><span>CUCINA ROMAGNOLA</span><i></i><span>PASTA FRESCA</span><i></i><span>PIZZA</span></div></div>
+
+    <section class="intro">
+      <div class="wrap intro-grid">
+        <div class="vertical-title">La nostra identità</div>
+        <div class="intro-copy">
+          <h2>Una cucina <em>sincera.</em><br>Un luogo autentico.</h2>
+          <p>Dal quartiere alla tavola: ricette riconoscibili, ingredienti scelti e quella semplicità che fa venire voglia di tornare.</p>
+          <div class="signature"><strong>Al Ponte</strong><span>Trattoria e Pizzeria<br>Forlì, Schiavonia</span></div>
         </div>
       </div>
     </section>
 
-    <section class="story" id="storia">
-      <div class="container story-grid">
-        <div class="story-media">
-          <img class="outside" src="assets/home/esterno.jpg" alt="Esterno reale di Al Ponte di Schiavonia illuminato la sera">
-          <img class="pasta" src="assets/home/pasta-fresca.jpg" alt="Preparazione artigianale della pasta fresca">
-        </div>
-        <div class="story-copy">
-          <span class="section-label">Una storia di famiglia</span>
-          <h2>Dal 1978,<br>la tavola di Schiavonia.</h2>
-          <p>Una trattoria nata nel quartiere e cresciuta con i suoi clienti. La cucina parte da ingredienti riconoscibili, ricette sincere e dalla cura quotidiana per ogni piatto.</p>
-          <p>Niente promesse costruite: sala reale, cucina reale e la stessa attenzione che accompagna il locale da generazioni.</p>
-          <div class="facts">
-            <div class="fact"><strong>Dal 1978</strong><span>Tradizione a Forlì</span></div>
-            <div class="fact"><strong>Preparazioni vere</strong><span>Pasta, cucina e pizza</span></div>
-          </div>
+    <section class="gallery" id="locale">
+      <div class="wrap gallery-grid">
+        <article class="shot"><img src="assets/home/esterno.jpg" alt="Esterno del ristorante la sera"><div class="shot-label"><small>Al Ponte</small><strong>Nel cuore di Schiavonia</strong></div></article>
+        <article class="shot"><img src="assets/home/pasta-fresca.jpg" alt="Preparazione della pasta fresca"><div class="shot-label"><small>Ogni giorno</small><strong>Fatto con cura</strong></div></article>
+        <article class="shot"><img src="assets/home/bancone.jpg" alt="Bancone del ristorante"><div class="shot-label"><small>Il locale</small><strong>Semplice, accogliente</strong></div></article>
+      </div>
+    </section>
+
+    <section class="menu-callout">
+      <div class="wrap">
+        <div class="menu-head"><h2>Dalla cucina,<br>senza scorciatoie.</h2><div class="menu-side"><p>Pasta fresca, piatti di terra e di mare, pizza e dolci. Tutto il menu, senza confusione.</p><a href="menu.html">Consulta il menu completo →</a></div></div>
+        <div class="plates">
+          <article class="plate"><img src="assets/home/tortelli.jpg" alt="Tortelli"><span>Pasta fresca</span></article>
+          <article class="plate"><img src="assets/home/tartare.jpg" alt="Tartare"><span>Cucina</span></article>
+          <article class="plate"><img src="assets/home/pizza.jpg" alt="Pizza"><span>Pizza</span></article>
         </div>
       </div>
     </section>
 
-    <section id="menu">
-      <div class="container">
-        <div class="specialties-head">
-          <div>
-            <span class="section-label">Dalla nostra cucina</span>
-            <h2>Tre modi di conoscerci.</h2>
-          </div>
-          <a class="text-link" href="menu.html">Consulta il menu completo</a>
-        </div>
-        <div class="cards">
-          <article class="card">
-            <img src="assets/home/tartare.jpg" alt="Tartare servita al ristorante">
-            <div class="card-body"><small>Antipasti</small><h3>Inizia dalla materia prima</h3></div>
-          </article>
-          <article class="card">
-            <img src="assets/home/tortelli.jpg" alt="Tortelli della cucina di Al Ponte">
-            <div class="card-body"><small>Primi</small><h3>Pasta e tradizione</h3></div>
-          </article>
-          <article class="card">
-            <img src="assets/home/pizza.jpg" alt="Pizza di Al Ponte di Schiavonia">
-            <div class="card-body"><small>Pizze</small><h3>Semplice, calda, fatta bene</h3></div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="venue" id="locale">
-      <div class="container venue-panel">
-        <img src="assets/home/bancone.jpg" alt="Bancone reale di Al Ponte di Schiavonia">
-        <div class="venue-copy" id="contatti">
-          <span class="eyebrow">Il locale</span>
-          <h2>Ci trovi a Forlì.</h2>
-          <p>Passa a trovarci, prenota un tavolo oppure componi il tuo ordine direttamente dal sito.</p>
-          <div class="contact-list">
-            <span>Viale Livio Salinatore 86, Forlì</span>
-            <a href="tel:+39054329448">0543 29448</a>
-          </div>
-          <a class="btn btn-primary" href="ordina.html">Vai alla pagina Ordina</a>
-        </div>
+    <section class="visit">
+      <div class="wrap visit-grid">
+        <img src="assets/home/sala.jpg" alt="Sala di Al Ponte di Schiavonia">
+        <div><div class="vertical-title">Vieni a trovarci</div><h2>Ci vediamo<br>a tavola.</h2><div class="details"><span>Viale Livio Salinatore 86, Forlì</span><a href="tel:+39054329448">0543 29448</a></div><a class="btn btn-red" href="ordina.html">Ordina online</a></div>
       </div>
     </section>
   </main>
 
-  <footer>
-    <div class="container footer-row">
-      <span>© 2026 Al Ponte di Schiavonia</span>
-      <span>Trattoria e Pizzeria · Forlì</span>
-    </div>
-  </footer>
-  <script>
-    if ("serviceWorker" in navigator) {
-      window.addEventListener("load", () => navigator.serviceWorker.register("./service-worker.js"));
-    }
-  </script>
+  <footer><div class="wrap footer-row"><span>© 2026 Al Ponte di Schiavonia</span><span>Trattoria e Pizzeria · Forlì</span></div></footer>
+  <script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./service-worker.js"));}</script>
 </body>
 </html>
