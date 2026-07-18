@@ -681,6 +681,19 @@ filterBtns.forEach(btn => {
     });
 });
 
+
+
+const initialMenuFilter = document.querySelector('#menuFilters .filter-btn.active');
+if (initialMenuFilter && document.getElementById('menu-grid')) {
+    const initialCategory = initialMenuFilter.dataset.category;
+    document.querySelectorAll('#menu-grid .menu-item').forEach(item => {
+        item.style.display = item.dataset.category === initialCategory ? '' : 'none';
+    });
+    filterBtns.forEach(button => {
+        button.setAttribute('aria-pressed', String(button === initialMenuFilter));
+    });
+}
+
 /* ========================================
    ORDER FORM - Indirizzo condizionale
 ======================================== */
