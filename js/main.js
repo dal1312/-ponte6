@@ -523,7 +523,7 @@ orderCategoryButtons.forEach(button => {
    ORDER PAGE - Genera items dalle categorie
 ======================================== */
 function renderOrderItems() {
-    const categories = ['pizze', 'antipasti', 'primi', 'secondi', 'contorni', 'dessert'];
+    const categories = ['pizze', 'antipasti', 'primi', 'secondi', 'contorni', 'dessert', 'bevande', 'birre', 'vini_bianchi', 'vini_rossi'];
     
     categories.forEach(category => {
         const container = document.getElementById(`${category}-list`);
