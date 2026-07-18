@@ -576,16 +576,11 @@ function renderMenuItems() {
                 ? `<p>${escapeHtml(item.description)}</p>`
                 : (item.ingredients ? `<p>${escapeHtml(item.ingredients)}</p>` : '');
             
-            const isPizza = category === 'pizze';
-            const ingredientsArray = item.ingredients ? item.ingredients.split(', ').filter(i => i.trim()) : [];
             const imageHtml = item.image
                 ? `<div class="menu-item-image"><img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}" loading="lazy"></div>`
                 : '';
             
-            const addBtnHtml = isPizza
-                ? `<button class="btn-add-to-cart btn-customize" type="button" data-name="${escapeHtml(item.name)}" data-price="${item.price}" data-ingredients='${escapeHtml(JSON.stringify(ingredientsArray))}'>🍕 Personalizza</button>`
-                : `<button class="btn-add-to-cart" type="button" data-name="${escapeHtml(item.name)}" data-price="${item.price}">+ Aggiungi</button>`;
-            
+
             html += `
                 <div class="menu-item animate-on-scroll category-${escapeHtml(category)}" data-category="${escapeHtml(category)}">
                     ${imageHtml}
@@ -596,7 +591,6 @@ function renderMenuItems() {
                         </div>
                         ${descHtml}
                         ${allergensHtml}
-                        ${addBtnHtml}
                     </div>
                 </div>
             `;
@@ -604,19 +598,6 @@ function renderMenuItems() {
     });
     
     menuGrid.innerHTML = html;
-    
-    document.querySelectorAll('.btn-add-to-cart').forEach(btn => {
-        btn.addEventListener('click', () => {
-            if (btn.classList.contains('btn-customize')) {
-                const name = btn.dataset.name;
-                const price = btn.dataset.price;
-                const ingredients = JSON.parse(btn.dataset.ingredients || '[]');
-                openPizzaModal(name, price, ingredients);
-            } else {
-                cart.addItem(btn.dataset.name, btn.dataset.price);
-            }
-        });
-    });
     
     document.querySelectorAll('.animate-on-scroll').forEach(el => {
         if (observer) {
