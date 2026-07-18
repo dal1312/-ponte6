@@ -498,6 +498,27 @@ class Cart {
 const cart = new Cart();
 createPizzaModal();
 
+
+
+/* ========================================
+   ORDER CATEGORY NAVIGATION
+======================================== */
+const orderCategoryButtons = document.querySelectorAll('[data-order-target]');
+
+orderCategoryButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        const target = document.getElementById(button.dataset.orderTarget);
+        if (!target) return;
+
+        orderCategoryButtons.forEach(item => item.classList.remove('active'));
+        button.classList.add('active');
+
+        const stickyOffset = 145;
+        const top = target.getBoundingClientRect().top + window.scrollY - stickyOffset;
+        window.scrollTo({ top, behavior: 'smooth' });
+    });
+});
+
 /* ========================================
    ORDER PAGE - Genera items dalle categorie
 ======================================== */

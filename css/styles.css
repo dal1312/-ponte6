@@ -1068,6 +1068,20 @@ section {
     font-weight: 700;
 }
 
+
+.order-category-nav {
+    top: 70px;
+}
+
+.order-category-section {
+    padding: 0;
+    scroll-margin-top: 155px;
+}
+
+.order-category-section + .order-category-section {
+    margin-top: 0;
+}
+
 /* ========================================
    ORDER PAGE
 ======================================== */
