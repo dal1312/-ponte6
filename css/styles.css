@@ -150,6 +150,11 @@ em {
     place-items: center;
     background: linear-gradient(145deg, rgba(122, 36, 31, 0.08), rgba(201, 160, 74, 0.14));
     box-shadow: inset 0 0 0 1px rgba(122, 36, 31, 0.08);
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.logo:hover .logo-icon {
+    transform: rotate(-8deg) scale(1.06);
 }
 
 .logo-text {
@@ -188,7 +193,7 @@ em {
     width: 0;
     height: 1.5px;
     background: var(--primary);
-    transition: width 0.25s;
+    transition: width 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .nav-links a:hover,
@@ -216,7 +221,8 @@ em {
 
 .btn-prenota-nav:hover {
     background: var(--primary-dark);
-    transform: translateY(-1px);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(122, 36, 31, 0.25);
 }
 
 .mobile-menu-btn {
@@ -250,7 +256,7 @@ em {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    transition: right 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: right 0.4s cubic-bezier(0.22, 1, 0.36, 1);
     box-shadow: -12px 0 40px rgba(0,0,0,0.08);
 }
 
@@ -263,6 +269,12 @@ em {
     font-weight: 500;
     padding: 0.9rem 0;
     border-bottom: 1px solid var(--gray-light);
+    transition: color 0.25s, padding-left 0.25s;
+}
+
+.mobile-menu a:hover {
+    color: var(--primary);
+    padding-left: 8px;
 }
 
 .mobile-menu .btn-whatsapp {
@@ -291,6 +303,21 @@ em {
     transition: var(--transition);
     font-family: 'Inter', sans-serif;
     box-shadow: 0 8px 20px rgba(40, 24, 18, 0.07);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.18) 50%, transparent 70%);
+    transform: translateX(-100%);
+    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.btn:hover::before {
+    transform: translateX(100%);
 }
 
 .btn-primary {
@@ -300,8 +327,8 @@ em {
 
 .btn-primary:hover {
     background: var(--primary-dark);
-    transform: translateY(-1px);
-    box-shadow: 0 12px 28px rgba(122, 36, 31, 0.22);
+    transform: translateY(-2px);
+    box-shadow: 0 14px 32px rgba(122, 36, 31, 0.28);
 }
 
 .btn-outline {
@@ -329,7 +356,7 @@ em {
 
 .btn-whatsapp:hover {
     background: var(--whatsapp-dark);
-    transform: translateY(-1px);
+    transform: translateY(-2px);
 }
 
 .btn-card {
@@ -356,7 +383,7 @@ em {
 }
 
 /* ========================================
-   HERO - refined, less heavy
+   HERO - refined + entrance sequence
 ======================================== */
 .hero {
     min-height: 88vh;
@@ -406,6 +433,7 @@ em {
     letter-spacing: 0.16em;
     margin-bottom: 1.6rem;
     border: 1px solid rgba(255,255,255,0.16);
+    animation: fadeInDown 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .badge-dot {
@@ -417,8 +445,8 @@ em {
 }
 
 @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.45; }
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.45; transform: scale(0.85); }
 }
 
 .hero-title {
@@ -428,6 +456,7 @@ em {
     text-wrap: balance;
     font-weight: 600;
     letter-spacing: -0.02em;
+    animation: fadeInUp 0.9s 0.15s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .hero-title em {
@@ -442,6 +471,7 @@ em {
     margin-bottom: 1.25rem;
     font-style: italic;
     font-weight: 500;
+    animation: fadeInUp 0.9s 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .hero-description {
@@ -450,12 +480,14 @@ em {
     margin-bottom: 2.1rem;
     opacity: 0.88;
     line-height: 1.65;
+    animation: fadeInUp 0.9s 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .hero-cta {
     display: flex;
     gap: 0.9rem;
     flex-wrap: wrap;
+    animation: fadeInUp 0.9s 0.52s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .hero-facts {
@@ -463,6 +495,7 @@ em {
     gap: 0.7rem;
     flex-wrap: wrap;
     margin-top: 2.1rem;
+    animation: fadeInUp 0.9s 0.65s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .hero-fact {
@@ -472,6 +505,12 @@ em {
     border-radius: var(--radius);
     background: rgba(255, 253, 248, 0.08);
     backdrop-filter: blur(12px);
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), background 0.35s;
+}
+
+.hero-fact:hover {
+    transform: translateY(-3px);
+    background: rgba(255, 253, 248, 0.14);
 }
 
 .hero-fact strong {
@@ -553,10 +592,17 @@ section {
     right: 0;
     height: 3px;
     background: linear-gradient(90deg, var(--primary), var(--secondary));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.order-card:hover::before {
+    transform: scaleX(1);
 }
 
 .order-card:hover {
-    transform: translateY(-6px);
+    transform: translateY(-7px);
     box-shadow: var(--shadow-hover);
 }
 
@@ -569,6 +615,11 @@ section {
     background: rgba(201, 160, 74, 0.14);
     font-size: 1.9rem;
     margin-bottom: 0.9rem;
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.order-card:hover .order-icon {
+    transform: scale(1.1) rotate(-6deg);
 }
 
 .order-card h3 {
@@ -616,24 +667,25 @@ section {
 }
 
 .specialty-card:hover {
-    transform: translateY(-6px);
+    transform: translateY(-7px);
     box-shadow: var(--shadow-hover);
 }
 
 .specialty-image {
     height: 220px;
     overflow: hidden;
+    position: relative;
 }
 
 .specialty-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .specialty-card:hover .specialty-image img {
-    transform: scale(1.06);
+    transform: scale(1.08);
 }
 
 .specialty-info {
@@ -647,6 +699,11 @@ section {
     color: var(--primary);
     line-height: 1;
     margin-bottom: 0.4rem;
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.specialty-card:hover .specialty-number {
+    transform: scale(1.08);
 }
 
 /* GALLERY */
@@ -673,9 +730,9 @@ section {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, transparent 50%, rgba(28, 20, 18, 0.18));
+    background: linear-gradient(180deg, transparent 45%, rgba(28, 20, 18, 0.35));
     opacity: 0;
-    transition: var(--transition);
+    transition: opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .gallery-item:hover::after {
@@ -686,11 +743,11 @@ section {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .gallery-item:hover img {
-    transform: scale(1.05);
+    transform: scale(1.07);
 }
 
 .gallery-large {
@@ -716,6 +773,11 @@ section {
     border-radius: var(--radius);
     text-align: center;
     box-shadow: var(--shadow-hover);
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.cta-box:hover {
+    transform: scale(1.01);
 }
 
 .cta-box h2 {
@@ -772,6 +834,7 @@ section {
     color: white;
     margin-bottom: 0.85rem;
     font-weight: 600;
+    animation: fadeInUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .page-title em {
@@ -781,6 +844,7 @@ section {
 .page-subtitle {
     opacity: 0.88;
     font-size: 1.05rem;
+    animation: fadeInUp 0.8s 0.15s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 /* ========================================
@@ -819,6 +883,7 @@ section {
 .filter-btn:hover {
     border-color: var(--primary);
     color: var(--primary);
+    transform: translateY(-1px);
 }
 
 .filter-btn.active {
@@ -857,6 +922,8 @@ section {
     height: 2.5px;
     background: var(--secondary);
     margin-top: 0.4rem;
+    transform-origin: left;
+    animation: scaleXIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .menu-grid {
@@ -878,7 +945,7 @@ section {
 }
 
 .menu-item:hover {
-    transform: translateY(-4px);
+    transform: translateY(-5px);
     box-shadow: var(--shadow-hover);
 }
 
@@ -892,11 +959,11 @@ section {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .menu-item:hover .menu-item-image img {
-    transform: scale(1.05);
+    transform: scale(1.07);
 }
 
 .badge-spicy,
@@ -910,6 +977,7 @@ section {
     font-size: 0.72rem;
     font-weight: 600;
     box-shadow: var(--shadow);
+    animation: fadeInScale 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .menu-item-content {
@@ -943,6 +1011,12 @@ section {
     background: rgba(122, 36, 31, 0.07);
     padding: 0.18rem 0.5rem;
     border-radius: 50px;
+    transition: background 0.3s, transform 0.3s;
+}
+
+.menu-item:hover .price {
+    background: rgba(122, 36, 31, 0.12);
+    transform: scale(1.05);
 }
 
 .menu-item-content p {
@@ -983,7 +1057,7 @@ section {
 
 .btn-add-to-cart:hover {
     background: var(--primary);
-    transform: scale(1.015);
+    transform: scale(1.02);
 }
 
 .btn-customize {
@@ -1052,15 +1126,18 @@ section {
     transition: var(--transition);
     opacity: 0;
     pointer-events: none;
+    transform: scale(0.6);
 }
 
 .floating-cart.active {
     opacity: 1;
     pointer-events: all;
+    transform: scale(1);
+    animation: cartPop 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .floating-cart:hover {
-    transform: scale(1.08);
+    transform: scale(1.1);
 }
 
 .cart-count {
@@ -1077,6 +1154,7 @@ section {
     justify-content: center;
     font-size: 0.72rem;
     font-weight: 700;
+    animation: countPulse 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .order-category-nav {
@@ -1137,7 +1215,7 @@ section {
 }
 
 .order-item:hover {
-    transform: translateY(-2px);
+    transform: translateY(-3px);
     box-shadow: var(--shadow-hover);
 }
 
@@ -1190,7 +1268,7 @@ section {
 
 .btn-add-small:hover {
     background: var(--primary-dark);
-    transform: scale(1.08);
+    transform: scale(1.12);
 }
 
 /* CART */
@@ -1230,6 +1308,11 @@ section {
     font-family: 'Inter', sans-serif;
     padding: 0.3rem 0.6rem;
     border-radius: 50px;
+    transition: background 0.25s;
+}
+
+.cart-clear:hover {
+    background: rgba(122, 36, 31, 0.14);
 }
 
 .cart-items {
@@ -1254,6 +1337,7 @@ section {
     align-items: center;
     padding: 0.7rem 0;
     border-bottom: 1px solid var(--border);
+    animation: fadeInRight 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .cart-item-info {
@@ -1291,6 +1375,7 @@ section {
 .qty-btn:hover {
     background: var(--primary);
     color: white;
+    transform: scale(1.1);
 }
 
 .cart-item-qty {
@@ -1422,7 +1507,7 @@ button:disabled {
 }
 
 .contact-card:hover {
-    transform: translateY(-4px);
+    transform: translateY(-5px);
     box-shadow: var(--shadow-hover);
 }
 
@@ -1435,6 +1520,11 @@ button:disabled {
     border-radius: 50%;
     background: rgba(47, 74, 54, 0.07);
     font-size: 1.75rem;
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.contact-card:hover .contact-icon {
+    transform: scale(1.12) rotate(-5deg);
 }
 
 .contact-card h3 {
@@ -1572,7 +1662,7 @@ button:disabled {
 
 .social-links a:hover {
     background: var(--primary);
-    transform: translateY(-2px);
+    transform: translateY(-3px) scale(1.08);
 }
 
 .footer-bottom {
@@ -1584,16 +1674,14 @@ button:disabled {
 }
 
 /* ========================================
-   ANIMAZIONI
+   ANIMAZIONI AVANZATE - V4LT13R1
 ======================================== */
-.animate-fade-in {
-    animation: fadeInUp 0.9s cubic-bezier(0.22, 1, 0.36, 1);
-}
 
+/* Base keyframes */
 @keyframes fadeInUp {
     from {
         opacity: 0;
-        transform: translateY(28px);
+        transform: translateY(32px);
     }
     to {
         opacity: 1;
@@ -1601,15 +1689,177 @@ button:disabled {
     }
 }
 
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.88);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes fadeInRight {
+    from {
+        opacity: 0;
+        transform: translateX(18px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-18px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes scaleXIn {
+    from {
+        transform: scaleX(0);
+    }
+    to {
+        transform: scaleX(1);
+    }
+}
+
+@keyframes cartPop {
+    0% {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+    70% {
+        transform: scale(1.12);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes countPulse {
+    0% {
+        transform: scale(0.6);
+    }
+    60% {
+        transform: scale(1.25);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-6px);
+    }
+}
+
+/* Utility classes */
+.animate-fade-in {
+    animation: fadeInUp 0.85s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-fade-scale {
+    animation: fadeInScale 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
 .animate-on-scroll {
     opacity: 0;
-    transform: translateY(24px);
-    transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    transform: translateY(28px);
+    transition: opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .animate-on-scroll.visible {
     opacity: 1;
     transform: translateY(0);
+}
+
+/* Stagger delays for grids */
+.order-card:nth-child(1),
+.specialty-card:nth-child(1),
+.menu-item:nth-child(1),
+.contact-card:nth-child(1),
+.gallery-item:nth-child(1) {
+    transition-delay: 0.05s;
+}
+
+.order-card:nth-child(2),
+.specialty-card:nth-child(2),
+.menu-item:nth-child(2),
+.contact-card:nth-child(2),
+.gallery-item:nth-child(2) {
+    transition-delay: 0.12s;
+}
+
+.order-card:nth-child(3),
+.specialty-card:nth-child(3),
+.menu-item:nth-child(3),
+.contact-card:nth-child(3),
+.gallery-item:nth-child(3) {
+    transition-delay: 0.19s;
+}
+
+.order-card:nth-child(4),
+.specialty-card:nth-child(4),
+.menu-item:nth-child(4),
+.contact-card:nth-child(4),
+.gallery-item:nth-child(4) {
+    transition-delay: 0.26s;
+}
+
+.order-card:nth-child(5),
+.specialty-card:nth-child(5),
+.menu-item:nth-child(5),
+.gallery-item:nth-child(5) {
+    transition-delay: 0.33s;
+}
+
+.order-card:nth-child(6),
+.specialty-card:nth-child(6),
+.menu-item:nth-child(6),
+.gallery-item:nth-child(6) {
+    transition-delay: 0.4s;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+
+    .animate-on-scroll {
+        opacity: 1;
+        transform: none;
+    }
 }
 
 /* ========================================
@@ -1768,7 +2018,7 @@ button:disabled {
     max-width: 480px;
     max-height: 90vh;
     overflow-y: auto;
-    transform: translateY(24px) scale(0.97);
+    transform: translateY(28px) scale(0.96);
     transition: var(--transition);
     box-shadow: 0 22px 70px rgba(0,0,0,0.25);
 }
@@ -1813,6 +2063,7 @@ button:disabled {
 .modal-close:hover {
     background: var(--primary);
     color: white;
+    transform: rotate(90deg);
 }
 
 .modal-body {
@@ -1999,8 +2250,8 @@ button:disabled {
 
 .btn-add-custom:hover {
     background: var(--primary-dark);
-    transform: translateY(-1px);
-    box-shadow: 0 10px 26px rgba(122, 36, 31, 0.25);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(122, 36, 31, 0.28);
 }
 
 /* Cart Item with Customization */
