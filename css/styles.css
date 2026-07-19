@@ -116,8 +116,9 @@ em {
     background: rgba(255, 253, 248, 0.92);
     backdrop-filter: blur(18px);
     -webkit-backdrop-filter: blur(18px);
-    transition: var(--transition);
+    transition: all var(--transition) cubic-bezier(0.4, 0, 0.2, 1);
     border-bottom: 1px solid rgba(122, 36, 31, 0.08);
+    box-shadow: 0 4px 20px rgba(28, 20, 18, 0.04);
 }
 
 .navbar.scrolled {
@@ -388,19 +389,41 @@ em {
 .hero {
     min-height: 88vh;
     background:
-        linear-gradient(105deg, rgba(22, 14, 12, 0.78) 0%, rgba(70, 28, 24, 0.55) 48%, rgba(22, 14, 12, 0.25) 100%),
-        url('../assets/site-images/photo-1555396273-367ea4eb4db5@w=1920&q=85') center/cover;
+        linear-gradient(105deg, rgba(28, 20, 18, 0.85) 0%, rgba(50, 20, 16, 0.65) 50%, rgba(28, 20, 18, 0.45) 100%),
+        url('../assets/site-images/photo-1555396273-367ea4eb4db5@w=1920&q=85') center/cover fixed;
     display: flex;
     align-items: center;
     position: relative;
     color: white;
     overflow: hidden;
+    perspective: 1000px;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 40% 50%, rgba(201, 160, 74, 0.15) 0%, transparent 60%);
+    z-index: 1;
+}
+
+.hero::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 150px;
+    background: linear-gradient(180deg, transparent, var(--cream));
+    pointer-events: none;
+    z-index: 1;
 }
 
 .hero-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, rgba(28, 20, 18, 0.05) 0%, rgba(28, 20, 18, 0.35) 100%);
+    background: linear-gradient(180deg, rgba(28, 20, 18, 0.1) 0%, rgba(28, 20, 18, 0.4) 100%);
+    z-index: 1;
 }
 
 .hero::after {
@@ -661,14 +684,37 @@ section {
     background: white;
     border-radius: var(--radius);
     overflow: hidden;
-    transition: var(--transition);
+    transition: all var(--transition) cubic-bezier(0.4, 0, 0.2, 1);
     border: 1px solid var(--border);
     box-shadow: var(--shadow);
+    position: relative;
+}
+
+.specialty-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1;
+}
+
+.specialty-card:hover::before {
+    transform: scaleX(1);
 }
 
 .specialty-card:hover {
-    transform: translateY(-7px);
+    transform: translateY(-8px) translateZ(10px);
     box-shadow: var(--shadow-hover);
+}
+
+.specialty-card:hover .specialty-number {
+    transform: scale(1.08) translateZ(5px);
 }
 
 .specialty-image {
