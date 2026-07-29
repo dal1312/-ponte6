@@ -1,0 +1,11 @@
+{
+  "name": "ponte6-static-site",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "smoke": "py -3 scripts/smoke_check.py"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

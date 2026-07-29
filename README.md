@@ -30,7 +30,7 @@ Il progetto combina:
 ## Uso locale
 
 ```bash
-python -m http.server 8080
+py -3 -m http.server 8080
 ```
 
 Apri:
@@ -38,6 +38,14 @@ Apri:
 ```text
 http://localhost:8080/
 ```
+
+Smoke check:
+
+```bash
+npm run smoke
+```
+
+Il comando esegue una verifica rapida con server locale temporaneo su tutte le pagine principali.
 
 ## Aggiornare il menu da Dishcovery
 
@@ -52,13 +60,13 @@ pip install -r requirements.txt
 Aggiornamento da API:
 
 ```bash
-python tools/refresh_menu.py
+py -3 tools/refresh_menu.py
 ```
 
 Aggiornamento dal JSON locale:
 
 ```bash
-python tools/refresh_menu.py --from-file
+py -3 tools/refresh_menu.py --from-file
 ```
 
 Output aggiornati:

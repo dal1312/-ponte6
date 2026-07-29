@@ -42,10 +42,15 @@
 <div class="mobile-menu" id="mobileMenu">
     <a href="index.html">Home</a>
     <a href="menu.html">Menu</a>
-    <a href="ordina.html">Ordina</a>
+    <a href="ordina.html" class="active">Ordina</a>
     <a href="contatti.html">Contatti</a>
     <a href="https://wa.me/39054329448" class="btn-whatsapp">Prenota su WhatsApp</a>
 </div>
+
+<button class="floating-cart" id="floatingCart" aria-label="Apri carrello" type="button">
+    <span>🧺</span>
+    <span class="cart-count">0</span>
+</button>
 
 <header class="page-hero">
     <div class="container">
@@ -176,7 +181,7 @@
                             </label>
                         </div>
                     </div>
-                    <div class="form-group" id="addressField" style="display:none;">
+                    <div class="form-group is-hidden" id="addressField">
                         <label>Indirizzo di consegna *</label>
                         <input type="text" name="address" placeholder="Via, numero civico">
                     </div>
@@ -195,11 +200,10 @@
     </div>
 </main>
 
-<footer class="footer">
-    <div class="container">
-        <div class="footer-bottom">
-            <p>© 2026 Al Ponte di Schiavonia • Tutti i diritti riservati</p>
-        </div>
+<footer class="site-footer">
+    <div class="container footer-row">
+        <span>© 2026 Al Ponte di Schiavonia</span>
+        <span>Trattoria e Pizzeria · Forlì</span>
     </div>
 </footer>
 
