@@ -549,13 +549,16 @@ function renderOrderItems() {
         
         container.innerHTML = menuData[category].map(item => {
             const ingredientsArray = item.ingredients ? item.ingredients.split(', ').filter(i => i.trim()) : [];
+            const ingredientDetailsHtml = item.ingredients
+                ? `<details class="dish-details order-dish-details"><summary>Ingredienti</summary><p class="dish-description">${escapeHtml(item.ingredients)}</p></details>`
+                : '<details class="dish-details order-dish-details"><summary>Ingredienti</summary><p class="dish-description dish-description-muted">Da confermare</p></details>';
             
             if (isPizza) {
                 const ingredientsJson = escapeHtml(JSON.stringify(ingredientsArray));
                 return `
                     <div class="order-item order-item-pizza">
                         <div class="order-item-name">${escapeHtml(item.name)}</div>
-                        ${item.ingredients ? `<div class="order-item-ingredients">${escapeHtml(item.ingredients)}</div>` : '<div class="order-item-ingredients order-item-ingredients-missing">Ingredienti da confermare</div>'}
+                        ${ingredientDetailsHtml}
                         <div class="order-item-bottom">
                             <span class="order-item-price">${formatPrice(item.price)}</span>
                             <button class="btn-add-small btn-customize-order" type="button" data-name="${escapeHtml(item.name)}" data-price="${item.price}" data-ingredients='${ingredientsJson}' aria-label="Personalizza ${escapeHtml(item.name)}">🍕</button>
@@ -610,8 +613,12 @@ function renderMenuItems() {
                 : '';
             
             const descHtml = item.description
-                ? `<p>${escapeHtml(item.description)}</p>`
-                : (item.ingredients ? `<p>${escapeHtml(item.ingredients)}</p>` : '');
+                ? `<p class="dish-description">${escapeHtml(item.description)}</p>`
+                : (item.ingredients ? `<p class="dish-description">${escapeHtml(item.ingredients)}</p>` : '');
+
+            const detailsHtml = descHtml || allergensHtml
+                ? `<details class="dish-details"><summary>Dettagli piatto</summary><div class="dish-details-body">${descHtml}${allergensHtml}</div></details>`
+                : '';
             
             const imageHtml = item.image
                 ? `<div class="menu-item-image"><img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}" loading="lazy"></div>`
@@ -626,8 +633,7 @@ function renderMenuItems() {
                             <h3>${escapeHtml(item.name)}</h3>
                             <span class="price">${formatPrice(item.price)}</span>
                         </div>
-                        ${descHtml}
-                        ${allergensHtml}
+                        ${detailsHtml}
                     </div>
                 </div>
             `;

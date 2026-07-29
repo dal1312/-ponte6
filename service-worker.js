@@ -1,4 +1,4 @@
-const CACHE_NAME = "ponte6-v10";
+const CACHE_NAME = "ponte6-v16";
 const APP_SHELL = [
   "./",
   "./index.html",
