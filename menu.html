@@ -19,7 +19,7 @@
     <meta property="og:locale" content="it_IT">
     <meta name="twitter:card" content="summary_large_image">
 </head>
-<body>
+<body class="menu-page">
 
 <nav class="navbar" id="navbar">
     <div class="container nav-container">
@@ -53,20 +53,23 @@
     <span class="cart-count">0</span>
 </button>
 
-<header class="page-hero">
+<header class="page-hero menu-page-hero">
     <div class="container">
-        <span class="section-label light">MENU VIVO</span>
-        <h1 class="page-title">Pasta, forno,<br><em>stagione.</em></h1>
-        <p class="page-subtitle">Piatti romagnoli, pizze e vini: una carta calda, diretta, senza effetto catalogo.</p>
+        <div class="menu-hero-copy">
+            <span class="section-label light">IL FORNO È ACCESO</span>
+            <h1 class="page-title">Pizza fatta<br><em>con calma.</em></h1>
+            <p class="page-subtitle">Impasto, ingredienti scelti e il calore del forno: qui trovi tutte le nostre pizze, una per una.</p>
+        </div>
+        <div class="menu-hero-note"><span>La carta</span><strong>Dal classico<br>alla voglia del giorno.</strong></div>
     </div>
 </header>
 
 <!-- FILTRI CATEGORIE STICKY -->
 <div class="menu-filters" id="menuFilters">
     <div class="container">
-        <button class="filter-btn active" data-category="antipasti" aria-pressed="true">Antipasti</button>
+        <button class="filter-btn" data-category="antipasti" aria-pressed="false">Antipasti</button>
         <button class="filter-btn" data-category="primi">Primi</button>
-        <button class="filter-btn" data-category="pizze">Pizze</button>
+        <button class="filter-btn active" data-category="pizze" aria-pressed="true">Pizze</button>
         <button class="filter-btn" data-category="secondi">Secondi</button>
         <button class="filter-btn" data-category="contorni">Contorni</button>
         <button class="filter-btn" data-category="dessert">Dessert</button>
@@ -79,6 +82,16 @@
 
 <main class="menu-main">
     <div class="container">
+        <section class="menu-category-intro" id="menuCategoryIntro" aria-live="polite">
+            <div>
+                <span class="menu-category-kicker">La carta</span>
+                <h2 id="menuCategoryTitle">Pizze</h2>
+            </div>
+            <div class="menu-category-summary">
+                <p id="menuCategoryCopy">Impasto, forno e ingredienti scelti: la pizza come piace a noi.</p>
+                <span id="menuCategoryCount"></span>
+            </div>
+        </section>
         <div class="menu-grid" id="menu-grid">
             <!-- Popolato dinamicamente da main.js -->
         </div>

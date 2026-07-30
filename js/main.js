@@ -617,7 +617,7 @@ function renderMenuItems() {
                 : (item.ingredients ? `<p class="dish-description">${escapeHtml(item.ingredients)}</p>` : '');
 
             const detailsHtml = descHtml || allergensHtml
-                ? `<details class="dish-details"><summary>Dettagli piatto</summary><div class="dish-details-body">${descHtml}${allergensHtml}</div></details>`
+                ? `<div class="menu-item-meta">${descHtml}${allergensHtml}</div>`
                 : '';
             
             const imageHtml = item.image
@@ -659,11 +659,36 @@ if (document.getElementById('menu-grid')) {
    MENU FILTERS
 ======================================== */
 const filterBtns = document.querySelectorAll('.filter-btn');
+const menuCategoryCopy = {
+    antipasti: 'Per iniziare con il passo giusto.',
+    primi: 'Pasta fresca e ricette della tradizione romagnola.',
+    pizze: 'Impasto, forno e ingredienti scelti: la pizza come piace a noi.',
+    secondi: 'Carne e pesce, cucinati senza fretta.',
+    contorni: 'Il complemento giusto per ogni tavola.',
+    dessert: 'Una chiusura dolce, fatta in casa.',
+    bevande: 'Per accompagnare ogni piatto.',
+    birre: 'Una selezione per la pizza e per la tavola.',
+    vini_bianchi: 'Bianchi scelti per la cucina e il pesce.',
+    vini_rossi: 'Rossi da condividere, calice dopo calice.'
+};
+
+function updateMenuCategoryIntro(category) {
+    const title = document.getElementById('menuCategoryTitle');
+    const copy = document.getElementById('menuCategoryCopy');
+    const count = document.getElementById('menuCategoryCount');
+    const button = document.querySelector(`.filter-btn[data-category="${category}"]`);
+    const items = menuData[category] || [];
+
+    if (title && button) title.textContent = button.textContent.trim();
+    if (copy) copy.textContent = menuCategoryCopy[category] || 'Scopri la nostra selezione.';
+    if (count) count.textContent = `${items.length} proposte`;
+}
 
 filterBtns.forEach(btn => {
     btn.addEventListener('click', () => {
         filterBtns.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
+        filterBtns.forEach(button => button.setAttribute('aria-pressed', String(button === btn)));
         
         const category = btn.dataset.category;
         const items = document.querySelectorAll('#menu-grid .menu-item');
@@ -678,10 +703,12 @@ filterBtns.forEach(btn => {
             });
         }
 
-        const menuGrid = document.getElementById('menu-grid');
-        if (menuGrid) {
+        updateMenuCategoryIntro(category);
+
+        const menuCategoryIntro = document.getElementById('menuCategoryIntro');
+        if (menuCategoryIntro) {
             const stickyOffset = 160;
-            const top = menuGrid.getBoundingClientRect().top + window.scrollY - stickyOffset;
+            const top = menuCategoryIntro.getBoundingClientRect().top + window.scrollY - stickyOffset;
             window.scrollTo({ top, behavior: 'smooth' });
         }
     });
@@ -698,6 +725,7 @@ if (initialMenuFilter && document.getElementById('menu-grid')) {
     filterBtns.forEach(button => {
         button.setAttribute('aria-pressed', String(button === initialMenuFilter));
     });
+    updateMenuCategoryIntro(initialCategory);
 }
 
 /* ========================================
