@@ -620,20 +620,20 @@ function renderMenuItems() {
                 ? `<div class="menu-item-meta">${descHtml}${allergensHtml}</div>`
                 : '';
             
-            const imageHtml = item.image
-                ? `<div class="menu-item-image"><img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}" loading="lazy"></div>`
+            const photoButtonHtml = item.image
+                ? `<button class="dish-photo-trigger" type="button" data-photo-src="${escapeHtml(item.image)}" data-photo-name="${escapeHtml(item.name)}" aria-controls="dishPhotoDialog" aria-haspopup="dialog">Vedi piatto</button>`
                 : '';
             
 
             html += `
                 <div class="menu-item animate-on-scroll category-${escapeHtml(category)}" data-category="${escapeHtml(category)}">
-                    ${imageHtml}
                     <div class="menu-item-content">
                         <div class="menu-item-header">
                             <h3>${escapeHtml(item.name)}</h3>
                             <span class="price">${formatPrice(item.price)}</span>
                         </div>
                         ${detailsHtml}
+                        ${photoButtonHtml}
                     </div>
                 </div>
             `;
@@ -651,8 +651,45 @@ function renderMenuItems() {
     });
 }
 
+function setupDishPhotoDialog() {
+    const menuGrid = document.getElementById('menu-grid');
+    const dialog = document.getElementById('dishPhotoDialog');
+    const image = document.getElementById('dishPhotoImage');
+    const title = document.getElementById('dishPhotoTitle');
+    const closeButton = document.getElementById('dishPhotoClose');
+    if (!menuGrid || !dialog || !image || !title || !closeButton) return;
+
+    let activeTrigger = null;
+    const closeDialog = () => dialog.close();
+
+    menuGrid.addEventListener('click', event => {
+        const trigger = event.target.closest('.dish-photo-trigger');
+        if (!trigger) return;
+
+        activeTrigger = trigger;
+        image.src = trigger.dataset.photoSrc;
+        image.alt = trigger.dataset.photoName;
+        title.textContent = trigger.dataset.photoName;
+        dialog.showModal();
+    });
+
+    closeButton.addEventListener('click', closeDialog);
+    dialog.addEventListener('click', event => {
+        const bounds = dialog.getBoundingClientRect();
+        const clickedBackdrop = event.clientX < bounds.left || event.clientX > bounds.right
+            || event.clientY < bounds.top || event.clientY > bounds.bottom;
+        if (clickedBackdrop) closeDialog();
+    });
+    dialog.addEventListener('close', () => {
+        image.removeAttribute('src');
+        activeTrigger?.focus();
+        activeTrigger = null;
+    });
+}
+
 if (document.getElementById('menu-grid')) {
     renderMenuItems();
+    setupDishPhotoDialog();
 }
 
 /* ========================================
