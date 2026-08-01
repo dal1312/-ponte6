@@ -1,0 +1,34 @@
+{
+  "bevande": [
+    { "id": "local-bevande-1", "name": "Acqua naturale Pejo in vetro", "price": 3, "description": "Formato: 75 cl" },
+    { "id": "local-bevande-2", "name": "Acqua gassata Pejo in vetro", "price": 3, "description": "Formato: 75 cl" },
+    { "id": "local-bevande-3", "name": "Coca-Cola in vetro 1 L", "price": 8, "description": "Formato: 1 L" },
+    { "id": "local-bevande-4", "name": "Coca-Cola in vetro 33 cl", "price": 3.5, "description": "Formato: 33 cl" },
+    { "id": "local-bevande-5", "name": "Fanta in PET", "price": 3.5, "description": "Formato: 45 cl" }
+  ],
+  "birre": [
+    { "id": "local-birre-1", "name": "Moretti Filtrata a Freddo", "price": 5, "description": "Formato: 55 cl • 4,3% Vol" },
+    { "id": "local-birre-2", "name": "Ichnusa Non Filtrata", "price": 5, "description": "Formato: 50 cl" },
+    { "id": "local-birre-3", "name": "Messina – Bionda Italiana", "price": 5, "description": "Formato: 50 cl" },
+    { "id": "local-birre-4", "name": "Beck's – Tedesca Bionda", "price": 4, "description": "Formato: 33 cl" },
+    { "id": "local-birre-5", "name": "Ceres", "price": 4.5, "description": "Formato: 33 cl • 7,7% Vol" },
+    { "id": "local-birre-6", "name": "Erdinger", "price": 5, "description": "Formato: 50 cl • 5,3% Vol" },
+    { "id": "local-birre-7", "name": "Paulaner", "price": 5, "description": "Formato: 50 cl" },
+    { "id": "local-birre-8", "name": "Leffe \"Blonde\"", "price": 10, "description": "Formato: 75 cl • 6,6% Vol" },
+    { "id": "local-birre-9", "name": "Leffe \"Rouge\"", "price": 10, "description": "Formato: 75 cl • 6,6% Vol" }
+  ],
+  "vini_bianchi": [
+    { "id": "local-vini_bianchi-1", "name": "Gewürztraminer Trentino DOC", "price": 17, "description": "Formato: 75 cl • Mezzacorona" },
+    { "id": "local-vini_bianchi-2", "name": "Falanghina del Sannio DOC", "price": 20, "description": "Formato: 75 cl • Feudi di San Gregorio" },
+    { "id": "local-vini_bianchi-3", "name": "Ribolla Gialla delle Venezie IGT", "price": 17, "description": "Formato: 75 cl • Villa Folini" },
+    { "id": "local-vini_bianchi-4", "name": "Greco di Tufo DOC", "price": 20, "description": "Formato: 75 cl • Feudi di San Gregorio" },
+    { "id": "local-vini_bianchi-5", "name": "Prosecco Superiore Valdobbiadene DOC", "price": 15, "description": "Formato: 75 cl • Ca Val" }
+  ],
+  "vini_rossi": [
+    { "id": "local-vini_rossi-1", "name": "Sangiovese di Romagna \"Notturno\" DOC", "price": 22, "description": "Formato: 75 cl • Tenuta Drei Donà" },
+    { "id": "local-vini_rossi-2", "name": "Sangiovese Superiore \"Prugneto\" DOC", "price": 20, "description": "Formato: 75 cl • Poderi Dal Nespoli" },
+    { "id": "local-vini_rossi-3", "name": "Sangiovese Superiore \"Ceregio Rosso\" DOC", "price": 15, "description": "Formato: 75 cl • Fattoria Zerbina" },
+    { "id": "local-vini_rossi-4", "name": "Sangiovese Superiore \"Ceregio Rosso\" DOC – Mezza bottiglia", "price": 10, "description": "Formato: 37,5 cl • Fattoria Zerbina" },
+    { "id": "local-vini_rossi-5", "name": "Valpolicella Superiore \"Ripasso\" DOC", "price": 18, "description": "Formato: 75 cl • Casa Sartori" }
+  ]
+}

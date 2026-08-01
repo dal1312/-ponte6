@@ -7,7 +7,9 @@
     <link rel="canonical" href="https://dal1312.github.io/-ponte6/contatti.html">
     <meta name="description" content="Contattaci per prenotare un tavolo o ordinare. Siamo in Viale Salinatore 86, Forlì. Aperti Mar-Dom 12-14:30 e 19-23.">
     <link rel="icon" href="favicon.ico" sizes="any">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Italiana&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
     <meta property="og:type" content="website">
     <meta property="og:title" content="Contatti | Al Ponte di Schiavonia">
@@ -18,7 +20,7 @@
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#8B1A1A">
 </head>
-<body>
+<body class="contact-experience">
 
 <nav class="navbar" id="navbar">
     <div class="container nav-container">
@@ -32,19 +34,19 @@
             <li><a href="ordina.html">Ordina</a></li>
             <li><a href="contatti.html" class="active">Contatti</a></li>
         </ul>
-        <a href="https://wa.me/39054329448" class="btn-prenota-nav" target="_blank" rel="noopener">Prenota</a>
-        <button class="mobile-menu-btn" aria-label="Menu">
+        <a href="https://wa.me/39054329448" data-config-href="whatsapp" data-track="booking_whatsapp" class="btn-prenota-nav" target="_blank" rel="noopener">Prenota</a>
+        <button class="mobile-menu-btn" aria-label="Apri menu" aria-controls="mobileMenu" aria-expanded="false" type="button">
             <span></span><span></span><span></span>
         </button>
     </div>
 </nav>
 
-<div class="mobile-menu" id="mobileMenu">
+<div class="mobile-menu" id="mobileMenu" aria-hidden="true">
     <a href="index.html">Home</a>
     <a href="menu.html">Menu</a>
     <a href="ordina.html">Ordina</a>
     <a href="contatti.html" class="active">Contatti</a>
-    <a href="https://wa.me/39054329448" class="btn-whatsapp">Prenota su WhatsApp</a>
+    <a href="https://wa.me/39054329448" data-config-href="whatsapp" data-track="booking_whatsapp" class="btn-whatsapp">Prenota su WhatsApp</a>
 </div>
 
 <button class="floating-cart" id="floatingCart" aria-label="Apri carrello" type="button">
@@ -55,8 +57,8 @@
 <header class="page-hero">
     <div class="container">
         <span class="section-label light">VIENI A TROVARCI</span>
-        <h1 class="page-title"><em>Contatti</em></h1>
-        <p class="page-subtitle">Siamo a Forlì • Dal 1978</p>
+        <h1 class="page-title">Una sala vera,<br><em>a Schiavonia.</em></h1>
+        <p class="page-subtitle">Prenota, chiama o passa da Viale Livio Salinatore 86. Qui si parla diretto.</p>
     </div>
 </header>
 
@@ -67,7 +69,7 @@
             <div class="contact-card animate-on-scroll">
                 <div class="contact-icon">📍</div>
                 <h3>Dove Siamo</h3>
-                <p>Viale Salinatore 86<br>47121 Forlì (FC)</p>
+                <p data-config-text="address">Viale Livio Salinatore 86, Forlì</p>
                 <a href="https://maps.google.com/?q=Viale+Salinatore+86+Forli" target="_blank" rel="noopener" class="btn-link">
                     Apri in Google Maps →
                 </a>
@@ -77,24 +79,21 @@
                 <div class="contact-icon">📞</div>
                 <h3>Chiamaci</h3>
                 <p>Per prenotazioni o ordini</p>
-                <a href="tel:+39054329448" class="btn-link">+39 0543 29448</a>
+                <a href="tel:+39054329448" data-config-href="tel" data-config-text="phone" class="btn-link">+39 0543 29448</a>
             </div>
 
             <div class="contact-card animate-on-scroll" data-delay="200">
                 <div class="contact-icon">💬</div>
                 <h3>Scrivici</h3>
                 <p>Rispondiamo subito</p>
-                <a href="https://wa.me/39054329448" target="_blank" rel="noopener" class="btn-link">WhatsApp</a>
+                <a href="https://wa.me/39054329448" data-config-href="whatsapp" data-track="contact_whatsapp" target="_blank" rel="noopener" class="btn-link">WhatsApp</a>
             </div>
 
             <div class="contact-card animate-on-scroll" data-delay="300">
                 <div class="contact-icon">🕐</div>
                 <h3>Orari</h3>
-                <ul class="hours-list">
-                    <li><span>Lunedì</span> <span class="closed">Chiuso</span></li>
-                    <li><span>Martedì – Domenica</span> <span>12:00 – 14:30</span></li>
-                    <li><span>Martedì – Domenica</span> <span>19:00 – 23:00</span></li>
-                </ul>
+                <div class="restaurant-status restaurant-status-card" data-restaurant-status aria-live="polite"></div>
+                <ul class="hours-list" data-hours-list></ul>
             </div>
 
         </div>
@@ -115,7 +114,7 @@
             <h2>Hai già scelto cosa mangiare?</h2>
             <p>Prenota il tuo tavolo o ordina direttamente senza commissioni.</p>
             <div class="cta-buttons">
-                <a href="https://wa.me/39054329448?text=Salve,%20vorrei%20prenotare%20un%20tavolo" class="btn btn-whatsapp" target="_blank" rel="noopener">
+                <a href="https://wa.me/39054329448?text=Salve,%20vorrei%20prenotare%20un%20tavolo" data-config-href="bookingWhatsapp" data-track="booking_whatsapp" class="btn btn-whatsapp" target="_blank" rel="noopener">
                     💬 Prenota su WhatsApp
                 </a>
                 <a href="ordina.html" class="btn btn-light">
@@ -130,9 +129,12 @@
     <div class="container footer-row">
         <span>© 2026 Al Ponte di Schiavonia</span>
         <span>Trattoria e Pizzeria · Forlì</span>
+        <a href="privacy.html">Privacy</a>
     </div>
 </footer>
 
+<script src="js/site-config.js"></script>
+<script src="js/site.js"></script>
 <script src="js/menu-data.js"></script>
 <script src="js/main.js"></script>
 </body>

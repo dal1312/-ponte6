@@ -7,7 +7,9 @@
     <link rel="canonical" href="https://dal1312.github.io/-ponte6/ordina.html">
     <meta name="description" content="Ordina online senza commissioni: ritiro in loco o consegna a domicilio a Forlì.">
     <link rel="icon" href="favicon.ico" sizes="any">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Italiana&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
     <meta property="og:type" content="website">
     <meta property="og:title" content="Ordina online | Al Ponte di Schiavonia">
@@ -18,7 +20,7 @@
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#8B1A1A">
 </head>
-<body>
+<body class="order-experience">
 
 <nav class="navbar" id="navbar">
     <div class="container nav-container">
@@ -32,19 +34,19 @@
             <li><a href="ordina.html" class="active">Ordina</a></li>
             <li><a href="contatti.html">Contatti</a></li>
         </ul>
-        <a href="https://wa.me/39054329448" class="btn-prenota-nav" target="_blank" rel="noopener">Prenota</a>
-        <button class="mobile-menu-btn" aria-label="Menu">
+        <a href="https://wa.me/39054329448" data-config-href="whatsapp" data-track="booking_whatsapp" class="btn-prenota-nav" target="_blank" rel="noopener">Prenota</a>
+        <button class="mobile-menu-btn" aria-label="Apri menu" aria-controls="mobileMenu" aria-expanded="false" type="button">
             <span></span><span></span><span></span>
         </button>
     </div>
 </nav>
 
-<div class="mobile-menu" id="mobileMenu">
+<div class="mobile-menu" id="mobileMenu" aria-hidden="true">
     <a href="index.html">Home</a>
     <a href="menu.html">Menu</a>
     <a href="ordina.html" class="active">Ordina</a>
     <a href="contatti.html">Contatti</a>
-    <a href="https://wa.me/39054329448" class="btn-whatsapp">Prenota su WhatsApp</a>
+    <a href="https://wa.me/39054329448" data-config-href="whatsapp" data-track="booking_whatsapp" class="btn-whatsapp">Prenota su WhatsApp</a>
 </div>
 
 <button class="floating-cart" id="floatingCart" aria-label="Apri carrello" type="button">
@@ -55,8 +57,9 @@
 <header class="page-hero">
     <div class="container">
         <span class="section-label light">ZERO COMMISSIONI</span>
-        <h1 class="page-title">Ordina <em>Online</em></h1>
-        <p class="page-subtitle">Componi il tuo ordine e ricevilo a casa o ritiralo in loco</p>
+        <div class="restaurant-status" data-restaurant-status aria-live="polite"></div>
+        <h1 class="page-title">Ordine diretto,<br><em>cucina calda.</em></h1>
+        <p class="page-subtitle">Scegli, aggiungi al carrello e manda tutto su WhatsApp: niente piattaforme in mezzo.</p>
     </div>
 </header>
 <!-- NAVIGAZIONE CATEGORIE ORDINE -->
@@ -134,10 +137,14 @@
             </div>
 
             <!-- CARRELLO -->
-            <aside class="order-cart" id="cart">
+            <button class="cart-drawer-backdrop" id="cartBackdrop" type="button" aria-label="Chiudi carrello" tabindex="-1"></button>
+            <aside class="order-cart" id="cart" aria-label="Carrello e dati ordine">
                 <div class="cart-header">
                     <h3>🛒 Il tuo ordine</h3>
-                    <button class="cart-clear" id="clearCart">Svuota</button>
+                    <div class="cart-header-actions">
+                        <button class="cart-clear" id="clearCart" type="button">Svuota</button>
+                        <button class="cart-drawer-close" id="closeCartDrawer" type="button" aria-label="Chiudi carrello">✕</button>
+                    </div>
                 </div>
                 
                 <div class="cart-items" id="cartItems">
@@ -161,16 +168,26 @@
                 <form class="cart-form" id="orderForm">
                     <h4>I tuoi dati</h4>
                     <div class="form-group">
-                        <label>Nome e Cognome *</label>
-                        <input type="text" name="name" required placeholder="Mario Rossi">
+                        <label for="customerName">Nome e Cognome *</label>
+                        <input id="customerName" type="text" name="name" required autocomplete="name" maxlength="120" placeholder="Mario Rossi">
                     </div>
                     <div class="form-group">
-                        <label>Telefono *</label>
-                        <input type="tel" name="phone" required placeholder="+39 333 1234567">
+                        <label for="customerPhone">Telefono *</label>
+                        <input id="customerPhone" type="tel" name="phone" required autocomplete="tel" maxlength="30" placeholder="+39 333 1234567">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="orderDate">Giorno *</label>
+                            <input id="orderDate" type="date" name="date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="orderTime">Orario *</label>
+                            <select id="orderTime" name="time" required><option value="">Scegli il giorno</option></select>
+                        </div>
                     </div>
                     <div class="form-group">
-                        <label>Modalità *</label>
-                        <div class="radio-group">
+                        <span class="form-label" id="orderModeLabel">Modalità *</span>
+                        <div class="radio-group" role="radiogroup" aria-labelledby="orderModeLabel">
                             <label class="radio-label">
                                 <input type="radio" name="mode" value="ritiro" checked>
                                 <span>🏠 Ritiro in loco</span>
@@ -182,33 +199,52 @@
                         </div>
                     </div>
                     <div class="form-group is-hidden" id="addressField">
-                        <label>Indirizzo di consegna *</label>
-                        <input type="text" name="address" placeholder="Via, numero civico">
+                        <label for="deliveryAddress">Indirizzo di consegna *</label>
+                        <input id="deliveryAddress" type="text" name="address" autocomplete="street-address" maxlength="220" placeholder="Via, numero civico">
+                        <small class="field-hint">Consegna disponibile nel comune di Forlì. Il locale confermerà copertura e tempi.</small>
                     </div>
                     <div class="form-group">
-                        <label>Note (opzionale)</label>
-                        <textarea name="notes" rows="2" placeholder="Allergie, richieste particolari..."></textarea>
+                        <label for="orderNotes">Note (opzionale)</label>
+                        <textarea id="orderNotes" name="notes" rows="2" maxlength="600" placeholder="Allergie, richieste particolari..."></textarea>
                     </div>
+                    <div class="form-feedback" id="orderFeedback" role="status" aria-live="polite"></div>
                     <button type="submit" class="btn btn-primary btn-large btn-full" id="submitOrder" disabled>
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347"/></svg>
-                        Invia Ordine via WhatsApp
+                        Rivedi ordine
                     </button>
-                    <p class="form-disclaimer">Cliccando, verrai reindirizzato a WhatsApp con il riepilogo del tuo ordine.</p>
+                    <p class="form-disclaimer">L’ordine è confermato soltanto dopo la risposta del ristorante su WhatsApp.</p>
                 </form>
             </aside>
         </div>
     </div>
 </main>
 
+<dialog class="order-receipt-dialog" id="orderReceiptDialog" aria-labelledby="orderReceiptTitle">
+    <div class="order-receipt">
+        <button class="order-receipt-close" id="orderReceiptClose" type="button" aria-label="Chiudi riepilogo">✕</button>
+        <span class="section-label">RIEPILOGO ORDINE</span>
+        <h2 id="orderReceiptTitle">Controlla prima di inviare</h2>
+        <div id="orderReceiptContent"></div>
+        <p class="order-confirmation-note">Questa è una richiesta: attendi la conferma del ristorante su WhatsApp.</p>
+        <div class="order-receipt-actions">
+            <button class="btn btn-outline" id="printOrder" type="button">Stampa riepilogo</button>
+            <a class="btn btn-primary" id="sendOrderWhatsapp" href="#" target="_blank" rel="noopener" data-track="order_whatsapp">Apri WhatsApp</a>
+        </div>
+    </div>
+</dialog>
+
 <footer class="site-footer">
     <div class="container footer-row">
         <span>© 2026 Al Ponte di Schiavonia</span>
         <span>Trattoria e Pizzeria · Forlì</span>
+        <a href="privacy.html">Privacy</a>
     </div>
 </footer>
 
+<script src="js/site-config.js"></script>
+<script src="js/site.js"></script>
 <script src="js/menu-data.js"></script>
-<script src="js/beverage-data.js"></script>
 <script src="js/main.js"></script>
+<script src="js/order.js"></script>
 </body>
 </html>

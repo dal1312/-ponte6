@@ -8,7 +8,9 @@
     <meta name="description" content="Menu completo: antipasti, primi romagnoli, 32 pizze al forno a legna, secondi di carne e pesce, contorni e dolci. Ingredienti freschi e tradizione dal 1978.">
     <link rel="icon" href="favicon.ico" sizes="any">
     <link rel="manifest" href="manifest.json">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Italiana&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
     <meta property="og:type" content="website">
     <meta property="og:title" content="Menu | Al Ponte di Schiavonia">
@@ -16,8 +18,37 @@
     <meta property="og:url" content="https://dal1312.github.io/-ponte6/menu.html">
     <meta property="og:locale" content="it_IT">
     <meta name="twitter:card" content="summary_large_image">
+    <meta property="og:image" content="https://dal1312.github.io/-ponte6/assets/home/pizza.jpg">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Menu",
+      "name": "Menu di Al Ponte di Schiavonia",
+      "url": "https://dal1312.github.io/-ponte6/menu.html",
+      "inLanguage": "it-IT",
+      "provider": {
+        "@type": "Restaurant",
+        "name": "Al Ponte di Schiavonia",
+        "telephone": "+39054329448",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Viale Livio Salinatore 86",
+          "addressLocality": "Forlì",
+          "addressCountry": "IT"
+        }
+      },
+      "hasMenuSection": [
+        { "@type": "MenuSection", "name": "Antipasti" },
+        { "@type": "MenuSection", "name": "Primi" },
+        { "@type": "MenuSection", "name": "Pizze" },
+        { "@type": "MenuSection", "name": "Secondi" },
+        { "@type": "MenuSection", "name": "Dessert" },
+        { "@type": "MenuSection", "name": "Bevande e vini" }
+      ]
+    }
+    </script>
 </head>
-<body>
+<body class="menu-page">
 
 <nav class="navbar" id="navbar">
     <div class="container nav-container">
@@ -31,19 +62,19 @@
             <li><a href="ordina.html">Ordina</a></li>
             <li><a href="contatti.html">Contatti</a></li>
         </ul>
-        <a href="https://wa.me/39054329448" class="btn-prenota-nav" target="_blank" rel="noopener">Prenota</a>
-        <button class="mobile-menu-btn" aria-label="Menu">
+        <a href="https://wa.me/39054329448" data-config-href="whatsapp" data-track="booking_whatsapp" class="btn-prenota-nav" target="_blank" rel="noopener">Prenota</a>
+        <button class="mobile-menu-btn" aria-label="Apri menu" aria-controls="mobileMenu" aria-expanded="false" type="button">
             <span></span><span></span><span></span>
         </button>
     </div>
 </nav>
 
-<div class="mobile-menu" id="mobileMenu">
+<div class="mobile-menu" id="mobileMenu" aria-hidden="true">
     <a href="index.html">Home</a>
     <a href="menu.html" class="active">Menu</a>
     <a href="ordina.html">Ordina</a>
     <a href="contatti.html">Contatti</a>
-    <a href="https://wa.me/39054329448" class="btn-whatsapp">Prenota su WhatsApp</a>
+    <a href="https://wa.me/39054329448" data-config-href="whatsapp" data-track="booking_whatsapp" class="btn-whatsapp">Prenota su WhatsApp</a>
 </div>
 
 <button class="floating-cart" id="floatingCart" aria-label="Apri carrello" type="button">
@@ -51,51 +82,108 @@
     <span class="cart-count">0</span>
 </button>
 
-<header class="page-hero">
+<header class="page-hero menu-page-hero">
     <div class="container">
-        <span class="section-label light">I NOSTRI PIATTI</span>
-        <h1 class="page-title">Il Nostro <em>Menu</em></h1>
-        <p class="page-subtitle">Tradizione romagnola, ingredienti freschi e forno a legna • Dal 1978</p>
+        <div class="menu-hero-copy">
+            <span class="section-label light">IL FORNO È ACCESO</span>
+            <h1 class="page-title">Pizza fatta<br><em>con calma.</em></h1>
+            <p class="page-subtitle">Impasto, ingredienti scelti e il calore del forno: qui trovi tutte le nostre pizze, una per una.</p>
+        </div>
+        <div class="menu-hero-note"><span>La carta</span><strong>Dal classico<br>alla voglia del giorno.</strong></div>
     </div>
 </header>
 
 <!-- FILTRI CATEGORIE STICKY -->
 <div class="menu-filters" id="menuFilters">
     <div class="container">
-        <button class="filter-btn active" data-category="antipasti" aria-pressed="true">Antipasti</button>
-        <button class="filter-btn" data-category="primi">Primi</button>
-        <button class="filter-btn" data-category="pizze">Pizze</button>
-        <button class="filter-btn" data-category="secondi">Secondi</button>
-        <button class="filter-btn" data-category="contorni">Contorni</button>
-        <button class="filter-btn" data-category="dessert">Dessert</button>
-        <button class="filter-btn" data-category="bevande">Bevande</button>
-        <button class="filter-btn" data-category="birre">Birre</button>
-        <button class="filter-btn" data-category="vini_bianchi">Vini bianchi</button>
-        <button class="filter-btn" data-category="vini_rossi">Vini rossi</button>
+        <button class="filter-btn" data-category="antipasti" aria-pressed="false">Antipasti</button>
+        <button class="filter-btn" data-category="primi" aria-pressed="false">Primi</button>
+        <button class="filter-btn active" data-category="pizze" aria-pressed="true">Pizze</button>
+        <button class="filter-btn" data-category="secondi" aria-pressed="false">Secondi</button>
+        <button class="filter-btn" data-category="contorni" aria-pressed="false">Contorni</button>
+        <button class="filter-btn" data-category="dessert" aria-pressed="false">Dessert</button>
+        <button class="filter-btn" data-category="bevande" aria-pressed="false">Bevande</button>
+        <button class="filter-btn" data-category="birre" aria-pressed="false">Birre</button>
+        <button class="filter-btn" data-category="vini_bianchi" aria-pressed="false">Vini bianchi</button>
+        <button class="filter-btn" data-category="vini_rossi" aria-pressed="false">Vini rossi</button>
     </div>
 </div>
 
 <main class="menu-main">
     <div class="container">
+        <section class="menu-tools" aria-label="Ricerca e filtri menu">
+            <div class="menu-search-field">
+                <label for="menuSearch">Cerca nel menu</label>
+                <input id="menuSearch" type="search" placeholder="Es. tortelli, burrata, pesce…" autocomplete="off">
+            </div>
+            <div class="menu-tool-field">
+                <label for="menuMaxPrice">Prezzo massimo</label>
+                <select id="menuMaxPrice">
+                    <option value="">Qualsiasi prezzo</option>
+                    <option value="10">Fino a €10</option>
+                    <option value="12">Fino a €12</option>
+                    <option value="15">Fino a €15</option>
+                </select>
+            </div>
+            <div class="menu-tool-field">
+                <label for="menuExcludeAllergen">Nascondi allergene dichiarato</label>
+                <select id="menuExcludeAllergen">
+                    <option value="">Nessuno</option>
+                    <option value="glutine">Glutine</option>
+                    <option value="latte e derivati">Latte e derivati</option>
+                    <option value="uova e derivati">Uova e derivati</option>
+                    <option value="pesce">Pesce</option>
+                    <option value="crostacei">Crostacei</option>
+                    <option value="molluschi">Molluschi</option>
+                </select>
+            </div>
+            <label class="menu-photo-filter"><input id="menuPhotoOnly" type="checkbox"> Solo piatti con foto</label>
+            <button class="menu-reset-filters" id="menuResetFilters" type="button">Azzera filtri</button>
+            <p class="menu-filter-safety">Il filtro allergeni nasconde solo i piatti in cui l’allergene è dichiarato: non certifica l’assenza negli altri.</p>
+        </section>
+        <section class="menu-category-intro" id="menuCategoryIntro" aria-live="polite">
+            <div>
+                <span class="menu-category-kicker">La carta</span>
+                <h2 id="menuCategoryTitle">Pizze</h2>
+            </div>
+            <div class="menu-category-summary">
+                <p id="menuCategoryCopy">Impasto, forno e ingredienti scelti: la pizza come piace a noi.</p>
+                <span id="menuCategoryCount"></span>
+            </div>
+        </section>
         <div class="menu-grid" id="menu-grid">
             <!-- Popolato dinamicamente da main.js -->
         </div>
+        <p class="menu-no-results" id="menuNoResults" hidden>Nessun piatto corrisponde ai filtri selezionati.</p>
 
         <div class="allergens-disclaimer animate-on-scroll">
-            <p><strong>⚠️ Informazioni allergeni:</strong> I prezzi sono in Euro, IVA inclusa. Gli ingredienti sono soggetti a variazioni stagionali. In caso di allergie o intolleranze alimentari, si prega di informare il personale di sala.</p>
+            <p><strong>⚠️ Informazioni allergeni:</strong> Le indicazioni mostrate provengono dai dati forniti dal ristorante e non sono dedotte automaticamente. Ingredienti e lavorazioni possono variare: in caso di allergie o intolleranze, contatta sempre il personale prima di ordinare.</p>
         </div>
     </div>
 </main>
+
+<dialog class="dish-photo-dialog" id="dishPhotoDialog" aria-labelledby="dishPhotoTitle">
+    <figure class="dish-photo-frame">
+        <img id="dishPhotoImage" alt="">
+        <button class="dish-photo-close" id="dishPhotoClose" type="button" aria-label="Chiudi foto">Chiudi</button>
+        <figcaption>
+            <span>Il piatto</span>
+            <h2 id="dishPhotoTitle"></h2>
+        </figcaption>
+    </figure>
+</dialog>
 
 <footer class="site-footer">
     <div class="container footer-row">
         <span>© 2026 Al Ponte di Schiavonia</span>
         <span>Trattoria e Pizzeria · Forlì</span>
+        <a href="privacy.html">Privacy</a>
     </div>
 </footer>
 
+<script src="js/site-config.js"></script>
+<script src="js/site.js"></script>
 <script src="js/menu-data.js"></script>
-<script src="js/beverage-data.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>
