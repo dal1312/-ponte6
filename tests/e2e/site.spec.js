@@ -12,14 +12,28 @@ test('menu mobile gestisce stato e tastiera', async ({ page, isMobile }) => {
   await expect(trigger).toBeFocused();
 });
 
-test('ricerca e filtri aggiornano il menu', async ({ page }) => {
+test('filtri aggiornano il menu', async ({ page }) => {
   await page.goto('/menu.html');
-  await page.getByLabel('Cerca nel menu').fill('margherita');
-  await expect(page.locator('#menu-grid .menu-item:visible')).toHaveCount(1);
-  await expect(page.getByRole('heading', { name: 'Margherita' })).toBeVisible();
+  await expect(page.getByRole('searchbox')).toHaveCount(0);
+  await page.getByLabel('Prezzo massimo').selectOption('10');
+  await expect(page.locator('#menu-grid .menu-item:visible')).toHaveCount(18);
   await page.getByRole('button', { name: 'Azzera filtri' }).click();
   await page.getByRole('button', { name: 'Primi' }).click();
   await expect(page.locator('#menuCategoryCount')).toContainText('8 proposte');
+});
+
+test('allergeni mostrano numero e provenienza', async ({ page }) => {
+  await page.goto('/menu.html');
+  const inferredDish = page.locator('.menu-item').filter({ has: page.getByRole('heading', { name: 'Aromatica' }) });
+  await expect(inferredDish.locator('.allergen-inferred')).toHaveCount(2);
+  await expect(inferredDish.locator('.allergens')).toContainText('1 Glutine');
+  await expect(inferredDish.locator('.allergens')).toContainText('7 Latte');
+  await expect(inferredDish.locator('.allergens')).toContainText('dedotto');
+
+  const confirmedDish = page.locator('.menu-item').filter({ has: page.getByRole('heading', { name: 'Margherita' }) });
+  await expect(confirmedDish.locator('.allergen-confirmed')).toHaveCount(2);
+  await expect(confirmedDish.locator('.allergens')).toContainText('1 Glutine');
+  await expect(confirmedDish.locator('.allergens')).toContainText('7 Latte');
 });
 
 test('carrello persiste e personalizza una pizza', async ({ page }) => {

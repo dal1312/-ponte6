@@ -111,11 +111,7 @@
 
 <main class="menu-main">
     <div class="container">
-        <section class="menu-tools" aria-label="Ricerca e filtri menu">
-            <div class="menu-search-field">
-                <label for="menuSearch">Cerca nel menu</label>
-                <input id="menuSearch" type="search" placeholder="Es. tortelli, burrata, pesce…" autocomplete="off">
-            </div>
+        <section class="menu-tools" aria-label="Filtri menu">
             <div class="menu-tool-field">
                 <label for="menuMaxPrice">Prezzo massimo</label>
                 <select id="menuMaxPrice">
@@ -126,20 +122,28 @@
                 </select>
             </div>
             <div class="menu-tool-field">
-                <label for="menuExcludeAllergen">Nascondi allergene dichiarato</label>
+                <label for="menuExcludeAllergen">Nascondi allergene</label>
                 <select id="menuExcludeAllergen">
                     <option value="">Nessuno</option>
                     <option value="glutine">Glutine</option>
-                    <option value="latte e derivati">Latte e derivati</option>
-                    <option value="uova e derivati">Uova e derivati</option>
-                    <option value="pesce">Pesce</option>
                     <option value="crostacei">Crostacei</option>
+                    <option value="uova">Uova</option>
+                    <option value="pesce">Pesce</option>
+                    <option value="arachidi">Arachidi</option>
+                    <option value="soia">Soia</option>
+                    <option value="latte">Latte</option>
+                    <option value="frutta a guscio">Frutta a guscio</option>
+                    <option value="sedano">Sedano</option>
+                    <option value="senape">Senape</option>
+                    <option value="sesamo">Sesamo</option>
+                    <option value="solfiti">Solfiti</option>
+                    <option value="lupini">Lupini</option>
                     <option value="molluschi">Molluschi</option>
                 </select>
             </div>
             <label class="menu-photo-filter"><input id="menuPhotoOnly" type="checkbox"> Solo piatti con foto</label>
             <button class="menu-reset-filters" id="menuResetFilters" type="button">Azzera filtri</button>
-            <p class="menu-filter-safety">Il filtro allergeni nasconde solo i piatti in cui l’allergene è dichiarato: non certifica l’assenza negli altri.</p>
+            <p class="menu-filter-safety">Il filtro considera dati dichiarati e deduzioni evidenziate. Non certifica l’assenza di allergeni o contaminazioni.</p>
         </section>
         <section class="menu-category-intro" id="menuCategoryIntro" aria-live="polite">
             <div>
@@ -157,7 +161,16 @@
         <p class="menu-no-results" id="menuNoResults" hidden>Nessun piatto corrisponde ai filtri selezionati.</p>
 
         <div class="allergens-disclaimer animate-on-scroll">
-            <p><strong>⚠️ Informazioni allergeni:</strong> Le indicazioni mostrate provengono dai dati forniti dal ristorante e non sono dedotte automaticamente. Ingredienti e lavorazioni possono variare: in caso di allergie o intolleranze, contatta sempre il personale prima di ordinare.</p>
+            <p><strong>⚠️ Informazioni allergeni:</strong> i badge senza dicitura sono dati dichiarati; quelli tratteggiati con “dedotto” derivano automaticamente da nome, ingredienti o categoria e devono essere verificati con il personale. Ingredienti, ricette e contaminazioni possono variare.</p>
+            <details class="allergen-legend">
+                <summary>Numeri di riferimento — Allegato II Reg. (UE) 1169/2011</summary>
+                <ol>
+                    <li>Glutine</li><li>Crostacei</li><li>Uova</li><li>Pesce</li>
+                    <li>Arachidi</li><li>Soia</li><li>Latte</li><li>Frutta a guscio</li>
+                    <li>Sedano</li><li>Senape</li><li>Sesamo</li><li>Solfiti</li>
+                    <li>Lupini</li><li>Molluschi</li>
+                </ol>
+            </details>
         </div>
     </div>
 </main>

@@ -22,6 +22,35 @@ function escapeHtml(value) {
         .replace(/'/g, '&#039;');
 }
 
+const ALLERGEN_REFERENCES = Object.freeze({
+    'Glutine': 1,
+    'Crostacei': 2,
+    'Uova': 3,
+    'Pesce': 4,
+    'Arachidi': 5,
+    'Soia': 6,
+    'Latte': 7,
+    'Frutta a guscio': 8,
+    'Sedano': 9,
+    'Senape': 10,
+    'Sesamo': 11,
+    'Solfiti': 12,
+    'Lupini': 13,
+    'Molluschi': 14
+});
+
+function renderAllergens(item, compact = false) {
+    if (!item.allergens?.length) return '';
+    const inferred = new Set(item.allergens_inferred || []);
+    const badges = item.allergens.map(allergen => {
+        const reference = ALLERGEN_REFERENCES[allergen];
+        const isInferred = inferred.has(allergen);
+        const sourceLabel = isInferred ? 'dedotto dagli ingredienti o dalla categoria' : 'dichiarato dal ristorante';
+        return `<span class="allergen${isInferred ? ' allergen-inferred' : ' allergen-confirmed'}" title="${escapeHtml(sourceLabel)}"><b>${reference || '?'}</b> ${escapeHtml(allergen)}${isInferred && !compact ? '<small>dedotto</small>' : ''}</span>`;
+    }).join('');
+    return `<div class="allergens${compact ? ' allergens-compact' : ''}" aria-label="Allergeni numerati">${badges}</div>`;
+}
+
 const CART_LIMITS = Object.freeze({ maxItems: 100, maxQty: 99, maxPrice: 1000 });
 
 function normalizeCartItem(item) {
@@ -687,6 +716,7 @@ function renderOrderItems() {
                 ? ''
                 : `<span class="availability-badge">${escapeHtml(itemState.label)}</span>`;
             const ingredientsArray = item.ingredients ? item.ingredients.split(', ').filter(i => i.trim()) : [];
+            const allergensHtml = renderAllergens(item, true);
             const ingredientDetailsHtml = item.ingredients
                 ? `<details class="dish-details order-dish-details"><summary>Ingredienti</summary><p class="dish-description">${escapeHtml(item.ingredients)}</p></details>`
                 : '<details class="dish-details order-dish-details"><summary>Ingredienti</summary><p class="dish-description dish-description-muted">Da confermare</p></details>';
@@ -698,6 +728,7 @@ function renderOrderItems() {
                         <div class="order-item-name">${escapeHtml(item.name)}</div>
                         ${availabilityHtml}
                         ${ingredientDetailsHtml}
+                        ${allergensHtml}
                         <div class="order-item-bottom">
                             <span class="order-item-price">${formatPrice(item.price)}</span>
                             <button class="btn-add-small btn-customize-order" type="button" data-name="${escapeHtml(item.name)}" data-price="${item.price}" data-ingredients='${ingredientsJson}' aria-label="${itemState.available ? 'Personalizza' : 'Non disponibile'} ${escapeHtml(item.name)}"${disabledAttribute}>🍕</button>
@@ -710,6 +741,7 @@ function renderOrderItems() {
                 <div class="order-item${itemState.available ? '' : ' is-unavailable'}">
                     <div class="order-item-name">${escapeHtml(item.name)}</div>
                     ${availabilityHtml}
+                    ${allergensHtml}
                     <div class="order-item-bottom">
                         <span class="order-item-price">${formatPrice(item.price)}</span>
                         <button class="btn-add-small" type="button" data-name="${escapeHtml(item.name)}" data-price="${item.price}" aria-label="${itemState.available ? 'Aggiungi' : 'Non disponibile'} ${escapeHtml(item.name)}"${disabledAttribute}>+</button>
@@ -749,11 +781,8 @@ function renderMenuItems() {
     Object.keys(menuData).forEach(category => {
         menuData[category].forEach(item => {
             const itemState = getItemAvailability(item, category);
-            const searchText = [item.name, item.description, item.ingredients].filter(Boolean).join(' ').toLocaleLowerCase('it');
             const allergenData = (item.allergens || []).join('|').toLocaleLowerCase('it');
-            const allergensHtml = item.allergens && item.allergens.length > 0
-                ? `<div class="allergens">${item.allergens.map(a => `<span class="allergen">${escapeHtml(a)}</span>`).join('')}</div>`
-                : '';
+            const allergensHtml = renderAllergens(item);
             
             const descHtml = item.description
                 ? `<p class="dish-description">${escapeHtml(item.description)}</p>`
@@ -772,7 +801,7 @@ function renderMenuItems() {
             
 
             html += `
-                <div class="menu-item animate-on-scroll category-${escapeHtml(category)}${itemState.available ? '' : ' is-unavailable'}" data-category="${escapeHtml(category)}" data-search="${escapeHtml(searchText)}" data-price="${Number(item.price)}" data-allergens="${escapeHtml(allergenData)}" data-has-photo="${item.image ? 'true' : 'false'}">
+                <div class="menu-item animate-on-scroll category-${escapeHtml(category)}${itemState.available ? '' : ' is-unavailable'}" data-category="${escapeHtml(category)}" data-price="${Number(item.price)}" data-allergens="${escapeHtml(allergenData)}" data-has-photo="${item.image ? 'true' : 'false'}">
                     <div class="menu-item-content">
                         <div class="menu-item-header">
                             <h3>${escapeHtml(item.name)}</h3>
@@ -870,7 +899,6 @@ function updateMenuCategoryIntro(category) {
 
 function applyMenuFilters() {
     const activeCategory = document.querySelector('#menuFilters .filter-btn.active')?.dataset.category || 'all';
-    const query = (document.getElementById('menuSearch')?.value || '').trim().toLocaleLowerCase('it');
     const maxPrice = Number(document.getElementById('menuMaxPrice')?.value || Infinity);
     const excludedAllergen = (document.getElementById('menuExcludeAllergen')?.value || '').toLocaleLowerCase('it');
     const photoOnly = document.getElementById('menuPhotoOnly')?.checked || false;
@@ -879,11 +907,10 @@ function applyMenuFilters() {
 
     items.forEach(item => {
         const categoryMatches = activeCategory === 'all' || item.dataset.category === activeCategory;
-        const queryMatches = !query || item.dataset.search.includes(query);
         const priceMatches = Number(item.dataset.price) <= maxPrice;
         const allergenMatches = !excludedAllergen || !item.dataset.allergens.includes(excludedAllergen);
         const photoMatches = !photoOnly || item.dataset.hasPhoto === 'true';
-        const visible = categoryMatches && queryMatches && priceMatches && allergenMatches && photoMatches;
+        const visible = categoryMatches && priceMatches && allergenMatches && photoMatches;
         item.hidden = !visible;
         item.style.display = visible ? '' : 'none';
         if (visible) visibleCount += 1;
@@ -928,13 +955,13 @@ if (initialMenuFilter && document.getElementById('menu-grid')) {
     applyMenuFilters();
 }
 
-['menuSearch', 'menuMaxPrice', 'menuExcludeAllergen', 'menuPhotoOnly'].forEach(id => {
+['menuMaxPrice', 'menuExcludeAllergen', 'menuPhotoOnly'].forEach(id => {
     const control = document.getElementById(id);
-    control?.addEventListener(id === 'menuSearch' ? 'input' : 'change', applyMenuFilters);
+    control?.addEventListener('change', applyMenuFilters);
 });
 
 document.getElementById('menuResetFilters')?.addEventListener('click', () => {
-    ['menuSearch', 'menuMaxPrice', 'menuExcludeAllergen'].forEach(id => {
+    ['menuMaxPrice', 'menuExcludeAllergen'].forEach(id => {
         const control = document.getElementById(id);
         if (control) control.value = '';
     });

@@ -1360,6 +1360,7 @@ section { padding: 104px 0; }
   display: flex;
   align-items: center;
   flex-wrap: wrap;
+  gap: .35rem;
   margin-top: .68rem;
   color: rgba(255,248,236,.64);
   font-size: .64rem;
@@ -1377,13 +1378,40 @@ section { padding: 104px 0; }
   font-size: inherit;
   font-weight: 700;
   letter-spacing: .02em;
-  text-transform: lowercase;
+  display: inline-flex;
+  align-items: center;
+  gap: .24rem;
+  border: 1px solid rgba(228,187,104,.5);
+  border-radius: 999px;
+  padding: .2rem .45rem;
 }
-.allergen:not(:last-child)::after {
-  content: " · ";
-  color: rgba(255,248,236,.36);
-  font-weight: 400;
+.allergen b {
+  display: inline-grid;
+  place-items: center;
+  width: 1.15rem;
+  height: 1.15rem;
+  border-radius: 50%;
+  background: #e4bb68;
+  color: #211713;
+  font-size: .62rem;
 }
+.allergen small {
+  font-size: .52rem;
+  font-weight: 800;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  opacity: .78;
+}
+.allergen-inferred {
+  border-style: dashed;
+  color: rgba(255,248,236,.78);
+}
+.allergen-inferred b {
+  background: transparent;
+  color: #e4bb68;
+  border: 1px dashed #e4bb68;
+}
+.allergens-compact { margin-top: .55rem; }
 
 .btn-add-to-cart {
   background: var(--ink);
@@ -1442,6 +1470,26 @@ section { padding: 104px 0; }
   margin-top: 2.5rem;
   text-align: center;
   box-shadow: var(--shadow-sm);
+}
+.allergen-legend { margin-top: 1rem; text-align: left; }
+.allergen-legend summary { cursor: pointer; font-weight: 800; color: var(--wine); }
+.allergen-legend ol {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .35rem 1.4rem;
+  margin: .85rem 0 0;
+  padding-left: 1.6rem;
+}
+.allergen-legend li { padding-left: .15rem; }
+.order-allergen-note {
+  margin: 0 0 1.25rem;
+  padding: .85rem 1rem;
+  border: 1px solid rgba(214,168,79,.28);
+  border-radius: var(--radius);
+  background: rgba(214,168,79,.07);
+  color: rgba(255,248,236,.76);
+  font-size: .78rem;
+  line-height: 1.5;
 }
 
 /* FLOATING CART */
