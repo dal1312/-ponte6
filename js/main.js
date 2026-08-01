@@ -801,7 +801,7 @@ function renderMenuItems() {
             
 
             html += `
-                <div class="menu-item animate-on-scroll category-${escapeHtml(category)}${itemState.available ? '' : ' is-unavailable'}" data-category="${escapeHtml(category)}" data-price="${Number(item.price)}" data-allergens="${escapeHtml(allergenData)}" data-has-photo="${item.image ? 'true' : 'false'}">
+                <div class="menu-item animate-on-scroll category-${escapeHtml(category)}${itemState.available ? '' : ' is-unavailable'}" data-category="${escapeHtml(category)}" data-allergens="${escapeHtml(allergenData)}">
                     <div class="menu-item-content">
                         <div class="menu-item-header">
                             <h3>${escapeHtml(item.name)}</h3>
@@ -888,36 +888,27 @@ const menuCategoryCopy = {
 function updateMenuCategoryIntro(category) {
     const title = document.getElementById('menuCategoryTitle');
     const copy = document.getElementById('menuCategoryCopy');
-    const count = document.getElementById('menuCategoryCount');
     const button = document.querySelector(`.filter-btn[data-category="${category}"]`);
-    const items = menuData[category] || [];
 
     if (title && button) title.textContent = button.textContent.trim();
     if (copy) copy.textContent = menuCategoryCopy[category] || 'Scopri la nostra selezione.';
-    if (count) count.textContent = `${items.length} proposte`;
 }
 
 function applyMenuFilters() {
     const activeCategory = document.querySelector('#menuFilters .filter-btn.active')?.dataset.category || 'all';
-    const maxPrice = Number(document.getElementById('menuMaxPrice')?.value || Infinity);
     const excludedAllergen = (document.getElementById('menuExcludeAllergen')?.value || '').toLocaleLowerCase('it');
-    const photoOnly = document.getElementById('menuPhotoOnly')?.checked || false;
     const items = [...document.querySelectorAll('#menu-grid .menu-item')];
     let visibleCount = 0;
 
     items.forEach(item => {
         const categoryMatches = activeCategory === 'all' || item.dataset.category === activeCategory;
-        const priceMatches = Number(item.dataset.price) <= maxPrice;
         const allergenMatches = !excludedAllergen || !item.dataset.allergens.includes(excludedAllergen);
-        const photoMatches = !photoOnly || item.dataset.hasPhoto === 'true';
-        const visible = categoryMatches && priceMatches && allergenMatches && photoMatches;
+        const visible = categoryMatches && allergenMatches;
         item.hidden = !visible;
         item.style.display = visible ? '' : 'none';
         if (visible) visibleCount += 1;
     });
 
-    const count = document.getElementById('menuCategoryCount');
-    if (count) count.textContent = `${visibleCount} ${visibleCount === 1 ? 'proposta' : 'proposte'}`;
     const noResults = document.getElementById('menuNoResults');
     if (noResults) noResults.hidden = visibleCount !== 0;
 }
@@ -955,20 +946,7 @@ if (initialMenuFilter && document.getElementById('menu-grid')) {
     applyMenuFilters();
 }
 
-['menuMaxPrice', 'menuExcludeAllergen', 'menuPhotoOnly'].forEach(id => {
-    const control = document.getElementById(id);
-    control?.addEventListener('change', applyMenuFilters);
-});
-
-document.getElementById('menuResetFilters')?.addEventListener('click', () => {
-    ['menuMaxPrice', 'menuExcludeAllergen'].forEach(id => {
-        const control = document.getElementById(id);
-        if (control) control.value = '';
-    });
-    const photoOnly = document.getElementById('menuPhotoOnly');
-    if (photoOnly) photoOnly.checked = false;
-    applyMenuFilters();
-});
+document.getElementById('menuExcludeAllergen')?.addEventListener('change', applyMenuFilters);
 
 /* ========================================
    NOTIFICATION STYLE

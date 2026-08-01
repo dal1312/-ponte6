@@ -15,11 +15,13 @@ test('menu mobile gestisce stato e tastiera', async ({ page, isMobile }) => {
 test('filtri aggiornano il menu', async ({ page }) => {
   await page.goto('/menu.html');
   await expect(page.getByRole('searchbox')).toHaveCount(0);
-  await page.getByLabel('Prezzo massimo').selectOption('10');
-  await expect(page.locator('#menu-grid .menu-item:visible')).toHaveCount(18);
-  await page.getByRole('button', { name: 'Azzera filtri' }).click();
+  await expect(page.getByLabel('Prezzo massimo')).toHaveCount(0);
+  await expect(page.getByText('Solo piatti con foto')).toHaveCount(0);
+  await page.getByLabel('Nascondi allergene').selectOption('latte');
+  await expect(page.getByRole('heading', { name: 'Margherita' })).toBeHidden();
+  await expect(page.getByRole('heading', { name: 'Marinara' })).toBeVisible();
   await page.getByRole('button', { name: 'Primi' }).click();
-  await expect(page.locator('#menuCategoryCount')).toContainText('8 proposte');
+  await expect(page.locator('#menuCategoryCount')).toHaveCount(0);
 });
 
 test('allergeni mostrano numero e provenienza', async ({ page }) => {
