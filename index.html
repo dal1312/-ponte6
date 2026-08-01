@@ -13,6 +13,40 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Italiana&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
+  <meta property="og:type" content="restaurant">
+  <meta property="og:title" content="Al Ponte di Schiavonia | Trattoria e Pizzeria a Forlì">
+  <meta property="og:description" content="Cucina romagnola, pasta fresca e pizza dal 1978. Menu e ordine diretto senza commissioni.">
+  <meta property="og:url" content="https://dal1312.github.io/-ponte6/">
+  <meta property="og:image" content="https://dal1312.github.io/-ponte6/assets/home/sala.jpg">
+  <meta property="og:locale" content="it_IT">
+  <meta name="twitter:card" content="summary_large_image">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Restaurant",
+    "name": "Al Ponte di Schiavonia",
+    "description": "Trattoria e pizzeria a Forlì dal 1978, con cucina romagnola, pasta fresca e pizza.",
+    "url": "https://dal1312.github.io/-ponte6/",
+    "telephone": "+39054329448",
+    "image": "https://dal1312.github.io/-ponte6/assets/home/sala.jpg",
+    "priceRange": "€€",
+    "servesCuisine": ["Cucina romagnola", "Pizza", "Cucina italiana"],
+    "acceptsReservations": true,
+    "hasMenu": "https://dal1312.github.io/-ponte6/menu.html",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Viale Livio Salinatore 86",
+      "postalCode": "47121",
+      "addressLocality": "Forlì",
+      "addressRegion": "FC",
+      "addressCountry": "IT"
+    },
+    "openingHoursSpecification": [
+      { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"], "opens": "12:00", "closes": "14:30" },
+      { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"], "opens": "19:00", "closes": "23:00" }
+    ]
+  }
+  </script>
 </head>
 <body>
   <nav class="navbar" id="navbar">
@@ -27,8 +61,8 @@
         <a href="contatti.html">Contatti</a>
         <a href="ordina.html">Ordina online</a>
       </nav>
-      <a class="btn-prenota-nav" href="https://wa.me/39054329448" target="_blank" rel="noopener">Prenota</a>
-      <button class="mobile-menu-btn" aria-label="Apri menu" type="button">
+      <a class="btn-prenota-nav" href="https://wa.me/39054329448" data-config-href="whatsapp" data-track="booking_whatsapp" target="_blank" rel="noopener">Prenota</a>
+      <button class="mobile-menu-btn" aria-label="Apri menu" aria-controls="mobileMenu" aria-expanded="false" type="button">
         <span></span>
         <span></span>
         <span></span>
@@ -36,12 +70,12 @@
     </div>
   </nav>
 
-  <div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
     <a href="menu.html">Menu</a>
     <a href="#locale" class="active" aria-current="page">Il locale</a>
     <a href="contatti.html">Contatti</a>
     <a href="ordina.html">Ordina online</a>
-    <a href="https://wa.me/39054329448" class="btn-whatsapp" target="_blank" rel="noopener">Prenota su WhatsApp</a>
+    <a href="https://wa.me/39054329448" data-config-href="whatsapp" data-track="booking_whatsapp" class="btn-whatsapp" target="_blank" rel="noopener">Prenota su WhatsApp</a>
   </div>
 
   <button class="floating-cart" id="floatingCart" aria-label="Apri carrello" type="button">
@@ -54,9 +88,10 @@
       <div class="container hero-content">
         <div>
           <div class="hero-badge">Forlì · dal 1978</div>
+          <div class="restaurant-status" data-restaurant-status aria-live="polite"></div>
           <h1 class="hero-title">Romagna viva.<br>A tavola, subito.</h1>
           <p class="hero-description">Pasta fresca, pizza e cucina romagnola in un percorso chiaro: scegli il menu, ordina diretto o prenota.</p>
-          <div class="hero-cta"><a class="btn btn-primary" href="ordina.html">Ordina adesso</a><a class="btn btn-outline" href="menu.html">Scopri il menu</a></div>
+          <div class="hero-cta"><a class="btn btn-primary" href="ordina.html" data-track="order_start">Ordina adesso</a><a class="btn btn-outline" href="menu.html" data-track="menu_open">Scopri il menu</a></div>
           <div class="hero-facts hero-facts-compact" aria-label="Punti forti">
             <div class="hero-fact"><strong>1978</strong><span>Storia vera</span></div>
             <div class="hero-fact"><strong>0%</strong><span>Commissioni ordine</span></div>
@@ -80,8 +115,8 @@
           </div>
         </div>
         <div class="home-focus-media">
-          <article class="gallery-item gallery-item-main"><img src="assets/home/esterno.jpg" alt="Esterno del ristorante la sera"><div class="shot-label"><small>Schiavonia</small><strong>Al Ponte</strong></div></article>
-          <article class="gallery-item"><img src="assets/home/pasta-fresca.jpg" alt="Preparazione della pasta fresca"><div class="shot-label"><small>Cucina</small><strong>Pasta fresca</strong></div></article>
+          <article class="gallery-item gallery-item-main"><picture><source type="image/webp" srcset="assets/home/esterno-640.webp 640w, assets/home/esterno.webp 1024w" sizes="(max-width: 768px) 100vw, 45vw"><img src="assets/home/esterno.jpg" alt="Esterno del ristorante la sera" width="1024" height="737" loading="lazy" decoding="async"></picture><div class="shot-label"><small>Schiavonia</small><strong>Al Ponte</strong></div></article>
+          <article class="gallery-item"><picture><source type="image/webp" srcset="assets/home/pasta-fresca-640.webp 640w, assets/home/pasta-fresca.webp 960w" sizes="(max-width: 768px) 100vw, 45vw"><img src="assets/home/pasta-fresca.jpg" alt="Preparazione della pasta fresca" width="960" height="720" loading="lazy" decoding="async"></picture><div class="shot-label"><small>Cucina</small><strong>Pasta fresca</strong></div></article>
         </div>
       </div>
     </section>
@@ -90,9 +125,9 @@
       <div class="container">
         <div class="menu-head"><h2>Dalla cucina,<br>senza scorciatoie.</h2><div class="menu-side"><p>Pasta fresca, piatti di terra e di mare, pizza e dolci. Tutto il menu, senza confusione.</p><a href="menu.html">Consulta il menu completo →</a></div></div>
         <div class="plates">
-          <a class="plate" href="menu.html"><img src="assets/home/tortelli.jpg" alt="Tortelli"><span>Pasta fresca</span></a>
-          <a class="plate" href="menu.html"><img src="assets/home/tartare.jpg" alt="Tartare"><span>Cucina</span></a>
-          <a class="plate" href="menu.html"><img src="assets/home/pizza.jpg" alt="Pizza"><span>Pizza</span></a>
+          <a class="plate" href="menu.html"><picture><source type="image/webp" srcset="assets/home/tortelli-640.webp 640w, assets/home/tortelli.webp 1360w" sizes="(max-width: 768px) 100vw, 33vw"><img src="assets/home/tortelli.jpg" alt="Tortelli" width="1360" height="644" loading="lazy" decoding="async"></picture><span>Pasta fresca</span></a>
+          <a class="plate" href="menu.html"><picture><source type="image/webp" srcset="assets/home/tartare-640.webp 640w, assets/home/tartare.webp 1000w" sizes="(max-width: 768px) 100vw, 33vw"><img src="assets/home/tartare.jpg" alt="Tartare" width="1000" height="1200" loading="lazy" decoding="async"></picture><span>Cucina</span></a>
+          <a class="plate" href="menu.html"><picture><source type="image/webp" srcset="assets/home/pizza-640.webp 640w, assets/home/pizza.webp 1000w" sizes="(max-width: 768px) 100vw, 33vw"><img src="assets/home/pizza.jpg" alt="Pizza" width="1000" height="1200" loading="lazy" decoding="async"></picture><span>Pizza</span></a>
         </div>
       </div>
     </section>
@@ -100,7 +135,7 @@
     <section class="visit visit-compact">
       <div class="container visit-card">
         <div><div class="section-label">Vieni a trovarci</div><h2>Ci vediamo a tavola.</h2></div>
-        <div class="details"><span>Viale Livio Salinatore 86, Forlì</span><a href="tel:+39054329448">0543 29448</a></div>
+        <div class="details"><span data-config-text="address">Viale Livio Salinatore 86, Forlì</span><a href="tel:+39054329448" data-config-href="tel" data-config-text="phone">+39 0543 29448</a></div>
         <div class="visit-actions"><a class="btn btn-primary" href="ordina.html">Ordina online</a><a class="btn btn-outline" href="contatti.html">Contatti</a></div>
       </div>
     </section>
@@ -110,8 +145,11 @@
     <div class="container footer-row">
       <span>© 2026 Al Ponte di Schiavonia</span>
       <span>Trattoria e Pizzeria · Forlì</span>
+      <a href="privacy.html">Privacy</a>
     </div>
   </footer>
+  <script src="js/site-config.js"></script>
+  <script src="js/site.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>

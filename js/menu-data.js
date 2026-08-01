@@ -17,7 +17,8 @@ window.menuData = {
       "allergens": [
         "Senape"
       ],
-      "image": "assets/menu-images/307352_Tartare_di_Controfiletto_Irlandese_con_Senape_al_Miele_e_Frutta_Fresca.jpeg",
+      "allergens_source": "Dishcovery",
+      "image": "assets/menu-images/307352_Tartare_di_Controfiletto_Irlandese_con_Senape_al_Miele_e_Frutta_Fresca.webp",
       "payoff": "",
       "order": 0
     },
@@ -28,10 +29,11 @@ window.menuData = {
       "description": "Le acciughe del Mar Cantabrico sono considerate tra le migliori al mondo per la loro qualità e sapore unico. In questo antipasto, la cremosità della Burrata si fonde con il sapore salato delle acciughe, creando un contrasto di sapori equilibrato e delizioso. Il pane croccante e il burro aggiungono morbidezza e completano l'esperienza gustativa.",
       "ingredients": "",
       "allergens": [
-        "Pesce",
-        "Latte e derivati"
+        "Latte e derivati",
+        "Pesce"
       ],
-      "image": "assets/menu-images/307633_Acciughe_del_Mar_Cantabrico_e_Burrata.jpeg",
+      "allergens_source": "Dishcovery",
+      "image": "assets/menu-images/307633_Acciughe_del_Mar_Cantabrico_e_Burrata.webp",
       "payoff": "",
       "order": 1
     },
@@ -42,7 +44,8 @@ window.menuData = {
       "description": "I Bruciatini sono un piatto tipico della tradizione culinaria della Romagna, a base di radicchio fresco e pancetta cotta in padella con aceto balsamico. Questi ingredienti vengono abilmente combinati per creare un'esplosione di sapori e profumi unici della cucina romagnola. Il radicchio fresco, croccante e leggermente amarognolo, si sposa perfettamente con la dolcezza della pancetta cotta e il sapore acidulo dell'aceto balsamico, creando un equilibrio di sapori unico. Il nome \"Bruciatini\" deriva dal fatto che la pancetta viene cotta fino a diventare croccante e bruciata, aggiungendo una nota croccante al piatto.",
       "ingredients": "",
       "allergens": [],
-      "image": "assets/menu-images/generated_bruciatini.png",
+      "allergens_source": "",
+      "image": "",
       "payoff": "",
       "order": 2
     },
@@ -55,7 +58,8 @@ window.menuData = {
       "allergens": [
         "Latte e derivati"
       ],
-      "image": "assets/menu-images/493656_Flan_di_Zucca_e_Porri_su_Crema_di_Gorgonzola.jpeg",
+      "allergens_source": "Dishcovery",
+      "image": "assets/menu-images/493656_Flan_di_Zucca_e_Porri_su_Crema_di_Gorgonzola.webp",
       "payoff": "",
       "order": 3
     },
@@ -69,6 +73,7 @@ window.menuData = {
         "Glutine",
         "Latte e derivati"
       ],
+      "allergens_source": "Dishcovery",
       "image": "",
       "payoff": "",
       "order": 4
@@ -83,7 +88,8 @@ window.menuData = {
         "Glutine",
         "Latte e derivati"
       ],
-      "image": "assets/menu-images/307616_Degustazione_di_Formaggi_del_Territorio_e_Piadina_Romagnola.jpeg",
+      "allergens_source": "Dishcovery",
+      "image": "assets/menu-images/307616_Degustazione_di_Formaggi_del_Territorio_e_Piadina_Romagnola.webp",
       "payoff": "",
       "order": 5
     },
@@ -96,7 +102,8 @@ window.menuData = {
       "allergens": [
         "Molluschi"
       ],
-      "image": "assets/menu-images/307627_Cozze_alla_Tarantina.jpeg",
+      "allergens_source": "Dishcovery",
+      "image": "assets/menu-images/307627_Cozze_alla_Tarantina.webp",
       "payoff": "",
       "order": 6
     }
@@ -109,11 +116,12 @@ window.menuData = {
       "description": "Le Tagliatelle al Ragù della Nonna Franca sono un piatto profondamente radicato nella tradizione culinaria romagnola. Questo piatto è un omaggio ai sapori autentici e alla semplicità rustica della regione. Le tagliatelle, fatte in casa con amore e cura, sono il letto perfetto per un ragù lento e ricco, cucinato pazientemente per ore. Il ragù è un connubio di carne macinata di qualità, soffritto di verdure fresche e una salsa di pomodoro che si addensa e si arricchisce di sapore durante la lunga cottura. Servite calde, con una generosa spolverata di Parmigiano Reggiano, le Tagliatelle al Ragù della Nonna Franca sono un piatto che riscalda il cuore e celebra la convivialità della tavola romagnola",
       "ingredients": "Sedano, Cipolla, Pasta fresca all’uovo, Carne di manzo e maiale, Carota",
       "allergens": [
-        "Sedano",
         "Glutine",
+        "Sedano",
         "Uova e derivati"
       ],
-      "image": "assets/menu-images/307635_Tagliatelle_al_Rag_della_Nonna_Franca.jpeg",
+      "allergens_source": "Dishcovery",
+      "image": "assets/menu-images/307635_Tagliatelle_al_Rag_della_Nonna_Franca.webp",
       "payoff": "",
       "order": 0
     },
@@ -125,10 +133,11 @@ window.menuData = {
       "ingredients": "Prosciutto Crudo, Farina, Pasta fresca all’uovo, Grana, Carne bollito",
       "allergens": [
         "Glutine",
-        "Uova e derivati",
-        "Latte e derivati"
+        "Latte e derivati",
+        "Uova e derivati"
       ],
-      "image": "assets/menu-images/307643_Cappelletti_al_Crudo_di_Parma_Ciliegini_e_Pesto_di_Rucola.jpeg",
+      "allergens_source": "Dishcovery",
+      "image": "assets/menu-images/307643_Cappelletti_al_Crudo_di_Parma_Ciliegini_e_Pesto_di_Rucola.webp",
       "payoff": "",
       "order": 1
     },
@@ -139,12 +148,13 @@ window.menuData = {
       "description": "I cappelletti sono un piatto tipico della cucina dell'Emilia-Romagna, in particolare della Romagna. Sono una pasta ripiena a forma di cappello ripiena di carne o formaggio e serviti in brodo o con sugo. Spesso vengono confusi con i tortellini, ma hanno una forma leggermente diversa e sono tipici di un'altra regione, ovvero l'Emilia.",
       "ingredients": "Grana Padano, Ricotta, Uova, Farina di tipo 1, maiale, Sale, pollo, Pepe",
       "allergens": [
-        "Sedano",
         "Glutine",
-        "Uova e derivati",
-        "Latte e derivati"
+        "Latte e derivati",
+        "Sedano",
+        "Uova e derivati"
       ],
-      "image": "assets/menu-images/304039_Cappelletti_al_Rag_della_Nonna_Franca.jpeg",
+      "allergens_source": "Dishcovery",
+      "image": "assets/menu-images/304039_Cappelletti_al_Rag_della_Nonna_Franca.webp",
       "payoff": "",
       "order": 2
     },
@@ -156,10 +166,11 @@ window.menuData = {
       "ingredients": "Guanciale, Pasta fresca all’uovo, Farina, Burro, Salvia",
       "allergens": [
         "Glutine",
-        "Uova e derivati",
-        "Latte e derivati"
+        "Latte e derivati",
+        "Uova e derivati"
       ],
-      "image": "assets/menu-images/307651_Tortelli_di_Ricotta_e_Spinaci_con_Guanciale_Salvia_Crema_di_Burro_Chiarificato.jpeg",
+      "allergens_source": "Dishcovery",
+      "image": "assets/menu-images/307651_Tortelli_di_Ricotta_e_Spinaci_con_Guanciale_Salvia_Crema_di_Burro_Chiarificato.webp",
       "payoff": "",
       "order": 3
     },
@@ -172,7 +183,8 @@ window.menuData = {
       "allergens": [
         "Glutine"
       ],
-      "image": "assets/menu-images/307660_Strozzapreti_ai_Porcini_con_Scaglie_di_Pecorino_di_Fossa_di_Sogliano.jpeg",
+      "allergens_source": "Dishcovery",
+      "image": "assets/menu-images/307660_Strozzapreti_ai_Porcini_con_Scaglie_di_Pecorino_di_Fossa_di_Sogliano.webp",
       "payoff": "",
       "order": 4
     },
@@ -186,7 +198,8 @@ window.menuData = {
         "Cereali",
         "Molluschi"
       ],
-      "image": "assets/menu-images/307678_Gnocchetti_alle_Vongole_su_Crema_di_Zucchine_e_Datterini.jpeg",
+      "allergens_source": "Dishcovery",
+      "image": "assets/menu-images/307678_Gnocchetti_alle_Vongole_su_Crema_di_Zucchine_e_Datterini.webp",
       "payoff": "",
       "order": 5
     },
@@ -197,14 +210,15 @@ window.menuData = {
       "description": "",
       "ingredients": "Seppia, Gamberi, Polpo, Pasta fresca all’uovo, Cozze, Vongole, Aglio, Pomodoro, Prezzemolo",
       "allergens": [
-        "Sedano",
-        "Glutine",
         "Crostacei",
+        "Glutine",
+        "Molluschi",
         "Pesce",
-        "Uova e derivati",
-        "Molluschi"
+        "Sedano",
+        "Uova e derivati"
       ],
-      "image": "assets/menu-images/generated_tagliolini_scoglio.png",
+      "allergens_source": "Dishcovery",
+      "image": "",
       "payoff": "",
       "order": 6
     },
@@ -215,11 +229,12 @@ window.menuData = {
       "description": "Un piatto tipico della cucina romagnola, le lasagne sono preparate con sfoglia all'uovo, ragù di carne, besciamella e parmigiano reggiano, per un piatto saporito e sostanzioso.",
       "ingredients": "",
       "allergens": [
+        "Latte e derivati",
         "Sedano",
-        "Uova e derivati",
-        "Latte e derivati"
+        "Uova e derivati"
       ],
-      "image": "assets/menu-images/generated_lasagne_romagnola.png",
+      "allergens_source": "Dishcovery",
+      "image": "",
       "payoff": "",
       "order": 8
     }
@@ -235,6 +250,7 @@ window.menuData = {
         "Glutine",
         "Latte e derivati"
       ],
+      "allergens_source": "Dishcovery",
       "image": "",
       "payoff": "",
       "order": 0
@@ -246,6 +262,7 @@ window.menuData = {
       "description": "",
       "ingredients": "Mozzarella Fiordilatte, Burrata, Prosciutto Crudo di Parma",
       "allergens": [],
+      "allergens_source": "",
       "image": "",
       "payoff": "",
       "order": 1
@@ -260,6 +277,7 @@ window.menuData = {
         "Glutine",
         "Latte e derivati"
       ],
+      "allergens_source": "Dishcovery",
       "image": "",
       "payoff": "",
       "order": 2
@@ -274,6 +292,7 @@ window.menuData = {
         "Glutine",
         "Latte e derivati"
       ],
+      "allergens_source": "Dishcovery",
       "image": "",
       "payoff": "",
       "order": 3
@@ -285,6 +304,7 @@ window.menuData = {
       "description": "",
       "ingredients": "Fior di Latte, Pomodoro, Salame Piccante, Fagioli, Salsiccia, Cipolla",
       "allergens": [],
+      "allergens_source": "",
       "image": "",
       "payoff": "",
       "order": 4
@@ -299,6 +319,7 @@ window.menuData = {
         "Glutine",
         "Latte e derivati"
       ],
+      "allergens_source": "Dishcovery",
       "image": "",
       "payoff": "",
       "order": 5
@@ -313,6 +334,7 @@ window.menuData = {
         "Glutine",
         "Latte e derivati"
       ],
+      "allergens_source": "Dishcovery",
       "image": "",
       "payoff": "",
       "order": 7
@@ -325,9 +347,10 @@ window.menuData = {
       "ingredients": "Mozzarella Fiordilatte, Burrata, Acciughe del Cantabrico, Olive Taggiasche",
       "allergens": [
         "Glutine",
-        "Pesce",
-        "Latte e derivati"
+        "Latte e derivati",
+        "Pesce"
       ],
+      "allergens_source": "Dishcovery",
       "image": "",
       "payoff": "",
       "order": 8
@@ -340,9 +363,10 @@ window.menuData = {
       "ingredients": "Capperi, Fior di Latte, Pomodoro, Salame Piccante, Acciughe",
       "allergens": [
         "Glutine",
-        "Pesce",
-        "Latte e derivati"
+        "Latte e derivati",
+        "Pesce"
       ],
+      "allergens_source": "Dishcovery",
       "image": "",
       "payoff": "",
       "order": 9
@@ -357,6 +381,7 @@ window.menuData = {
         "Glutine",
         "Latte e derivati"
       ],
+      "allergens_source": "Dishcovery",
       "image": "",
       "payoff": "",
       "order": 10
@@ -371,6 +396,7 @@ window.menuData = {
         "Glutine",
         "Latte e derivati"
       ],
+      "allergens_source": "Dishcovery",
       "image": "",
       "payoff": "",
       "order": 11
@@ -385,6 +411,7 @@ window.menuData = {
         "Glutine",
         "Latte e derivati"
       ],
+      "allergens_source": "Dishcovery",
       "image": "",
       "payoff": "",
       "order": 13
@@ -399,6 +426,7 @@ window.menuData = {
         "Glutine",
         "Latte e derivati"
       ],
+      "allergens_source": "Dishcovery",
       "image": "",
       "payoff": "",
       "order": 14
@@ -413,6 +441,7 @@ window.menuData = {
         "Glutine",
         "Latte e derivati"
       ],
+      "allergens_source": "Dishcovery",
       "image": "",
       "payoff": "",
       "order": 15
@@ -426,6 +455,7 @@ window.menuData = {
       "allergens": [
         "Glutine"
       ],
+      "allergens_source": "Dishcovery",
       "image": "",
       "payoff": "",
       "order": 16
@@ -437,6 +467,7 @@ window.menuData = {
       "description": "",
       "ingredients": "Fior di Latte, Pomodoro, Salsiccia, Grana Padano, Rucola, Funghi Porcini, Zucchine",
       "allergens": [],
+      "allergens_source": "",
       "image": "",
       "payoff": "",
       "order": 17
@@ -449,9 +480,10 @@ window.menuData = {
       "ingredients": "Fior di Latte, Pomodoro, Acciughe, Origano",
       "allergens": [
         "Glutine",
-        "Pesce",
-        "Latte e derivati"
+        "Latte e derivati",
+        "Pesce"
       ],
+      "allergens_source": "Dishcovery",
       "image": "",
       "payoff": "",
       "order": 18
@@ -466,6 +498,7 @@ window.menuData = {
         "Glutine",
         "Latte e derivati"
       ],
+      "allergens_source": "Dishcovery",
       "image": "",
       "payoff": "",
       "order": 19
@@ -477,6 +510,7 @@ window.menuData = {
       "description": "",
       "ingredients": "Fior di Latte, Mozzarella di Bufala, Gorgonzola, Scamorza, Prosciutto Crudo di Parma",
       "allergens": [],
+      "allergens_source": "",
       "image": "",
       "payoff": "",
       "order": 20
@@ -491,6 +525,7 @@ window.menuData = {
         "Glutine",
         "Latte e derivati"
       ],
+      "allergens_source": "Dishcovery",
       "image": "",
       "payoff": "",
       "order": 21
@@ -505,6 +540,7 @@ window.menuData = {
         "Glutine",
         "Latte e derivati"
       ],
+      "allergens_source": "Dishcovery",
       "image": "",
       "payoff": "",
       "order": 22
@@ -519,6 +555,7 @@ window.menuData = {
         "Glutine",
         "Latte e derivati"
       ],
+      "allergens_source": "Dishcovery",
       "image": "",
       "payoff": "",
       "order": 23
@@ -530,6 +567,7 @@ window.menuData = {
       "description": "",
       "ingredients": "Fior di Latte, Pomodoro, Salame Piccante, Salsiccia, Wurstel",
       "allergens": [],
+      "allergens_source": "",
       "image": "",
       "payoff": "",
       "order": 24
@@ -541,6 +579,7 @@ window.menuData = {
       "description": "",
       "ingredients": "Fior di Latte, Pomodoro, Scamorza, Funghi Porcini, Speck",
       "allergens": [],
+      "allergens_source": "",
       "image": "",
       "payoff": "",
       "order": 25
@@ -555,6 +594,7 @@ window.menuData = {
         "Glutine",
         "Latte e derivati"
       ],
+      "allergens_source": "Dishcovery",
       "image": "",
       "payoff": "",
       "order": 26
@@ -566,6 +606,7 @@ window.menuData = {
       "description": "",
       "ingredients": "Fior di Latte, Pomodoro, Speck, Funghi Porcini, Gorgonzola",
       "allergens": [],
+      "allergens_source": "",
       "image": "",
       "payoff": "",
       "order": 28
@@ -580,6 +621,7 @@ window.menuData = {
         "Glutine",
         "Latte e derivati"
       ],
+      "allergens_source": "Dishcovery",
       "image": "",
       "payoff": "",
       "order": 29
@@ -594,6 +636,7 @@ window.menuData = {
         "Glutine",
         "Latte e derivati"
       ],
+      "allergens_source": "Dishcovery",
       "image": "",
       "payoff": "",
       "order": 30
@@ -605,6 +648,7 @@ window.menuData = {
       "description": "",
       "ingredients": "Fior di Latte, Pomodoro, Peperoni, Zucchine, Melanzane",
       "allergens": [],
+      "allergens_source": "",
       "image": "",
       "payoff": "",
       "order": 31
@@ -616,6 +660,7 @@ window.menuData = {
       "description": "",
       "ingredients": "Fior di Latte, Pomodoro, Gorgonzola, Pancetta, Spinaci",
       "allergens": [],
+      "allergens_source": "",
       "image": "",
       "payoff": "",
       "order": 32
@@ -630,6 +675,7 @@ window.menuData = {
         "Glutine",
         "Latte e derivati"
       ],
+      "allergens_source": "Dishcovery",
       "image": "",
       "payoff": "",
       "order": 33
@@ -644,6 +690,7 @@ window.menuData = {
         "Glutine",
         "Latte e derivati"
       ],
+      "allergens_source": "Dishcovery",
       "image": "",
       "payoff": "",
       "order": 34
@@ -655,11 +702,12 @@ window.menuData = {
       "name": "Galletto a Bassa Temperatura agli Agrumi con Spinaci al Vapore e Riduzione alla Soia",
       "price": 15.0,
       "description": "",
-      "ingredients": "Galletto cotto a bassa temperatura con salsa agli agrumi, Erbette fresche al vapore con glassa alla salsa di soia",
+      "ingredients": "Galletto cotto a bassa temperatura con salsa agli agrumi, Erbette fresche al vapore con glassa \talla salsa di soia",
       "allergens": [
         "Soia"
       ],
-      "image": "assets/menu-images/improved_galletto_agrumi.png",
+      "allergens_source": "Dishcovery",
+      "image": "assets/menu-images/307686_Galletto_a_Bassa_Temperatura_agli_Agrumi_con_Spinaci_al_Vapore_e_Riduzione_alla_Soia.webp",
       "payoff": "",
       "order": 0
     },
@@ -670,7 +718,8 @@ window.menuData = {
       "description": "",
       "ingredients": "Controfiletto Di Manzo, Aglio, Rosmarino, Patata",
       "allergens": [],
-      "image": "assets/menu-images/307947_Tagliata_di_Controfiletto_di_Manzo_Argentino_al_Sale_di_Cervia_con_Patate_Rustiche_al_Forno.jpeg",
+      "allergens_source": "",
+      "image": "assets/menu-images/307947_Tagliata_di_Controfiletto_di_Manzo_Argentino_al_Sale_di_Cervia_con_Patate_Rustiche_al_Forno.webp",
       "payoff": "",
       "order": 1
     },
@@ -683,7 +732,8 @@ window.menuData = {
       "allergens": [
         "Pesce"
       ],
-      "image": "assets/menu-images/improved_baccala_white.png",
+      "allergens_source": "Dishcovery",
+      "image": "assets/menu-images/493678_Baccal_Mantecato_su_Crema_di_Cipolle_al_Nero_di_Seppia_e_Pesto_di_Pomodori_Secchi.webp",
       "payoff": "",
       "order": 2
     },
@@ -694,18 +744,20 @@ window.menuData = {
       "description": "Un pregiato filetto di manzo Angus, cotto lentamente a bassa temperatura per preservarne tutta la tenerezza e i sapori naturali. Accompagnato da un ricco e aromatico condimento di funghi porcini, che esalta la succosità della carne, questo piatto offre un’esperienza culinaria intensa e raffinata. Una scelta perfetta per gli amanti della carne, dove la delicatezza della cottura sous-vide incontra la robustezza dei funghi porcini, in un’armonia di sapori autentici e avvolgenti.",
       "ingredients": "Filetto Di Manzo, Aglio, Porcini",
       "allergens": [],
-      "image": "assets/menu-images/generated_filetto_porcini.png",
+      "allergens_source": "",
+      "image": "",
       "payoff": "",
       "order": 3
     },
     {
       "id": 307950,
-      "name": "Filetto di Manzo \"Angus\" al Pepe Verde",
+      "name": "Filetto di Manzo \"Angus\" al Pepe Rosa",
       "price": 19.0,
       "description": "",
       "ingredients": "Filetto Di Manzo, Cognac, Pepe Verde",
       "allergens": [],
-      "image": "assets/menu-images/generated_filetto_pepe_rosa_clean.png",
+      "allergens_source": "",
+      "image": "",
       "payoff": "",
       "order": 4
     },
@@ -716,10 +768,11 @@ window.menuData = {
       "description": "Un polpo selezionato dalle coste del Marocco, cotto a bassa temperatura per ottenere una consistenza incredibilmente tenera e succulenta. Servito su una delicata crema di patate vellutata, impreziosita da fresche gocce di prezzemolo che aggiungono una nota erbacea e vivace. Un piatto elegante e bilanciato, dove la morbidezza del polpo si sposa perfettamente con la cremosità delle patate e la freschezza del prezzemolo, per un’esperienza gustativa raffinata e avvolgente.",
       "ingredients": "Polpo, Scalogno, Patate, Prezzemolo, Sedano, Carote, Cipolla, Olio",
       "allergens": [
-        "Sedano",
-        "Pesce"
+        "Pesce",
+        "Sedano"
       ],
-      "image": "assets/menu-images/307953_Polpo_Cotto_a_Bassa_Temperatura_su_Crema_di_Patate_e_Gocce_di_Prezzemolo.jpeg",
+      "allergens_source": "Dishcovery",
+      "image": "assets/menu-images/307953_Polpo_Cotto_a_Bassa_Temperatura_su_Crema_di_Patate_e_Gocce_di_Prezzemolo.webp",
       "payoff": "",
       "order": 5
     },
@@ -730,12 +783,13 @@ window.menuData = {
       "description": "Sapori marini e freschezza vegetale si incontrano in questa deliziosa frittura mista. Mazzancolle succulente, anelli di calamari teneri, alici aromatiche, melanzane croccanti e zucchine saporite. Un piatto irresistibilmente croccante e gustoso.",
       "ingredients": "Mazzancolle, Calamari, Melanzane, Zucchine",
       "allergens": [
-        "Glutine",
         "Crostacei",
-        "Pesce",
-        "Molluschi"
+        "Glutine",
+        "Molluschi",
+        "Pesce"
       ],
-      "image": "assets/menu-images/generated_fritto_mare_verdure.png",
+      "allergens_source": "Dishcovery",
+      "image": "",
       "payoff": "",
       "order": 6
     },
@@ -746,7 +800,8 @@ window.menuData = {
       "description": "Salsiccia, Petto di Pollo, Pancetta, Lonza e Patate al Forno",
       "ingredients": "Salsiccia, Petto di Pollo, Lonza di Maiale, Pancetta, Patate al Forno",
       "allergens": [],
-      "image": "assets/menu-images/generated_grigliata_carne.png",
+      "allergens_source": "",
+      "image": "",
       "payoff": "",
       "order": 7
     },
@@ -757,7 +812,8 @@ window.menuData = {
       "description": "",
       "ingredients": "",
       "allergens": [],
-      "image": "assets/menu-images/generated_cotoletta_milanese.png",
+      "allergens_source": "",
+      "image": "",
       "payoff": "",
       "order": 8
     }
@@ -770,6 +826,7 @@ window.menuData = {
       "description": "",
       "ingredients": "",
       "allergens": [],
+      "allergens_source": "",
       "image": "",
       "payoff": "",
       "order": 0
@@ -781,6 +838,7 @@ window.menuData = {
       "description": "",
       "ingredients": "",
       "allergens": [],
+      "allergens_source": "",
       "image": "",
       "payoff": "",
       "order": 1
@@ -792,6 +850,7 @@ window.menuData = {
       "description": "",
       "ingredients": "",
       "allergens": [],
+      "allergens_source": "",
       "image": "",
       "payoff": "",
       "order": 43
@@ -803,6 +862,7 @@ window.menuData = {
       "description": "",
       "ingredients": "",
       "allergens": [],
+      "allergens_source": "",
       "image": "",
       "payoff": "",
       "order": 44
@@ -814,6 +874,7 @@ window.menuData = {
       "description": "Melanzane e Zucchine",
       "ingredients": "Melanzane, Zucchine",
       "allergens": [],
+      "allergens_source": "",
       "image": "",
       "payoff": "",
       "order": 46
@@ -827,9 +888,10 @@ window.menuData = {
       "description": "",
       "ingredients": "Mascarpone, Uova, zucchero",
       "allergens": [
-        "Uova e derivati",
-        "Latte e derivati"
+        "Latte e derivati",
+        "Uova e derivati"
       ],
+      "allergens_source": "Dishcovery",
       "image": "",
       "payoff": "",
       "order": 0
@@ -841,9 +903,10 @@ window.menuData = {
       "description": "",
       "ingredients": "",
       "allergens": [
-        "Uova e derivati",
-        "Latte e derivati"
+        "Latte e derivati",
+        "Uova e derivati"
       ],
+      "allergens_source": "Dishcovery",
       "image": "",
       "payoff": "",
       "order": 2
@@ -855,6 +918,7 @@ window.menuData = {
       "description": "",
       "ingredients": "",
       "allergens": [],
+      "allergens_source": "",
       "image": "",
       "payoff": "",
       "order": 3
@@ -866,37 +930,306 @@ window.menuData = {
       "description": "",
       "ingredients": "",
       "allergens": [],
+      "allergens_source": "",
       "image": "",
       "payoff": "",
       "order": 5
     }
   ],
-  "birre": [],
-  "vini_rossi": [],
-  "vini_bianchi": [],
-  "bevande": []
+  "birre": [
+    {
+      "id": "local-birre-1",
+      "name": "Moretti Filtrata a Freddo",
+      "price": 5.0,
+      "description": "Formato: 55 cl • 4,3% Vol",
+      "ingredients": "",
+      "allergens": [],
+      "allergens_source": "",
+      "image": "",
+      "payoff": "",
+      "order": 0
+    },
+    {
+      "id": "local-birre-2",
+      "name": "Ichnusa Non Filtrata",
+      "price": 5.0,
+      "description": "Formato: 50 cl",
+      "ingredients": "",
+      "allergens": [],
+      "allergens_source": "",
+      "image": "",
+      "payoff": "",
+      "order": 1
+    },
+    {
+      "id": "local-birre-3",
+      "name": "Messina – Bionda Italiana",
+      "price": 5.0,
+      "description": "Formato: 50 cl",
+      "ingredients": "",
+      "allergens": [],
+      "allergens_source": "",
+      "image": "",
+      "payoff": "",
+      "order": 2
+    },
+    {
+      "id": "local-birre-4",
+      "name": "Beck's – Tedesca Bionda",
+      "price": 4.0,
+      "description": "Formato: 33 cl",
+      "ingredients": "",
+      "allergens": [],
+      "allergens_source": "",
+      "image": "",
+      "payoff": "",
+      "order": 3
+    },
+    {
+      "id": "local-birre-5",
+      "name": "Ceres",
+      "price": 4.5,
+      "description": "Formato: 33 cl • 7,7% Vol",
+      "ingredients": "",
+      "allergens": [],
+      "allergens_source": "",
+      "image": "",
+      "payoff": "",
+      "order": 4
+    },
+    {
+      "id": "local-birre-6",
+      "name": "Erdinger",
+      "price": 5.0,
+      "description": "Formato: 50 cl • 5,3% Vol",
+      "ingredients": "",
+      "allergens": [],
+      "allergens_source": "",
+      "image": "",
+      "payoff": "",
+      "order": 5
+    },
+    {
+      "id": "local-birre-7",
+      "name": "Paulaner",
+      "price": 5.0,
+      "description": "Formato: 50 cl",
+      "ingredients": "",
+      "allergens": [],
+      "allergens_source": "",
+      "image": "",
+      "payoff": "",
+      "order": 6
+    },
+    {
+      "id": "local-birre-8",
+      "name": "Leffe \"Blonde\"",
+      "price": 10.0,
+      "description": "Formato: 75 cl • 6,6% Vol",
+      "ingredients": "",
+      "allergens": [],
+      "allergens_source": "",
+      "image": "",
+      "payoff": "",
+      "order": 7
+    },
+    {
+      "id": "local-birre-9",
+      "name": "Leffe \"Rouge\"",
+      "price": 10.0,
+      "description": "Formato: 75 cl • 6,6% Vol",
+      "ingredients": "",
+      "allergens": [],
+      "allergens_source": "",
+      "image": "",
+      "payoff": "",
+      "order": 8
+    }
+  ],
+  "vini_rossi": [
+    {
+      "id": "local-vini_rossi-1",
+      "name": "Sangiovese di Romagna \"Notturno\" DOC",
+      "price": 22.0,
+      "description": "Formato: 75 cl • Tenuta Drei Donà",
+      "ingredients": "",
+      "allergens": [],
+      "allergens_source": "",
+      "image": "",
+      "payoff": "",
+      "order": 0
+    },
+    {
+      "id": "local-vini_rossi-2",
+      "name": "Sangiovese Superiore \"Prugneto\" DOC",
+      "price": 20.0,
+      "description": "Formato: 75 cl • Poderi Dal Nespoli",
+      "ingredients": "",
+      "allergens": [],
+      "allergens_source": "",
+      "image": "",
+      "payoff": "",
+      "order": 1
+    },
+    {
+      "id": "local-vini_rossi-3",
+      "name": "Sangiovese Superiore \"Ceregio Rosso\" DOC",
+      "price": 15.0,
+      "description": "Formato: 75 cl • Fattoria Zerbina",
+      "ingredients": "",
+      "allergens": [],
+      "allergens_source": "",
+      "image": "",
+      "payoff": "",
+      "order": 2
+    },
+    {
+      "id": "local-vini_rossi-4",
+      "name": "Sangiovese Superiore \"Ceregio Rosso\" DOC – Mezza bottiglia",
+      "price": 10.0,
+      "description": "Formato: 37,5 cl • Fattoria Zerbina",
+      "ingredients": "",
+      "allergens": [],
+      "allergens_source": "",
+      "image": "",
+      "payoff": "",
+      "order": 3
+    },
+    {
+      "id": "local-vini_rossi-5",
+      "name": "Valpolicella Superiore \"Ripasso\" DOC",
+      "price": 18.0,
+      "description": "Formato: 75 cl • Casa Sartori",
+      "ingredients": "",
+      "allergens": [],
+      "allergens_source": "",
+      "image": "",
+      "payoff": "",
+      "order": 4
+    }
+  ],
+  "vini_bianchi": [
+    {
+      "id": "local-vini_bianchi-1",
+      "name": "Gewürztraminer Trentino DOC",
+      "price": 17.0,
+      "description": "Formato: 75 cl • Mezzacorona",
+      "ingredients": "",
+      "allergens": [],
+      "allergens_source": "",
+      "image": "",
+      "payoff": "",
+      "order": 0
+    },
+    {
+      "id": "local-vini_bianchi-2",
+      "name": "Falanghina del Sannio DOC",
+      "price": 20.0,
+      "description": "Formato: 75 cl • Feudi di San Gregorio",
+      "ingredients": "",
+      "allergens": [],
+      "allergens_source": "",
+      "image": "",
+      "payoff": "",
+      "order": 1
+    },
+    {
+      "id": "local-vini_bianchi-3",
+      "name": "Ribolla Gialla delle Venezie IGT",
+      "price": 17.0,
+      "description": "Formato: 75 cl • Villa Folini",
+      "ingredients": "",
+      "allergens": [],
+      "allergens_source": "",
+      "image": "",
+      "payoff": "",
+      "order": 2
+    },
+    {
+      "id": "local-vini_bianchi-4",
+      "name": "Greco di Tufo DOC",
+      "price": 20.0,
+      "description": "Formato: 75 cl • Feudi di San Gregorio",
+      "ingredients": "",
+      "allergens": [],
+      "allergens_source": "",
+      "image": "",
+      "payoff": "",
+      "order": 3
+    },
+    {
+      "id": "local-vini_bianchi-5",
+      "name": "Prosecco Superiore Valdobbiadene DOC",
+      "price": 15.0,
+      "description": "Formato: 75 cl • Ca Val",
+      "ingredients": "",
+      "allergens": [],
+      "allergens_source": "",
+      "image": "",
+      "payoff": "",
+      "order": 4
+    }
+  ],
+  "bevande": [
+    {
+      "id": "local-bevande-1",
+      "name": "Acqua naturale Pejo in vetro",
+      "price": 3.0,
+      "description": "Formato: 75 cl",
+      "ingredients": "",
+      "allergens": [],
+      "allergens_source": "",
+      "image": "",
+      "payoff": "",
+      "order": 0
+    },
+    {
+      "id": "local-bevande-2",
+      "name": "Acqua gassata Pejo in vetro",
+      "price": 3.0,
+      "description": "Formato: 75 cl",
+      "ingredients": "",
+      "allergens": [],
+      "allergens_source": "",
+      "image": "",
+      "payoff": "",
+      "order": 1
+    },
+    {
+      "id": "local-bevande-3",
+      "name": "Coca-Cola in vetro 1 L",
+      "price": 8.0,
+      "description": "Formato: 1 L",
+      "ingredients": "",
+      "allergens": [],
+      "allergens_source": "",
+      "image": "",
+      "payoff": "",
+      "order": 2
+    },
+    {
+      "id": "local-bevande-4",
+      "name": "Coca-Cola in vetro 33 cl",
+      "price": 3.5,
+      "description": "Formato: 33 cl",
+      "ingredients": "",
+      "allergens": [],
+      "allergens_source": "",
+      "image": "",
+      "payoff": "",
+      "order": 3
+    },
+    {
+      "id": "local-bevande-5",
+      "name": "Fanta in PET",
+      "price": 3.5,
+      "description": "Formato: 45 cl",
+      "ingredients": "",
+      "allergens": [],
+      "allergens_source": "",
+      "image": "",
+      "payoff": "",
+      "order": 4
+    }
+  ]
 };
-
-
-// Conservative allergen completion for legacy Dishcovery entries.
-(() => {
-  const rules = [
-    ["Glutine", /pizza|pasta|tagliatell|cappellet|tortell|strozzapret|gnocch|lasagn|spaghetti|pane|farina|impanat|cotoletta|fritt/i],
-    ["Latte e derivati", /mozzarella|fior di latte|latte|burro|panna|formagg|pecorino|grana|gorgonzola|mascarpone|burrat|squacquerone|scamorza/i],
-    ["Uova e derivati", /uov|maionese|mascarpone|tiramis|pasta fresca|cotoletta/i],
-    ["Pesce", /pesce|baccal|alice|acciug|tonno|salmone|bottarga/i],
-    ["Crostacei", /gamber|mazzancoll|scampo|crostace/i],
-    ["Molluschi", /polpo|calamar|cozz|vongol|seppia|mollusch/i],
-    ["Sedano", /sedano/i], ["Soia", /soia/i], ["Frutta a guscio", /noce|noci|mandorl|pistacch|nocciol/i],
-    ["Senape", /senape/i], ["Solfiti", /vino|aceto balsamico/i]
-  ];
-  Object.entries(window.menuData || {}).forEach(([category, items]) => {
-    items.forEach((item) => {
-      const text = [item.name, item.description, item.ingredients].filter(Boolean).join(" ");
-      const allergens = new Set(item.allergens || []);
-      if (category === "pizze") { allergens.add("Glutine"); allergens.add("Latte e derivati"); }
-      rules.forEach(([label, pattern]) => { if (pattern.test(text)) allergens.add(label); });
-      item.allergens = [...allergens];
-    });
-  });
-})();

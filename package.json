@@ -3,7 +3,12 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
-    "smoke": "py -3 scripts/smoke_check.py"
+    "smoke": "node scripts/smoke_check.js",
+    "serve": "node scripts/static_server.js",
+    "test:e2e": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.55.0"
   },
   "engines": {
     "node": ">=18"

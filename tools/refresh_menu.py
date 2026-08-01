@@ -5,12 +5,13 @@ import csv
 import json
 import re
 from html import unescape
+from html.parser import HTMLParser
 from pathlib import Path
 from typing import Any
 from urllib.parse import urlparse
+from urllib.request import Request, urlopen
 
-import httpx
-from bs4 import BeautifulSoup
+from PIL import Image, ImageOps
 
 
 DEFAULT_HASH = "f6c9502ec497bb4731cf5a256bf52d0c"
@@ -20,18 +21,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DATA_DIR = ROOT / "data"
 IMAGE_DIR = ROOT / "assets" / "menu-images"
 MENU_DATA_JS = ROOT / "js" / "menu-data.js"
-
-ALLERGEN_RULES = {
-    "Glutine": r"pizza|pasta|tagliatell|cappellet|tortell|strozzapret|gnocch|lasagn|spaghetti|pane|farina|impanat|cotoletta|fritt",
-    "Latte e derivati": r"mozzarella|fior di latte|latte|burro|panna|formagg|pecorino|grana|gorgonzola|mascarpone|burrat|squacquerone|scamorza",
-    "Uova e derivati": r"uov|maionese|mascarpone|tiramis|pasta fresca|cotoletta",
-    "Pesce": r"pesce|baccal|alice|acciug|tonno|salmone|bottarga",
-    "Crostacei": r"gamber|mazzancoll|scampo|crostace",
-    "Molluschi": r"polpo|calamar|cozz|vongol|seppia|mollusch",
-    "Sedano": r"sedano", "Soia": r"soia",
-    "Frutta a guscio": r"noce|noci|mandorl|pistacch|nocciol",
-    "Senape": r"senape", "Solfiti": r"vino|aceto balsamico",
-}
+BEVERAGE_DATA_JSON = DATA_DIR / "beverages.json"
 
 CATEGORY_MAP = {
     "Antipasti": "antipasti",
@@ -43,10 +33,21 @@ CATEGORY_MAP = {
 }
 
 
+class TextExtractor(HTMLParser):
+    def __init__(self) -> None:
+        super().__init__()
+        self.parts: list[str] = []
+
+    def handle_data(self, data: str) -> None:
+        self.parts.append(data)
+
+
 def clean_html(value: str | None) -> str:
     if not value:
         return ""
-    text = BeautifulSoup(value, "html.parser").get_text(" ", strip=True)
+    parser = TextExtractor()
+    parser.feed(value)
+    text = " ".join(parser.parts)
     return unescape(re.sub(r"\s+", " ", text)).strip()
 
 
@@ -60,26 +61,46 @@ def image_extension(url: str) -> str:
     return suffix if suffix in {".jpg", ".jpeg", ".png", ".webp"} else ".jpg"
 
 
+def optimize_image(
+    source: Path,
+    destination: Path | None = None,
+    max_width: int = 1200,
+    quality: int = 82,
+) -> Path:
+    destination = destination or source.with_suffix(".webp")
+    if destination.exists() and destination.stat().st_mtime >= source.stat().st_mtime:
+        return destination
+
+    with Image.open(source) as opened:
+        image = ImageOps.exif_transpose(opened).convert("RGB")
+        if image.width > max_width:
+            height = round(image.height * max_width / image.width)
+            image = image.resize((max_width, height), Image.Resampling.LANCZOS)
+        image.save(destination, "WEBP", quality=quality, method=6)
+    return destination
+
+
 def api_url(restaurant_hash: str, lang: str) -> str:
     return f"https://dishcovery.menu/api/v3/restaurants/{restaurant_hash}?lang={lang}"
 
 
 def fetch_restaurant(restaurant_hash: str, lang: str) -> dict[str, Any]:
-    headers = {
-        "User-Agent": "Mozilla/5.0 PonteUnifiedApp/1.0",
-        "Accept": "application/json,text/plain,*/*",
-    }
-    with httpx.Client(headers=headers, follow_redirects=True, timeout=60) as client:
-        response = client.get(api_url(restaurant_hash, lang))
-        response.raise_for_status()
-        data = response.json()
+    request = Request(
+        api_url(restaurant_hash, lang),
+        headers={
+            "User-Agent": "Mozilla/5.0 PonteUnifiedApp/1.0",
+            "Accept": "application/json,text/plain,*/*",
+        },
+    )
+    with urlopen(request, timeout=60) as response:
+        data = json.loads(response.read().decode("utf-8"))
 
     if not isinstance(data, dict) or "menucategories" not in data:
         raise ValueError("Unexpected Dishcovery response: missing menucategories")
     return data
 
 
-def download_image(client: httpx.Client, item: dict[str, Any]) -> str:
+def download_image(item: dict[str, Any]) -> str:
     image_url = item.get("image")
     if not image_url:
         return ""
@@ -91,16 +112,19 @@ def download_image(client: httpx.Client, item: dict[str, Any]) -> str:
     )
     target = IMAGE_DIR / filename
     if target.exists():
-        return f"assets/menu-images/{target.name}"
+        optimized = optimize_image(target)
+        return f"assets/menu-images/{optimized.name}"
 
     try:
-        response = client.get(image_url, timeout=60)
-        response.raise_for_status()
-    except httpx.HTTPError:
+        request = Request(image_url, headers={"User-Agent": "Mozilla/5.0 PonteUnifiedApp/1.0"})
+        with urlopen(request, timeout=60) as response:
+            content = response.read()
+    except OSError:
         return ""
 
-    target.write_bytes(response.content)
-    return f"assets/menu-images/{target.name}"
+    target.write_bytes(content)
+    optimized = optimize_image(target)
+    return f"assets/menu-images/{optimized.name}"
 
 
 def item_to_app_entry(
@@ -119,11 +143,9 @@ def item_to_app_entry(
         if ingredient.get("name")
     ]
 
-    text = " ".join([item.get("name") or "", clean_html(item.get("description")), " ".join(ingredients)])
-    inferred = {name for name, pattern in ALLERGEN_RULES.items() if re.search(pattern, text, re.I)}
-    if category == "pizze":
-        inferred.update({"Glutine", "Latte e derivati"})
-    allergens = sorted(set(allergens) | inferred)
+    # Food-safety information must come from the restaurant source. Inferring
+    # allergens from free text can create false assurances for customers.
+    allergens = sorted(set(allergens))
 
     return {
         "id": item.get("id"),
@@ -132,6 +154,7 @@ def item_to_app_entry(
         "description": clean_html(item.get("description")),
         "ingredients": ", ".join(ingredients),
         "allergens": allergens,
+        "allergens_source": "Dishcovery" if allergens else "",
         "image": image_path,
         "payoff": item.get("payoff") or "",
         "order": item.get("order") or 0,
@@ -154,22 +177,39 @@ def build_menu_data(data: dict[str, Any], download_images: bool) -> dict[str, li
 
     IMAGE_DIR.mkdir(parents=True, exist_ok=True)
 
-    with httpx.Client(
-        headers={"User-Agent": "Mozilla/5.0 PonteUnifiedApp/1.0"},
-        follow_redirects=True,
-    ) as client:
-        for category in data.get("menucategories", []):
-            target_category = CATEGORY_MAP.get(category.get("name"))
-            if not target_category:
+    for category in data.get("menucategories", []):
+        target_category = CATEGORY_MAP.get(category.get("name"))
+        if not target_category:
+            continue
+
+        entries = []
+        for item in category.get("menuentries", []):
+            image_path = download_image(item) if download_images else ""
+            entries.append(item_to_app_entry(item, image_path, target_category))
+
+        entries.sort(key=lambda entry: (entry["order"], entry["name"]))
+        menu_data[target_category].extend(entries)
+
+    if BEVERAGE_DATA_JSON.exists():
+        beverage_data = json.loads(BEVERAGE_DATA_JSON.read_text(encoding="utf-8"))
+        for category, items in beverage_data.items():
+            if category not in menu_data:
                 continue
-
-            entries = []
-            for item in category.get("menuentries", []):
-                image_path = download_image(client, item) if download_images else ""
-                entries.append(item_to_app_entry(item, image_path, target_category))
-
-            entries.sort(key=lambda entry: (entry["order"], entry["name"]))
-            menu_data[target_category].extend(entries)
+            menu_data[category] = [
+                {
+                    "id": item.get("id"),
+                    "name": item.get("name", ""),
+                    "price": float(item.get("price") or 0),
+                    "description": item.get("description", ""),
+                    "ingredients": "",
+                    "allergens": item.get("allergens", []),
+                    "allergens_source": item.get("allergens_source", ""),
+                    "image": item.get("image", ""),
+                    "payoff": "",
+                    "order": index,
+                }
+                for index, item in enumerate(items)
+            ]
 
     return menu_data
 
@@ -201,6 +241,7 @@ def write_csv(data: dict[str, Any], menu_data: dict[str, list[dict[str, Any]]]) 
         "description",
         "ingredients",
         "allergens",
+        "allergens_source",
         "image",
     ]
     with (DATA_DIR / "menu.csv").open("w", newline="", encoding="utf-8") as handle:
@@ -217,6 +258,7 @@ def write_csv(data: dict[str, Any], menu_data: dict[str, list[dict[str, Any]]]) 
                         "description": item.get("description") or "",
                         "ingredients": item.get("ingredients") or "",
                         "allergens": ", ".join(item.get("allergens") or []),
+                        "allergens_source": item.get("allergens_source") or "",
                         "image": item.get("image") or "",
                     }
                 )

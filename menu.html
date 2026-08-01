@@ -18,6 +18,35 @@
     <meta property="og:url" content="https://dal1312.github.io/-ponte6/menu.html">
     <meta property="og:locale" content="it_IT">
     <meta name="twitter:card" content="summary_large_image">
+    <meta property="og:image" content="https://dal1312.github.io/-ponte6/assets/home/pizza.jpg">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Menu",
+      "name": "Menu di Al Ponte di Schiavonia",
+      "url": "https://dal1312.github.io/-ponte6/menu.html",
+      "inLanguage": "it-IT",
+      "provider": {
+        "@type": "Restaurant",
+        "name": "Al Ponte di Schiavonia",
+        "telephone": "+39054329448",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Viale Livio Salinatore 86",
+          "addressLocality": "Forlì",
+          "addressCountry": "IT"
+        }
+      },
+      "hasMenuSection": [
+        { "@type": "MenuSection", "name": "Antipasti" },
+        { "@type": "MenuSection", "name": "Primi" },
+        { "@type": "MenuSection", "name": "Pizze" },
+        { "@type": "MenuSection", "name": "Secondi" },
+        { "@type": "MenuSection", "name": "Dessert" },
+        { "@type": "MenuSection", "name": "Bevande e vini" }
+      ]
+    }
+    </script>
 </head>
 <body class="menu-page">
 
@@ -33,19 +62,19 @@
             <li><a href="ordina.html">Ordina</a></li>
             <li><a href="contatti.html">Contatti</a></li>
         </ul>
-        <a href="https://wa.me/39054329448" class="btn-prenota-nav" target="_blank" rel="noopener">Prenota</a>
-        <button class="mobile-menu-btn" aria-label="Menu">
+        <a href="https://wa.me/39054329448" data-config-href="whatsapp" data-track="booking_whatsapp" class="btn-prenota-nav" target="_blank" rel="noopener">Prenota</a>
+        <button class="mobile-menu-btn" aria-label="Apri menu" aria-controls="mobileMenu" aria-expanded="false" type="button">
             <span></span><span></span><span></span>
         </button>
     </div>
 </nav>
 
-<div class="mobile-menu" id="mobileMenu">
+<div class="mobile-menu" id="mobileMenu" aria-hidden="true">
     <a href="index.html">Home</a>
     <a href="menu.html" class="active">Menu</a>
     <a href="ordina.html">Ordina</a>
     <a href="contatti.html">Contatti</a>
-    <a href="https://wa.me/39054329448" class="btn-whatsapp">Prenota su WhatsApp</a>
+    <a href="https://wa.me/39054329448" data-config-href="whatsapp" data-track="booking_whatsapp" class="btn-whatsapp">Prenota su WhatsApp</a>
 </div>
 
 <button class="floating-cart" id="floatingCart" aria-label="Apri carrello" type="button">
@@ -68,20 +97,50 @@
 <div class="menu-filters" id="menuFilters">
     <div class="container">
         <button class="filter-btn" data-category="antipasti" aria-pressed="false">Antipasti</button>
-        <button class="filter-btn" data-category="primi">Primi</button>
+        <button class="filter-btn" data-category="primi" aria-pressed="false">Primi</button>
         <button class="filter-btn active" data-category="pizze" aria-pressed="true">Pizze</button>
-        <button class="filter-btn" data-category="secondi">Secondi</button>
-        <button class="filter-btn" data-category="contorni">Contorni</button>
-        <button class="filter-btn" data-category="dessert">Dessert</button>
-        <button class="filter-btn" data-category="bevande">Bevande</button>
-        <button class="filter-btn" data-category="birre">Birre</button>
-        <button class="filter-btn" data-category="vini_bianchi">Vini bianchi</button>
-        <button class="filter-btn" data-category="vini_rossi">Vini rossi</button>
+        <button class="filter-btn" data-category="secondi" aria-pressed="false">Secondi</button>
+        <button class="filter-btn" data-category="contorni" aria-pressed="false">Contorni</button>
+        <button class="filter-btn" data-category="dessert" aria-pressed="false">Dessert</button>
+        <button class="filter-btn" data-category="bevande" aria-pressed="false">Bevande</button>
+        <button class="filter-btn" data-category="birre" aria-pressed="false">Birre</button>
+        <button class="filter-btn" data-category="vini_bianchi" aria-pressed="false">Vini bianchi</button>
+        <button class="filter-btn" data-category="vini_rossi" aria-pressed="false">Vini rossi</button>
     </div>
 </div>
 
 <main class="menu-main">
     <div class="container">
+        <section class="menu-tools" aria-label="Ricerca e filtri menu">
+            <div class="menu-search-field">
+                <label for="menuSearch">Cerca nel menu</label>
+                <input id="menuSearch" type="search" placeholder="Es. tortelli, burrata, pesce…" autocomplete="off">
+            </div>
+            <div class="menu-tool-field">
+                <label for="menuMaxPrice">Prezzo massimo</label>
+                <select id="menuMaxPrice">
+                    <option value="">Qualsiasi prezzo</option>
+                    <option value="10">Fino a €10</option>
+                    <option value="12">Fino a €12</option>
+                    <option value="15">Fino a €15</option>
+                </select>
+            </div>
+            <div class="menu-tool-field">
+                <label for="menuExcludeAllergen">Nascondi allergene dichiarato</label>
+                <select id="menuExcludeAllergen">
+                    <option value="">Nessuno</option>
+                    <option value="glutine">Glutine</option>
+                    <option value="latte e derivati">Latte e derivati</option>
+                    <option value="uova e derivati">Uova e derivati</option>
+                    <option value="pesce">Pesce</option>
+                    <option value="crostacei">Crostacei</option>
+                    <option value="molluschi">Molluschi</option>
+                </select>
+            </div>
+            <label class="menu-photo-filter"><input id="menuPhotoOnly" type="checkbox"> Solo piatti con foto</label>
+            <button class="menu-reset-filters" id="menuResetFilters" type="button">Azzera filtri</button>
+            <p class="menu-filter-safety">Il filtro allergeni nasconde solo i piatti in cui l’allergene è dichiarato: non certifica l’assenza negli altri.</p>
+        </section>
         <section class="menu-category-intro" id="menuCategoryIntro" aria-live="polite">
             <div>
                 <span class="menu-category-kicker">La carta</span>
@@ -95,9 +154,10 @@
         <div class="menu-grid" id="menu-grid">
             <!-- Popolato dinamicamente da main.js -->
         </div>
+        <p class="menu-no-results" id="menuNoResults" hidden>Nessun piatto corrisponde ai filtri selezionati.</p>
 
         <div class="allergens-disclaimer animate-on-scroll">
-            <p><strong>⚠️ Informazioni allergeni:</strong> I prezzi sono in Euro, IVA inclusa. Gli ingredienti sono soggetti a variazioni stagionali. In caso di allergie o intolleranze alimentari, si prega di informare il personale di sala.</p>
+            <p><strong>⚠️ Informazioni allergeni:</strong> Le indicazioni mostrate provengono dai dati forniti dal ristorante e non sono dedotte automaticamente. Ingredienti e lavorazioni possono variare: in caso di allergie o intolleranze, contatta sempre il personale prima di ordinare.</p>
         </div>
     </div>
 </main>
@@ -117,11 +177,13 @@
     <div class="container footer-row">
         <span>© 2026 Al Ponte di Schiavonia</span>
         <span>Trattoria e Pizzeria · Forlì</span>
+        <a href="privacy.html">Privacy</a>
     </div>
 </footer>
 
+<script src="js/site-config.js"></script>
+<script src="js/site.js"></script>
 <script src="js/menu-data.js"></script>
-<script src="js/beverage-data.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>

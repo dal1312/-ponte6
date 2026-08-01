@@ -1,7 +1,8 @@
 /* ========================================
    NAVBAR SCROLL EFFECT
 ======================================== */
-const RESTAURANT_CONTACT_NUMBER = '39054329448';
+const SITE_CONFIG = window.PONTE_CONFIG || {};
+const RESTAURANT_CONTACT_NUMBER = SITE_CONFIG.restaurant?.whatsapp || '39054329448';
 const WHATSAPP_BASE_URL = `https://wa.me/${RESTAURANT_CONTACT_NUMBER}`;
 
 function buildWhatsAppUrl(message = '') {
@@ -20,6 +21,36 @@ function escapeHtml(value) {
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#039;');
 }
+
+const CART_LIMITS = Object.freeze({ maxItems: 100, maxQty: 99, maxPrice: 1000 });
+
+function normalizeCartItem(item) {
+    if (!item || typeof item !== 'object') return null;
+
+    const name = typeof item.name === 'string' ? item.name.trim().slice(0, 160) : '';
+    const price = Number(item.price);
+    const qty = Number(item.qty);
+    const customDetails = typeof item.customDetails === 'string'
+        ? item.customDetails.trim().slice(0, 600)
+        : null;
+
+    if (!name || !Number.isFinite(price) || price < 0 || price > CART_LIMITS.maxPrice) return null;
+    if (!Number.isInteger(qty) || qty < 1) return null;
+
+    return {
+        name,
+        price: Math.round(price * 100) / 100,
+        qty: Math.min(qty, CART_LIMITS.maxQty),
+        customDetails: customDetails || null
+    };
+}
+
+function normalizeCart(items) {
+    if (!Array.isArray(items)) return [];
+    return items.slice(0, CART_LIMITS.maxItems).map(normalizeCartItem).filter(Boolean);
+}
+
+window.PonteUtils = { buildWhatsAppUrl, formatPrice, escapeHtml };
 
 const navbar = document.getElementById('navbar');
 
@@ -40,14 +71,30 @@ const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
 const mobileMenu = document.getElementById('mobileMenu');
 
 if (mobileMenuBtn && mobileMenu) {
+    const closeMobileMenu = ({ restoreFocus = false } = {}) => {
+        mobileMenu.classList.remove('active');
+        mobileMenu.setAttribute('aria-hidden', 'true');
+        mobileMenuBtn.setAttribute('aria-expanded', 'false');
+        if (restoreFocus) mobileMenuBtn.focus();
+    };
+
     mobileMenuBtn.addEventListener('click', () => {
-        mobileMenu.classList.toggle('active');
+        const isOpen = mobileMenu.classList.toggle('active');
+        mobileMenu.setAttribute('aria-hidden', String(!isOpen));
+        mobileMenuBtn.setAttribute('aria-expanded', String(isOpen));
+        if (isOpen) mobileMenu.querySelector('a')?.focus();
     });
     
     mobileMenu.querySelectorAll('a').forEach(link => {
         link.addEventListener('click', () => {
-            mobileMenu.classList.remove('active');
+            closeMobileMenu();
         });
+    });
+
+    document.addEventListener('keydown', event => {
+        if (event.key === 'Escape' && mobileMenu.classList.contains('active')) {
+            closeMobileMenu({ restoreFocus: true });
+        }
     });
 }
 
@@ -89,10 +136,22 @@ if ('IntersectionObserver' in window) {
 const menuData = window.menuData || {};
 const menuMeta = window.menuMeta || {};
 
+function getItemAvailability(item, category) {
+    const availability = SITE_CONFIG.availability || {};
+    const override = availability.itemOverrides?.[String(item.id)] || {};
+    const disabled = availability.disabledItemIds?.map(String).includes(String(item.id))
+        || availability.disabledCategories?.includes(category)
+        || override.available === false;
+    return {
+        available: !disabled,
+        label: override.label || (disabled ? 'Non disponibile oggi' : '')
+    };
+}
+
 /* ========================================
    PIZZA CUSTOMIZATION DATA
 ======================================== */
-const pizzaExtras = [
+const defaultPizzaExtras = [
     { id: 'bufala', name: 'Mozzarella di Bufala DOP', price: 2.50 },
     { id: 'burrata', name: 'Burrata', price: 3.00 },
     { id: 'prosciutto_crudo', name: 'Prosciutto Crudo di Parma', price: 2.50 },
@@ -108,11 +167,13 @@ const pizzaExtras = [
     { id: 'nduja', name: "'Nduja Piccante", price: 2.00 },
     { id: 'truffle', name: 'Olio al Tartufo', price: 3.00 }
 ];
+const pizzaExtras = SITE_CONFIG.pizzaExtras || defaultPizzaExtras;
 
 let currentPizza = null;
 let selectedExtras = [];
 let removedIngredients = [];
 let pizzaNotes = '';
+let pizzaModalReturnFocus = null;
 
 /* ========================================
    MODALE PERSONALIZZAZIONE PIZZA
@@ -121,11 +182,15 @@ function createPizzaModal() {
     const modal = document.createElement('div');
     modal.className = 'modal-overlay';
     modal.id = 'pizzaModal';
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-labelledby', 'modalPizzaName');
+    modal.setAttribute('aria-hidden', 'true');
     modal.innerHTML = `
         <div class="modal">
             <div class="modal-header">
                 <h3 id="modalPizzaName">Personalizza la tua Pizza</h3>
-                <button class="modal-close" onclick="closePizzaModal()">✕</button>
+                <button class="modal-close" id="pizzaModalClose" type="button" aria-label="Chiudi personalizzazione pizza">✕</button>
             </div>
             <div class="modal-body">
                 <!-- EXTRA -->
@@ -164,7 +229,7 @@ function createPizzaModal() {
                     <span>Totale</span>
                     <span class="modal-total-price" id="modalTotal">€7,00</span>
                 </div>
-                <button class="btn-add-custom" onclick="addCustomPizzaToCart()">
+                <button class="btn-add-custom" id="addCustomPizza" type="button">
                     🛒 Aggiungi al Carrello
                 </button>
             </div>
@@ -175,9 +240,33 @@ function createPizzaModal() {
     modal.addEventListener('click', (e) => {
         if (e.target === modal) closePizzaModal();
     });
+    modal.querySelector('#pizzaModalClose').addEventListener('click', closePizzaModal);
+    modal.querySelector('#addCustomPizza').addEventListener('click', addCustomPizzaToCart);
+    modal.addEventListener('keydown', event => {
+        if (event.key === 'Escape') {
+            event.preventDefault();
+            closePizzaModal();
+            return;
+        }
+        if (event.key !== 'Tab') return;
+
+        const focusable = [...modal.querySelectorAll('button, input, textarea, [href], [tabindex]:not([tabindex="-1"])')]
+            .filter(element => !element.disabled && element.offsetParent !== null);
+        if (focusable.length === 0) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+            event.preventDefault();
+            last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+            event.preventDefault();
+            first.focus();
+        }
+    });
 }
 
 function openPizzaModal(pizzaName, pizzaPrice, pizzaIngredients) {
+    pizzaModalReturnFocus = document.activeElement;
     currentPizza = { name: pizzaName, price: parseFloat(pizzaPrice), ingredients: pizzaIngredients };
     selectedExtras = [];
     removedIngredients = [];
@@ -204,11 +293,9 @@ function openPizzaModal(pizzaName, pizzaPrice, pizzaIngredients) {
         `).join('');
 
         removeList.querySelectorAll('.remove-chip').forEach(chip => {
-            chip.addEventListener('click', (event) => {
-                event.preventDefault();
-                const checkbox = chip.querySelector('input');
-                const selected = !checkbox.checked;
-                checkbox.checked = selected;
+            const checkbox = chip.querySelector('input');
+            checkbox.addEventListener('change', () => {
+                const selected = checkbox.checked;
                 chip.classList.toggle('selected', selected);
                 const ing = chip.dataset.ingredient;
                 if (selected) {
@@ -225,13 +312,11 @@ function openPizzaModal(pizzaName, pizzaPrice, pizzaIngredients) {
     }
 
     document.querySelectorAll('.extra-item').forEach(item => {
-        item.onclick = function(e) {
-            e.preventDefault();
-            const checkbox = this.querySelector('input');
-            const selected = !checkbox.checked;
-            checkbox.checked = selected;
-            this.classList.toggle('selected', selected);
-            const extraId = this.dataset.extra;
+        const checkbox = item.querySelector('input');
+        checkbox.onchange = function() {
+            const selected = checkbox.checked;
+            item.classList.toggle('selected', selected);
+            const extraId = item.dataset.extra;
             if (selected) {
                 if (!selectedExtras.includes(extraId)) {
                     selectedExtras.push(extraId);
@@ -251,14 +336,19 @@ function openPizzaModal(pizzaName, pizzaPrice, pizzaIngredients) {
 
     const modal = document.getElementById('pizzaModal');
     modal.classList.add('active');
+    modal.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
+    modal.querySelector('.modal-close').focus();
 }
 
 function closePizzaModal() {
     const modal = document.getElementById('pizzaModal');
     if (!modal) return;
     modal.classList.remove('active');
+    modal.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
+    if (pizzaModalReturnFocus instanceof HTMLElement) pizzaModalReturnFocus.focus();
+    pizzaModalReturnFocus = null;
 }
 
 function updateModalTotal() {
@@ -315,22 +405,29 @@ class Cart {
     }
     
     addItem(name, price, customDetails = null) {
-        const existing = this.items.find(i => i.name === name && i.customDetails === customDetails);
+        const candidate = normalizeCartItem({ name, price, qty: 1, customDetails });
+        if (!candidate) return;
+
+        const existing = this.items.find(i => i.name === candidate.name && i.customDetails === candidate.customDetails);
         if (existing) {
-            existing.qty++;
+            existing.qty = Math.min(existing.qty + 1, CART_LIMITS.maxQty);
+        } else if (this.items.length < CART_LIMITS.maxItems) {
+            this.items.push(candidate);
         } else {
-            this.items.push({ name, price: parseFloat(price), qty: 1, customDetails });
+            this.showNotification('Il carrello ha raggiunto il limite massimo');
+            return;
         }
         this.save();
         this.render();
         this.updateUI();
-        this.showNotification(`✓ ${name} aggiunto`);
+        this.showNotification(`✓ ${candidate.name} aggiunto`);
+        window.PonteSite?.analytics.track('add_to_cart', { item: candidate.name, price: candidate.price });
     }
     
     load() {
         try {
             const savedCart = localStorage.getItem('cart');
-            return savedCart ? JSON.parse(savedCart) : [];
+            return savedCart ? normalizeCart(JSON.parse(savedCart)) : [];
         } catch (error) {
             console.warn('Carrello non leggibile, riparto da vuoto.', error);
             return [];
@@ -347,7 +444,7 @@ class Cart {
     updateQty(index, delta) {
         const item = this.items[index];
         if (item) {
-            item.qty += delta;
+            item.qty = Math.min(item.qty + delta, CART_LIMITS.maxQty);
             if (item.qty <= 0) {
                 this.removeItem(index);
                 return;
@@ -403,9 +500,9 @@ class Cart {
                     <div class="cart-item-price">${formatPrice(item.price)} cad.</div>
                 </div>
                 <div class="cart-item-controls">
-                    <button class="qty-btn" type="button" data-cart-index="${index}" data-cart-delta="-1">−</button>
+                    <button class="qty-btn" type="button" data-cart-index="${index}" data-cart-delta="-1" aria-label="Riduci quantità di ${escapeHtml(item.name)}">−</button>
                     <span class="cart-item-qty">${item.qty}</span>
-                    <button class="qty-btn" type="button" data-cart-index="${index}" data-cart-delta="1">+</button>
+                    <button class="qty-btn" type="button" data-cart-index="${index}" data-cart-delta="1" aria-label="Aumenta quantità di ${escapeHtml(item.name)}">+</button>
                 </div>
             </div>
         `).join('');
@@ -447,6 +544,8 @@ class Cart {
     showNotification(message) {
         const notif = document.createElement('div');
         notif.className = 'cart-notification';
+        notif.setAttribute('role', 'status');
+        notif.setAttribute('aria-live', 'polite');
         notif.textContent = message;
         notif.style.cssText = `
             position: fixed;
@@ -480,22 +579,56 @@ class Cart {
         const clearBtn = document.getElementById('clearCart');
         if (clearBtn) {
             clearBtn.addEventListener('click', () => {
-                if (confirm('Svuotare il carrello?')) {
-                    this.clear();
+                if (clearBtn.dataset.confirming !== 'true') {
+                    clearBtn.dataset.confirming = 'true';
+                    clearBtn.textContent = 'Conferma?';
+                    window.setTimeout(() => {
+                        clearBtn.dataset.confirming = 'false';
+                        clearBtn.textContent = 'Svuota';
+                    }, 3000);
+                    return;
                 }
+                this.clear();
+                clearBtn.dataset.confirming = 'false';
+                clearBtn.textContent = 'Svuota';
+                this.showNotification('Carrello svuotato');
             });
         }
 
         const floatingCart = document.getElementById('floatingCart');
+        const cartPanel = document.getElementById('cart');
+        if (cartPanel && window.matchMedia('(max-width: 768px)').matches) {
+            cartPanel.setAttribute('aria-hidden', 'true');
+        }
         if (floatingCart) {
             floatingCart.addEventListener('click', () => {
-                window.location.href = 'ordina.html';
+                if (document.getElementById('orderForm')) {
+                    document.body.classList.add('cart-drawer-open');
+                    document.getElementById('cart')?.setAttribute('aria-hidden', 'false');
+                    document.getElementById('closeCartDrawer')?.focus();
+                } else {
+                    window.location.href = 'ordina.html';
+                }
             });
         }
+
+        const closeDrawer = () => {
+            document.body.classList.remove('cart-drawer-open');
+            if (window.matchMedia('(max-width: 768px)').matches) {
+                document.getElementById('cart')?.setAttribute('aria-hidden', 'true');
+            }
+            floatingCart?.focus();
+        };
+        document.getElementById('closeCartDrawer')?.addEventListener('click', closeDrawer);
+        document.getElementById('cartBackdrop')?.addEventListener('click', closeDrawer);
+        document.addEventListener('keydown', event => {
+            if (event.key === 'Escape' && document.body.classList.contains('cart-drawer-open')) closeDrawer();
+        });
     }
 }
 
 const cart = new Cart();
+window.PonteCart = cart;
 createPizzaModal();
 
 
@@ -548,6 +681,11 @@ function renderOrderItems() {
         const isPizza = category === 'pizze';
         
         container.innerHTML = menuData[category].map(item => {
+            const itemState = getItemAvailability(item, category);
+            const disabledAttribute = itemState.available ? '' : ' disabled';
+            const availabilityHtml = itemState.available
+                ? ''
+                : `<span class="availability-badge">${escapeHtml(itemState.label)}</span>`;
             const ingredientsArray = item.ingredients ? item.ingredients.split(', ').filter(i => i.trim()) : [];
             const ingredientDetailsHtml = item.ingredients
                 ? `<details class="dish-details order-dish-details"><summary>Ingredienti</summary><p class="dish-description">${escapeHtml(item.ingredients)}</p></details>`
@@ -556,23 +694,25 @@ function renderOrderItems() {
             if (isPizza) {
                 const ingredientsJson = escapeHtml(JSON.stringify(ingredientsArray));
                 return `
-                    <div class="order-item order-item-pizza">
+                    <div class="order-item order-item-pizza${itemState.available ? '' : ' is-unavailable'}">
                         <div class="order-item-name">${escapeHtml(item.name)}</div>
+                        ${availabilityHtml}
                         ${ingredientDetailsHtml}
                         <div class="order-item-bottom">
                             <span class="order-item-price">${formatPrice(item.price)}</span>
-                            <button class="btn-add-small btn-customize-order" type="button" data-name="${escapeHtml(item.name)}" data-price="${item.price}" data-ingredients='${ingredientsJson}' aria-label="Personalizza ${escapeHtml(item.name)}">🍕</button>
+                            <button class="btn-add-small btn-customize-order" type="button" data-name="${escapeHtml(item.name)}" data-price="${item.price}" data-ingredients='${ingredientsJson}' aria-label="${itemState.available ? 'Personalizza' : 'Non disponibile'} ${escapeHtml(item.name)}"${disabledAttribute}>🍕</button>
                         </div>
                     </div>
                 `;
             }
             
             return `
-                <div class="order-item">
+                <div class="order-item${itemState.available ? '' : ' is-unavailable'}">
                     <div class="order-item-name">${escapeHtml(item.name)}</div>
+                    ${availabilityHtml}
                     <div class="order-item-bottom">
                         <span class="order-item-price">${formatPrice(item.price)}</span>
-                        <button class="btn-add-small" type="button" data-name="${escapeHtml(item.name)}" data-price="${item.price}" aria-label="Aggiungi ${escapeHtml(item.name)}">+</button>
+                        <button class="btn-add-small" type="button" data-name="${escapeHtml(item.name)}" data-price="${item.price}" aria-label="${itemState.available ? 'Aggiungi' : 'Non disponibile'} ${escapeHtml(item.name)}"${disabledAttribute}>+</button>
                     </div>
                 </div>
             `;
@@ -608,6 +748,9 @@ function renderMenuItems() {
     
     Object.keys(menuData).forEach(category => {
         menuData[category].forEach(item => {
+            const itemState = getItemAvailability(item, category);
+            const searchText = [item.name, item.description, item.ingredients].filter(Boolean).join(' ').toLocaleLowerCase('it');
+            const allergenData = (item.allergens || []).join('|').toLocaleLowerCase('it');
             const allergensHtml = item.allergens && item.allergens.length > 0
                 ? `<div class="allergens">${item.allergens.map(a => `<span class="allergen">${escapeHtml(a)}</span>`).join('')}</div>`
                 : '';
@@ -621,17 +764,21 @@ function renderMenuItems() {
                 : '';
             
             const photoButtonHtml = item.image
-                ? `<button class="dish-photo-trigger" type="button" data-photo-src="${escapeHtml(item.image)}" data-photo-name="${escapeHtml(item.name)}" aria-controls="dishPhotoDialog" aria-haspopup="dialog">Vedi piatto</button>`
+                ? `<button class="dish-photo-trigger" type="button" data-photo-src="${escapeHtml(item.image)}" data-photo-name="${escapeHtml(item.name)}" aria-controls="dishPhotoDialog" aria-haspopup="dialog" data-track="dish_photo">Vedi piatto</button>`
                 : '';
+            const availabilityHtml = itemState.available
+                ? ''
+                : `<span class="availability-badge">${escapeHtml(itemState.label)}</span>`;
             
 
             html += `
-                <div class="menu-item animate-on-scroll category-${escapeHtml(category)}" data-category="${escapeHtml(category)}">
+                <div class="menu-item animate-on-scroll category-${escapeHtml(category)}${itemState.available ? '' : ' is-unavailable'}" data-category="${escapeHtml(category)}" data-search="${escapeHtml(searchText)}" data-price="${Number(item.price)}" data-allergens="${escapeHtml(allergenData)}" data-has-photo="${item.image ? 'true' : 'false'}">
                     <div class="menu-item-content">
                         <div class="menu-item-header">
                             <h3>${escapeHtml(item.name)}</h3>
                             <span class="price">${formatPrice(item.price)}</span>
                         </div>
+                        ${availabilityHtml}
                         ${detailsHtml}
                         ${photoButtonHtml}
                     </div>
@@ -721,6 +868,33 @@ function updateMenuCategoryIntro(category) {
     if (count) count.textContent = `${items.length} proposte`;
 }
 
+function applyMenuFilters() {
+    const activeCategory = document.querySelector('#menuFilters .filter-btn.active')?.dataset.category || 'all';
+    const query = (document.getElementById('menuSearch')?.value || '').trim().toLocaleLowerCase('it');
+    const maxPrice = Number(document.getElementById('menuMaxPrice')?.value || Infinity);
+    const excludedAllergen = (document.getElementById('menuExcludeAllergen')?.value || '').toLocaleLowerCase('it');
+    const photoOnly = document.getElementById('menuPhotoOnly')?.checked || false;
+    const items = [...document.querySelectorAll('#menu-grid .menu-item')];
+    let visibleCount = 0;
+
+    items.forEach(item => {
+        const categoryMatches = activeCategory === 'all' || item.dataset.category === activeCategory;
+        const queryMatches = !query || item.dataset.search.includes(query);
+        const priceMatches = Number(item.dataset.price) <= maxPrice;
+        const allergenMatches = !excludedAllergen || !item.dataset.allergens.includes(excludedAllergen);
+        const photoMatches = !photoOnly || item.dataset.hasPhoto === 'true';
+        const visible = categoryMatches && queryMatches && priceMatches && allergenMatches && photoMatches;
+        item.hidden = !visible;
+        item.style.display = visible ? '' : 'none';
+        if (visible) visibleCount += 1;
+    });
+
+    const count = document.getElementById('menuCategoryCount');
+    if (count) count.textContent = `${visibleCount} ${visibleCount === 1 ? 'proposta' : 'proposte'}`;
+    const noResults = document.getElementById('menuNoResults');
+    if (noResults) noResults.hidden = visibleCount !== 0;
+}
+
 filterBtns.forEach(btn => {
     btn.addEventListener('click', () => {
         filterBtns.forEach(b => b.classList.remove('active'));
@@ -728,19 +902,10 @@ filterBtns.forEach(btn => {
         filterBtns.forEach(button => button.setAttribute('aria-pressed', String(button === btn)));
         
         const category = btn.dataset.category;
-        const items = document.querySelectorAll('#menu-grid .menu-item');
-        
-        if (category === 'all') {
-            items.forEach(item => {
-                item.style.display = '';
-            });
-        } else {
-            items.forEach(item => {
-                item.style.display = item.dataset.category === category ? '' : 'none';
-            });
-        }
 
         updateMenuCategoryIntro(category);
+        applyMenuFilters();
+        window.PonteSite?.analytics.track('menu_category', { category });
 
         const menuCategoryIntro = document.getElementById('menuCategoryIntro');
         if (menuCategoryIntro) {
@@ -756,81 +921,27 @@ filterBtns.forEach(btn => {
 const initialMenuFilter = document.querySelector('#menuFilters .filter-btn.active');
 if (initialMenuFilter && document.getElementById('menu-grid')) {
     const initialCategory = initialMenuFilter.dataset.category;
-    document.querySelectorAll('#menu-grid .menu-item').forEach(item => {
-        item.style.display = item.dataset.category === initialCategory ? '' : 'none';
-    });
     filterBtns.forEach(button => {
         button.setAttribute('aria-pressed', String(button === initialMenuFilter));
     });
     updateMenuCategoryIntro(initialCategory);
+    applyMenuFilters();
 }
 
-/* ========================================
-   ORDER FORM - Indirizzo condizionale
-======================================== */
-const modeRadios = document.querySelectorAll('input[name="mode"]');
-const addressField = document.getElementById('addressField');
-
-modeRadios.forEach(radio => {
-    radio.addEventListener('change', (e) => {
-        if (!addressField) return;
-
-        if (e.target.value === 'consegna') {
-            addressField.style.display = 'block';
-            addressField.querySelector('input').required = true;
-        } else {
-            addressField.style.display = 'none';
-            addressField.querySelector('input').required = false;
-        }
-    });
+['menuSearch', 'menuMaxPrice', 'menuExcludeAllergen', 'menuPhotoOnly'].forEach(id => {
+    const control = document.getElementById(id);
+    control?.addEventListener(id === 'menuSearch' ? 'input' : 'change', applyMenuFilters);
 });
 
-/* ========================================
-   ORDER SUBMIT - Invio WhatsApp
-======================================== */
-const orderForm = document.getElementById('orderForm');
-
-if (orderForm) {
-    orderForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        
-        if (cart.getCount() === 0) {
-            alert('Aggiungi almeno un prodotto al carrello!');
-            return;
-        }
-        
-        const formData = new FormData(orderForm);
-        const name = formData.get('name');
-        const phone = formData.get('phone');
-        const mode = formData.get('mode');
-        const address = formData.get('address') || '-';
-        const notes = formData.get('notes') || '-';
-        
-        let message = `🍕 *NUOVO ORDINE - Al Ponte di Schiavonia* 🍕\n\n`;
-        message += `👤 *Cliente:* ${name}\n`;
-        message += `📞 *Telefono:* ${phone}\n`;
-        message += `🚚 *Modalità:* ${mode === 'ritiro' ? 'Ritiro in loco' : 'Consegna a domicilio'}\n`;
-        if (mode === 'consegna') {
-            message += `📍 *Indirizzo:* ${address}\n`;
-        }
-        message += `\n📋 *ORDINE:*\n`;
-        
-        cart.items.forEach(item => {
-            message += `• ${item.qty}x ${item.name} = €${(item.price * item.qty).toFixed(2)}\n`;
-            if (item.customDetails) {
-                message += `  └ ${item.customDetails}\n`;
-            }
-        });
-        
-        message += `\n💰 *TOTALE: €${cart.getTotal().toFixed(2)}*`;
-        if (notes !== '-') {
-            message += `\n\n📝 *Note:* ${notes}`;
-        }
-        
-        const whatsappUrl = buildWhatsAppUrl(message);
-        window.open(whatsappUrl, '_blank');
+document.getElementById('menuResetFilters')?.addEventListener('click', () => {
+    ['menuSearch', 'menuMaxPrice', 'menuExcludeAllergen'].forEach(id => {
+        const control = document.getElementById(id);
+        if (control) control.value = '';
     });
-}
+    const photoOnly = document.getElementById('menuPhotoOnly');
+    if (photoOnly) photoOnly.checked = false;
+    applyMenuFilters();
+});
 
 /* ========================================
    NOTIFICATION STYLE
