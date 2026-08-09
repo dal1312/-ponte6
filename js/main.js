@@ -810,11 +810,11 @@ function renderOrderItems() {
                     <div class="order-item order-item-pizza${dishImage ? ' has-photo' : ' no-photo'}${itemState.available ? '' : ' is-unavailable'}">
                         ${orderPhotoHtml}
                         <div class="order-item-name">${escapeHtml(item.name)}</div>
+                        <span class="order-item-price">${formatPrice(item.price)}</span>
                         ${availabilityHtml}
                         ${ingredientDetailsHtml}
                         ${allergensHtml}
                         <div class="order-item-bottom">
-                            <span class="order-item-price">${formatPrice(item.price)}</span>
                             <button class="btn-add-small btn-customize-order" type="button" data-name="${escapeHtml(item.name)}" data-price="${item.price}" data-ingredients='${ingredientsJson}' aria-label="${itemState.available ? 'Personalizza' : 'Non disponibile'} ${escapeHtml(item.name)}"${disabledAttribute}>Personalizza</button>
                         </div>
                     </div>
@@ -825,10 +825,10 @@ function renderOrderItems() {
                 <div class="order-item${dishImage ? ' has-photo' : ' no-photo'}${itemState.available ? '' : ' is-unavailable'}">
                     ${orderPhotoHtml}
                     <div class="order-item-name">${escapeHtml(item.name)}</div>
+                    <span class="order-item-price">${formatPrice(item.price)}</span>
                     ${availabilityHtml}
                     ${allergensHtml}
                     <div class="order-item-bottom">
-                        <span class="order-item-price">${formatPrice(item.price)}</span>
                         <button class="btn-add-small" type="button" data-name="${escapeHtml(item.name)}" data-price="${item.price}" aria-label="${itemState.available ? 'Aggiungi' : 'Non disponibile'} ${escapeHtml(item.name)}"${disabledAttribute}>Aggiungi</button>
                     </div>
                 </div>

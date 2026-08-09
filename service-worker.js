@@ -1,4 +1,4 @@
-const STATIC_CACHE = "ponte6-static-v77";
+const STATIC_CACHE = "ponte6-static-v79";
 const RUNTIME_CACHE = "ponte6-runtime-v1";
 const RUNTIME_LIMIT = 50;
 
@@ -12,7 +12,7 @@ const APP_SHELL = [
   "./offline.html",
   "./privacy.html",
   "./css/styles.css",
-  "./js/main.js?v=77",
+  "./js/main.js?v=78",
   "./js/site-config.js",
   "./js/site.js",
   "./js/order.js",
