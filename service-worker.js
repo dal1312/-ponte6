@@ -1,4 +1,4 @@
-const STATIC_CACHE = "ponte6-static-v72";
+const STATIC_CACHE = "ponte6-static-v73";
 const RUNTIME_CACHE = "ponte6-runtime-v1";
 const RUNTIME_LIMIT = 50;
 

@@ -1,8 +1,8 @@
 const { test, expect } = require('@playwright/test');
 
-test('titoli editoriali conservano una frase accessibile', async ({ page }) => {
+test('titoli principali conservano una frase accessibile', async ({ page }) => {
   const pages = [
-    ['/index.html', 'Dopo il ponte, la tavola si accende.'],
+    ['/index.html', 'Cucina romagnola e pizza dal 1978.'],
     ['/menu.html', 'Scegli il tuo posto a tavola.'],
     ['/ordina.html', 'Il tuo ordine, senza intermediari.'],
     ['/contatti.html', 'Trova il ponte, poi trova il tavolo.'],
@@ -15,8 +15,6 @@ test('titoli editoriali conservano una frase accessibile', async ({ page }) => {
     await expect(page.getByRole('heading', { level: 1, name })).toBeVisible();
   }
 
-  await page.goto('/index.html');
-  await expect(page.locator('.hero-note strong')).toHaveText('La serata comincia qui.');
   await page.goto('/menu.html');
   await expect(page.locator('.menu-hero-note strong')).toHaveText("Dall'antipasto all'ultima fetta.");
 });

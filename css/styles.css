@@ -3996,6 +3996,129 @@ button:disabled { opacity: .5; cursor: not-allowed; }
   }
 }
 
+/* ============================================
+   CARTA ESSENZIALE
+   Un solo sistema visivo per consultazione e ordine.
+   ============================================ */
+.after-dark-home .hero {
+  min-height: clamp(620px, 76svh, 780px);
+}
+.after-dark-home .hero-content {
+  grid-template-columns: minmax(0, 820px);
+  align-items: center;
+}
+.after-dark-home .hero-title {
+  max-width: 820px;
+  font-size: clamp(3.4rem, 6.5vw, 6rem);
+  line-height: .91;
+}
+
+.after-dark-menu .menu-filters,
+.after-dark-order .menu-filters {
+  border-color: #d3c1ab;
+  background: rgba(246,238,225,.97);
+  box-shadow: 0 10px 30px rgba(48,29,22,.08);
+}
+.after-dark-menu .filter-index-label,
+.after-dark-order .filter-index-label { color: #84281f; }
+.after-dark-menu .filter-btn,
+.after-dark-order .filter-btn { color: #655248; }
+.after-dark-menu .filter-btn:hover,
+.after-dark-order .filter-btn:hover { color: #231612; }
+.after-dark-menu .filter-btn.active,
+.after-dark-order .filter-btn.active { color: #84281f; }
+.after-dark-menu .filter-btn.active::after,
+.after-dark-order .filter-btn.active::after { background: #84281f; }
+
+.after-dark-menu .menu-main,
+.after-dark-order .order-page {
+  background: #f3eadc;
+  color: #231612;
+}
+.after-dark-menu .menu-category-intro,
+.after-dark-order .order-menu h2 { border-color: #cbb69e; }
+.after-dark-menu .menu-category-kicker,
+.after-dark-order .order-menu h2::before { color: #84281f; }
+.after-dark-menu .menu-category-intro h2,
+.after-dark-menu .menu-category-summary p,
+.after-dark-menu .menu-item-header h3,
+.after-dark-order .order-item-name,
+.after-dark-order .order-menu h2 { color: #231612; }
+.after-dark-menu .menu-category-summary p { color: #67564d; }
+
+.after-dark-menu .menu-item,
+.after-dark-order .order-item {
+  border-bottom-color: #d4c2ad;
+  background: transparent;
+}
+.after-dark-menu .menu-item:hover,
+.after-dark-order .order-item:hover {
+  border-bottom-color: #84281f;
+  background: rgba(132,40,31,.035);
+}
+.after-dark-menu .dish-description,
+.after-dark-order .order-pizza-ingredients { color: #67564d; }
+.after-dark-menu .price,
+.after-dark-order .order-item-price { color: #84281f; }
+.after-dark-menu .dish-photo-thumb,
+.after-dark-order .order-dish-photo {
+  border-color: #b69873;
+  background: #e6d8c5;
+  box-shadow: 0 0 0 4px rgba(132,40,31,.055);
+}
+.after-dark-menu .allergens,
+.after-dark-order .allergens { color: #67564d; }
+.after-dark-menu .allergens::before,
+.after-dark-order .allergens::before { color: #7a675d; }
+.after-dark-menu .allergen,
+.after-dark-order .allergen { color: #6e3a26; }
+.after-dark-menu .allergen b,
+.after-dark-order .allergen b {
+  background: #84281f;
+  color: #fff8ec;
+}
+.after-dark-menu .allergen-inferred,
+.after-dark-order .allergen-inferred { color: #67564d; }
+.after-dark-menu .allergen-inferred b,
+.after-dark-order .allergen-inferred b {
+  border-color: #84281f;
+  background: transparent;
+  color: #84281f;
+}
+.after-dark-menu .allergens-disclaimer,
+.after-dark-order .order-allergen-note {
+  border-color: #cfbaa2;
+  background: rgba(255,255,255,.34);
+  color: #67564d;
+}
+.after-dark-order .btn-add-small {
+  border-color: #84281f;
+  background: #84281f;
+  color: #fff8ec;
+}
+.after-dark-order .btn-add-small:not(.btn-customize-order):hover {
+  background: #5f1c17;
+  color: #fff8ec;
+}
+.after-dark-order .order-item-bottom { border-color: #d8c8b6; }
+
+@media (max-width: 768px) {
+  .after-dark-home .hero { min-height: 720px; }
+  .after-dark-home .hero-title { font-size: clamp(3rem, 13vw, 4.45rem); }
+  .after-dark-home .hero-cta { max-width: 310px; }
+  .after-dark-menu .menu-main,
+  .after-dark-order .order-page { padding-top: 2rem; }
+}
+
+@media (max-width: 620px) {
+  .after-dark-menu .menu-item-content,
+  .after-dark-order .order-item { padding-block: 1rem; }
+  .after-dark-menu .menu-item-header h3,
+  .after-dark-order .order-item-name { font-size: 1.08rem; }
+  .after-dark-menu .dish-description,
+  .after-dark-order .order-pizza-ingredients { font-size: .78rem; }
+}
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
