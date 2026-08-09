@@ -918,20 +918,51 @@ function renderMenuItems() {
 }
 
 function setupDishPhotoDialog() {
-    const menuGrid = document.getElementById('menu-grid');
+    const photoTriggerRoot = document.getElementById('menu-grid') || document.querySelector('.order-menu');
     const dialog = document.getElementById('dishPhotoDialog');
     const image = document.getElementById('dishPhotoImage');
     const title = document.getElementById('dishPhotoTitle');
     const closeButton = document.getElementById('dishPhotoClose');
-    if (!menuGrid || !dialog || !image || !title || !closeButton) return;
+    if (!photoTriggerRoot || !dialog || !image || !title || !closeButton) {
+        console.warn('Dish photo dialog not fully initialized');
+        return;
+    }
 
     let activeTrigger = null;
     const closeDialog = () => dialog.close();
 
-    menuGrid.addEventListener('click', event => {
+    // Focus trap for dish photo dialog
+    dialog.addEventListener('keydown', event => {
+        if (event.key === 'Escape') {
+            event.preventDefault();
+            closeDialog();
+            return;
+        }
+        if (event.key !== 'Tab') return;
+        const focusable = [...dialog.querySelectorAll('button, [href], input, textarea, select, [tabindex]:not([tabindex="-1"])')]
+            .filter(el => !el.disabled && el.offsetParent !== null);
+        if (focusable.length === 0) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+            event.preventDefault();
+            last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+            event.preventDefault();
+            first.focus();
+        }
+    });
+
+    // When opened, focus close button
+    const originalShowModal = dialog.showModal.bind(dialog);
+    dialog.showModal = () => {
+        originalShowModal();
+        closeButton.focus();
+    };
+
+    photoTriggerRoot.addEventListener('click', event => {
         const trigger = event.target.closest('.dish-photo-trigger');
         if (!trigger) return;
-
         activeTrigger = trigger;
         image.src = trigger.dataset.photoSrc;
         image.alt = trigger.dataset.photoName;
@@ -942,8 +973,8 @@ function setupDishPhotoDialog() {
     closeButton.addEventListener('click', closeDialog);
     dialog.addEventListener('click', event => {
         const bounds = dialog.getBoundingClientRect();
-        const clickedBackdrop = event.clientX < bounds.left || event.clientX > bounds.right
-            || event.clientY < bounds.top || event.clientY > bounds.bottom;
+        const clickedBackdrop = event.clientX < bounds.left || event.clientX > bounds.right ||
+            event.clientY < bounds.top || event.clientY > bounds.bottom;
         if (clickedBackdrop) closeDialog();
     });
     dialog.addEventListener('close', () => {
@@ -953,10 +984,8 @@ function setupDishPhotoDialog() {
     });
 }
 
-if (document.getElementById('menu-grid')) {
-    renderMenuItems();
-    setupDishPhotoDialog();
-}
+if (document.getElementById('menu-grid')) renderMenuItems();
+if (document.getElementById('dishPhotoDialog')) setupDishPhotoDialog();
 
 /* ========================================
    MENU FILTERS
