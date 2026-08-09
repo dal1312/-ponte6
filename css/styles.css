@@ -4079,11 +4079,19 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 .after-dark-menu .allergens::before,
 .after-dark-order .allergens::before { color: #7a675d; }
 .after-dark-menu .allergen,
-.after-dark-order .allergen { color: #6e3a26; }
+.after-dark-order .allergen {
+  position: relative;
+  padding: 0;
+  color: #6b574c;
+}
 .after-dark-menu .allergen b,
 .after-dark-order .allergen b {
-  background: #84281f;
-  color: #fff8ec;
+  width: 1.05rem;
+  height: 1.05rem;
+  border: 1px solid #b7a18c;
+  background: rgba(92,68,56,.045);
+  color: #6b574c;
+  font-size: .56rem;
 }
 .after-dark-menu .allergen-inferred,
 .after-dark-order .allergen-inferred { color: #67564d; }
@@ -4092,6 +4100,20 @@ button:disabled { opacity: .5; cursor: not-allowed; }
   border-color: #84281f;
   background: transparent;
   color: #84281f;
+}
+.after-dark-menu .allergen-name,
+.after-dark-menu .allergen-tag,
+.after-dark-order .allergen-name,
+.after-dark-order .allergen-tag {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 .after-dark-menu .allergens-disclaimer,
 .after-dark-order .order-allergen-note {

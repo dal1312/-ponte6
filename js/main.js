@@ -72,8 +72,9 @@ function renderAllergens(item, compact = false) {
         const reference = ALLERGEN_REFERENCES[allergen];
         const isInferred = inferred.has(allergen);
         const sourceLabel = isInferred ? 'dedotto dagli ingredienti o dalla categoria' : 'dichiarato dal ristorante';
-        const tagHtml = isInferred ? ' <small class="allergen-tag">(dedotto)</small>' : '';
-        return `<span class="allergen${isInferred ? ' allergen-inferred' : ' allergen-confirmed'}" title="${escapeHtml(sourceLabel)}"><b>${reference || '?'}</b> ${escapeHtml(allergen)}${tagHtml}</span>`;
+        const accessibleLabel = `${reference || '?'} ${allergen}, ${sourceLabel}`;
+        const tagHtml = isInferred ? '<small class="allergen-tag">dedotto</small>' : '';
+        return `<span class="allergen${isInferred ? ' allergen-inferred' : ' allergen-confirmed'}" title="${escapeHtml(accessibleLabel)}" aria-label="${escapeHtml(accessibleLabel)}"><b aria-hidden="true">${reference || '?'}</b> <span class="allergen-name">${escapeHtml(allergen)}</span>${tagHtml ? ` ${tagHtml}` : ''}</span>`;
     }).join('');
     return `<div class="allergens${compact ? ' allergens-compact' : ''}" aria-label="Allergeni numerati">${badges}</div>`;
 }
