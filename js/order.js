@@ -149,13 +149,6 @@
     whatsappLink.href = buildWhatsAppUrl(buildMessage(order));
   }
 
-  function saveDraft(order) {
-    let drafts = [];
-    try { drafts = JSON.parse(localStorage.getItem("ponte-order-drafts") || "[]"); } catch { drafts = []; }
-    drafts.push(order);
-    localStorage.setItem("ponte-order-drafts", JSON.stringify(drafts.slice(-10)));
-  }
-
   async function sendToConfiguredApi(order) {
     if (!config.ordering.apiEndpoint) return;
     try {
@@ -186,7 +179,6 @@
     }
 
     currentOrder = buildOrder(data);
-    saveDraft(currentOrder);
     renderReceipt(currentOrder);
     feedback.textContent = "Riepilogo pronto: controlla i dati prima di aprire WhatsApp.";
     feedback.className = "form-feedback is-success";
@@ -211,4 +203,7 @@
 
   setupDateRange();
   configureModes();
+  // Le vecchie versioni salvavano dati personali completi senza scadenza.
+  // La bozza vive ora soltanto in memoria fino alla chiusura della pagina.
+  localStorage.removeItem("ponte-order-drafts");
 })();

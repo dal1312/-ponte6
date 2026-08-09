@@ -1,27 +1,3 @@
-/* ========================================
-   NAVBAR SCROLL EFFECT
-======================================== */
-const SITE_CONFIG = window.PONTE_CONFIG || {};
-const RESTAURANT_CONTACT_NUMBER = SITE_CONFIG.restaurant?.whatsapp || '39054329448';
-const WHATSAPP_BASE_URL = `https://wa.me/${RESTAURANT_CONTACT_NUMBER}`;
-
-function buildWhatsAppUrl(message = '') {
-    return message ? `${WHATSAPP_BASE_URL}?text=${encodeURIComponent(message)}` : WHATSAPP_BASE_URL;
-}
-
-function formatPrice(value) {
-    return `€\u00a0${Number(value).toFixed(2).replace('.', ',')}`;
-}
-
-function escapeHtml(value) {
-    return String(value ?? '')
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#039;');
-}
-
 const ALLERGEN_REFERENCES = Object.freeze({
     'Glutine': 1,
     'Crostacei': 2,
@@ -41,9 +17,9 @@ const ALLERGEN_REFERENCES = Object.freeze({
 
 const MENU_IMAGE_FALLBACKS = Object.freeze({
     304039: 'assets/menu-images/304039_Cappelletti_al_Rag_della_Nonna_Franca.webp',
-    304044: 'assets/menu-images/generated_cotoletta_milanese.png',
+    304044: 'assets/menu-images/generated_cotoletta_milanese.webp',
     307352: 'assets/menu-images/307352_Tartare_di_Controfiletto_Irlandese_con_Senape_al_Miele_e_Frutta_Fresca.webp',
-    307611: 'assets/menu-images/generated_bruciatini.png',
+    307611: 'assets/menu-images/generated_bruciatini.webp',
     307616: 'assets/menu-images/307616_Degustazione_di_Formaggi_del_Territorio_e_Piadina_Romagnola.webp',
     307627: 'assets/menu-images/307627_Cozze_alla_Tarantina.webp',
     307633: 'assets/menu-images/307633_Acciughe_del_Mar_Cantabrico_e_Burrata.webp',
@@ -51,18 +27,18 @@ const MENU_IMAGE_FALLBACKS = Object.freeze({
     307643: 'assets/menu-images/307643_Cappelletti_al_Crudo_di_Parma_Ciliegini_e_Pesto_di_Rucola.webp',
     307651: 'assets/menu-images/307651_Tortelli_di_Ricotta_e_Spinaci_con_Guanciale_Salvia_Crema_di_Burro_Chiarificato.webp',
     307660: 'assets/menu-images/307660_Strozzapreti_ai_Porcini_con_Scaglie_di_Pecorino_di_Fossa_di_Sogliano.webp',
-    307669: 'assets/menu-images/generated_tagliolini_scoglio.png',
+    307669: 'assets/menu-images/generated_tagliolini_scoglio.webp',
     307678: 'assets/menu-images/307678_Gnocchetti_alle_Vongole_su_Crema_di_Zucchine_e_Datterini.webp',
-    307686: 'assets/menu-images/improved_galletto_agrumi.png',
+    307686: 'assets/menu-images/improved_galletto_agrumi.webp',
     307947: 'assets/menu-images/307947_Tagliata_di_Controfiletto_di_Manzo_Argentino_al_Sale_di_Cervia_con_Patate_Rustiche_al_Forno.webp',
-    307949: 'assets/menu-images/generated_filetto_porcini.png',
-    307950: 'assets/menu-images/generated_filetto_pepe_rosa_clean.png',
-    307951: 'assets/menu-images/generated_fritto_mare_verdure.png',
+    307949: 'assets/menu-images/generated_filetto_porcini.webp',
+    307950: 'assets/menu-images/generated_filetto_pepe_rosa_clean.webp',
+    307951: 'assets/menu-images/generated_fritto_mare_verdure.webp',
     307953: 'assets/menu-images/307953_Polpo_Cotto_a_Bassa_Temperatura_su_Crema_di_Patate_e_Gocce_di_Prezzemolo.webp',
-    380901: 'assets/menu-images/generated_grigliata_carne.png',
+    380901: 'assets/menu-images/generated_grigliata_carne.webp',
     493656: 'assets/menu-images/493656_Flan_di_Zucca_e_Porri_su_Crema_di_Gorgonzola.webp',
-    493678: 'assets/menu-images/improved_baccala_white.png',
-    520062: 'assets/menu-images/generated_lasagne_romagnola.png'
+    493678: 'assets/menu-images/improved_baccala_white.webp',
+    520062: 'assets/menu-images/generated_lasagne_romagnola.webp'
 });
 
 function renderAllergens(item, compact = false) {
@@ -105,113 +81,6 @@ function normalizeCartItem(item) {
 function normalizeCart(items) {
     if (!Array.isArray(items)) return [];
     return items.slice(0, CART_LIMITS.maxItems).map(normalizeCartItem).filter(Boolean);
-}
-
-window.PonteUtils = { buildWhatsAppUrl, formatPrice, escapeHtml };
-
-const navbar = document.getElementById('navbar');
-
-if (navbar) {
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
-            navbar.classList.add('scrolled');
-        } else {
-            navbar.classList.remove('scrolled');
-        }
-    });
-}
-
-/* ========================================
-   MOBILE MENU
-======================================== */
-const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-const mobileMenu = document.getElementById('mobileMenu');
-
-if (mobileMenuBtn && mobileMenu) {
-    const closeMobileMenu = ({ restoreFocus = false } = {}) => {
-        mobileMenu.classList.remove('active');
-        document.body.classList.remove('mobile-menu-open');
-        mobileMenu.setAttribute('aria-hidden', 'true');
-        mobileMenuBtn.setAttribute('aria-expanded', 'false');
-        mobileMenuBtn.setAttribute('aria-label', 'Apri menu');
-        if (restoreFocus) mobileMenuBtn.focus();
-    };
-
-    mobileMenuBtn.addEventListener('click', () => {
-        const isOpen = mobileMenu.classList.toggle('active');
-        document.body.classList.toggle('mobile-menu-open', isOpen);
-        mobileMenu.setAttribute('aria-hidden', String(!isOpen));
-        mobileMenuBtn.setAttribute('aria-expanded', String(isOpen));
-        mobileMenuBtn.setAttribute('aria-label', isOpen ? 'Chiudi menu' : 'Apri menu');
-        if (isOpen) mobileMenu.querySelector('a')?.focus();
-    });
-    
-    mobileMenu.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', () => {
-            closeMobileMenu();
-        });
-    });
-
-    document.addEventListener('pointerdown', event => {
-        if (!mobileMenu.classList.contains('active')) return;
-        if (mobileMenu.contains(event.target) || mobileMenuBtn.contains(event.target)) return;
-        closeMobileMenu({ restoreFocus: true });
-    });
-
-    window.matchMedia('(max-width: 768px)').addEventListener?.('change', event => {
-        if (!event.matches && mobileMenu.classList.contains('active')) closeMobileMenu();
-    });
-
-    document.addEventListener('keydown', event => {
-        if (!mobileMenu.classList.contains('active')) return;
-        if (event.key === 'Escape') {
-            closeMobileMenu({ restoreFocus: true });
-            return;
-        }
-        if (event.key === 'Tab') {
-            const links = [...mobileMenu.querySelectorAll('a')];
-            const last = links.at(-1);
-            if (event.shiftKey && document.activeElement === mobileMenuBtn) {
-                event.preventDefault();
-                last?.focus();
-            } else if (!event.shiftKey && document.activeElement === last) {
-                event.preventDefault();
-                mobileMenuBtn.focus();
-            }
-        }
-    });
-}
-
-/* ========================================
-   SCROLL ANIMATIONS (Intersection Observer)
-======================================== */
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-};
-
-let observer = null;
-
-if ('IntersectionObserver' in window) {
-    observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const delay = entry.target.dataset.delay || 0;
-                setTimeout(() => {
-                    entry.target.classList.add('visible');
-                }, delay);
-                observer.unobserve(entry.target);
-            }
-        });
-    }, observerOptions);
-
-    document.querySelectorAll('.animate-on-scroll').forEach(el => {
-        observer.observe(el);
-    });
-} else {
-    document.querySelectorAll('.animate-on-scroll').forEach(el => {
-        el.classList.add('visible');
-    });
 }
 
 /* ========================================
@@ -1066,26 +935,3 @@ if (initialMenuFilter && document.getElementById('menu-grid')) {
 }
 
 document.getElementById('menuExcludeAllergen')?.addEventListener('change', applyMenuFilters);
-
-/* ========================================
-   NOTIFICATION STYLE
-======================================== */
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes slideInRight {
-        from { transform: translateX(100%); opacity: 0; }
-        to { transform: translateX(0); opacity: 1; }
-    }
-`;
-document.head.appendChild(style);
-
-/* ========================================
-   PWA SERVICE WORKER REGISTRATION
-======================================== */
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./service-worker.js')
-            .then(reg => console.log('✓ Service Worker registrato'))
-            .catch(err => console.log('✗ SW error:', err));
-    });
-}

@@ -12,6 +12,8 @@ const targets = [
   'offline.html',
   'privacy.html',
   'css/styles.css',
+  'js/core.js',
+  'js/site-ui.js',
   'js/main.js',
   'js/site-config.js',
   'js/site.js',
@@ -40,6 +42,8 @@ const targets = [
   'assets/home/pizza.webp',
   'assets/home/bancone.webp'
 ];
+
+const menuImagesDirectory = path.join(root, 'assets', 'menu-images');
 
 const contentTypes = {
   '.css': 'text/css; charset=utf-8',
@@ -74,7 +78,11 @@ server.listen(0, '127.0.0.1', async () => {
   let ok = true;
 
   try {
-    for (const target of targets) {
+    const menuImages = (await fs.readdir(menuImagesDirectory))
+      .filter(file => file.endsWith('.webp'))
+      .map(file => `assets/menu-images/${file}`);
+
+    for (const target of [...targets, ...menuImages]) {
       const response = await fetch(`http://127.0.0.1:${port}/${target}`);
       const body = await response.arrayBuffer();
       const passed = response.ok && body.byteLength > 0;

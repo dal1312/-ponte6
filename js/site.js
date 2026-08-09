@@ -89,7 +89,10 @@
         navigator.sendBeacon(config.analytics.endpoint, JSON.stringify(events.at(-1)));
       }
     },
-    optOut() { localStorage.setItem("ponte-analytics-optout", "1"); },
+    optOut() {
+      localStorage.setItem("ponte-analytics-optout", "1");
+      localStorage.removeItem(config.analytics.storageKey);
+    },
     optIn() { localStorage.removeItem("ponte-analytics-optout"); }
   };
 

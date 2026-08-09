@@ -135,15 +135,65 @@ test('ordine crea ID, riepilogo e link WhatsApp', async ({ page, isMobile }) => 
   await page.getByRole('button', { name: /Aggiungi Tartare/ }).click();
   await page.getByLabel('Nome e Cognome *').fill('Mario Rossi');
   await page.getByLabel('Telefono *').fill('+39 333 1234567');
-  await page.getByLabel('Giorno *').fill(await page.locator('#orderDate').inputValue());
+  const availableDate = await page.evaluate(() => {
+    for (let offset = 1; offset <= PONTE_CONFIG.ordering.maxAdvanceDays; offset += 1) {
+      const date = new Date();
+      date.setDate(date.getDate() + offset);
+      if (!(PONTE_CONFIG.hours[date.getDay()] || []).length) continue;
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    }
+    return '';
+  });
+  expect(availableDate).not.toBe('');
+  await page.getByLabel('Giorno *').fill(availableDate);
   const time = page.locator('#orderTime option:not([value=""])').first();
-  test.skip(await time.count() === 0, 'Nessuna fascia disponibile oggi');
+  await expect(time).toHaveCount(1);
   await page.getByLabel('Orario *').selectOption(await time.getAttribute('value'));
   if (isMobile) await page.getByRole('button', { name: 'Apri carrello' }).click();
   await page.getByRole('button', { name: 'Rivedi ordine' }).click();
   await expect(page.getByRole('dialog', { name: 'Controlla prima di inviare' })).toBeVisible();
   await expect(page.locator('.receipt-meta strong')).toHaveText(/^AP-\d{8}-[A-Z0-9]{3,}$/);
   await expect(page.getByRole('link', { name: 'Apri WhatsApp' })).toHaveAttribute('href', /wa\.me\/39054329448\?text=/);
+  await expect.poll(() => page.evaluate(() => localStorage.getItem('ponte-order-drafts'))).toBeNull();
+});
+
+test('contatti non mostra il carrello', async ({ page }) => {
+  await page.goto('/contatti.html');
+  await expect(page.getByRole('button', { name: 'Apri carrello' })).toHaveCount(0);
+});
+
+test('le vecchie bozze con dati personali vengono eliminate', async ({ page }) => {
+  await page.goto('/ordina.html');
+  await page.evaluate(() => localStorage.setItem('ponte-order-drafts', JSON.stringify([
+    { customer: { name: 'Mario Rossi', phone: '3331234567' }, fulfillment: { address: 'Forlì' } }
+  ])));
+  await page.reload();
+  await expect.poll(() => page.evaluate(() => localStorage.getItem('ponte-order-drafts'))).toBeNull();
+});
+
+test('route principali non hanno overflow, errori console o immagini rotte', async ({ page }) => {
+  const errors = [];
+  page.on('console', message => {
+    if (message.type() === 'error') errors.push(message.text());
+  });
+  page.on('pageerror', error => errors.push(error.message));
+
+  for (const width of [360, 768, 1280]) {
+    await page.setViewportSize({ width, height: 900 });
+    for (const path of ['/index.html', '/menu.html', '/ordina.html', '/contatti.html']) {
+      await page.goto(path);
+      await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+      const brokenImages = await page.locator('img').evaluateAll(images => images
+        .filter(image => image.getAttribute('src') && image.complete && image.naturalWidth === 0)
+        .map(image => image.currentSrc || image.src));
+      expect(brokenImages).toEqual([]);
+    }
+  }
+
+  expect(errors).toEqual([]);
 });
 
 test('URL ordine legacy converge sulla pagina unica', async ({ page }) => {
@@ -160,10 +210,12 @@ test('privacy mostra una sola azione coerente con lo stato', async ({ page }) =>
   await expect(optOut).toBeVisible();
   await expect(optIn).toBeHidden();
 
+  await page.evaluate(() => localStorage.setItem(PONTE_CONFIG.analytics.storageKey, '[{"event":"test"}]'));
   await optOut.click();
   await expect(page.getByRole('status')).toHaveText('Misurazioni locali disattivate.');
   await expect(optOut).toBeHidden();
   await expect(optIn).toBeVisible();
+  await expect.poll(() => page.evaluate(() => localStorage.getItem(PONTE_CONFIG.analytics.storageKey))).toBeNull();
 
   await page.reload();
   await expect(page.getByRole('status')).toHaveText('Misurazioni locali disattivate.');
