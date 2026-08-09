@@ -1728,33 +1728,12 @@ section { padding: 104px 0; }
   filter: saturate(.92) contrast(1.04);
   transition: transform .45s var(--ease), filter .45s var(--ease);
 }
-.order-dish-photo span {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  padding: 1.4rem .35rem .45rem;
-  background: linear-gradient(180deg, transparent, rgba(13,8,6,.88));
-  color: var(--paper);
-  font-size: .6rem;
-  font-weight: 800;
-  letter-spacing: .1em;
-  text-align: center;
-  text-transform: uppercase;
-  opacity: 0;
-  display: none;
-  transition: opacity .3s var(--ease);
-}
 .order-dish-photo:hover img,
 .order-dish-photo:focus-visible img {
   transform: scale(1.045);
   filter: saturate(1) contrast(1.08);
 }
-.order-dish-photo:hover span,
-.order-dish-photo:focus-visible span { opacity: 1; }
-
-.order-item.has-photo,
-.order-item.no-photo {
+.order-item.has-photo {
   display: grid;
   grid-template-columns: 84px minmax(0, 1fr);
   grid-template-areas:
@@ -1767,19 +1746,6 @@ section { padding: 104px 0; }
   align-content: start;
 }
 .order-item.has-photo .order-dish-photo { grid-area: photo; }
-.order-item.no-photo::before {
-  content: attr(data-monogram);
-  grid-area: photo;
-  display: grid;
-  place-items: center;
-  width: 84px;
-  height: 84px;
-  border: 1px solid rgba(228,187,104,.26);
-  border-radius: 50%;
-  background: rgba(228,187,104,.035);
-  color: rgba(228,187,104,.48);
-  font: italic 1.35rem/1 var(--serif);
-}
 .order-item .order-item-name { grid-area: name; }
 .order-item .availability-badge { grid-area: availability; justify-self: start; }
 .order-item .order-dish-details { grid-area: details; }
@@ -2329,11 +2295,9 @@ button:disabled { opacity: .5; cursor: not-allowed; }
   place-items: center;
   overflow-x: hidden;
   background:
-    linear-gradient(90deg, rgba(244,234,220,.028) 1px, transparent 1px),
     radial-gradient(circle at 82% 14%, rgba(132,40,31,.28), transparent 30vw),
     radial-gradient(circle at 12% 90%, rgba(228,187,104,.1), transparent 26vw),
     #17100d;
-  background-size: 112px 112px, auto, auto, auto;
   color: var(--paper);
 }
 .utility-page::before {
@@ -3309,10 +3273,8 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 .after-dark-order .order-page,
 .after-dark-contacts .contacts-page {
   background:
-    linear-gradient(90deg, rgba(244,234,220,.026) 1px, transparent 1px),
     radial-gradient(circle at 88% 0%, rgba(120,46,37,.22), transparent 28vw),
     #211713;
-  background-size: 112px 112px, auto, auto;
 }
 .after-dark-menu .menu-item { border-bottom-color: rgba(228,187,104,.22); }
 .after-dark-menu .menu-item:hover { background: linear-gradient(90deg, rgba(228,187,104,.08), transparent 80%); }
@@ -3349,30 +3311,11 @@ button:disabled { opacity: .5; cursor: not-allowed; }
   filter: saturate(.9) contrast(1.04);
   transition: transform .45s var(--ease), filter .45s var(--ease);
 }
-.after-dark-menu .dish-photo-thumb span {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  padding: .42rem .3rem;
-  background: linear-gradient(180deg, transparent, rgba(13,8,6,.9));
-  color: var(--paper);
-  font-size: .58rem;
-  font-weight: 800;
-  letter-spacing: .09em;
-  text-align: center;
-  text-transform: uppercase;
-  display: none;
-  opacity: 0;
-  transition: opacity .3s var(--ease);
-}
 .after-dark-menu .dish-photo-thumb:hover img,
 .after-dark-menu .dish-photo-thumb:focus-visible img {
   transform: scale(1.045);
   filter: saturate(1) contrast(1.08);
 }
-.after-dark-menu .dish-photo-thumb:hover span,
-.after-dark-menu .dish-photo-thumb:focus-visible span { opacity: 1; }
 .after-dark-menu .dish-photo-dialog { border-radius: 5px; }
 
 .after-dark-order .order-item,
@@ -3432,22 +3375,19 @@ button:disabled { opacity: .5; cursor: not-allowed; }
     "details bottom"
     "allergens bottom";
 }
-.after-dark-order .order-item.no-photo::before { display: none; }
 .after-dark-order .order-item.has-photo .order-dish-photo {
   width: 88px;
   height: 88px;
   min-height: 88px;
 }
-.after-dark-order .order-item.no-photo::before {
-  width: 88px;
-  height: 88px;
-  border-color: rgba(228,187,104,.24);
-  box-shadow: inset 0 0 0 4px rgba(228,187,104,.025);
-}
 .after-dark-order .order-item-name {
+  max-width: 34rem;
   padding-top: .05rem;
-  font-size: clamp(1.32rem, 1.65vw, 1.68rem);
+  font-family: var(--serif);
+  font-size: clamp(1.35rem, 1.65vw, 1.75rem);
+  font-weight: 400;
   line-height: 1.12;
+  letter-spacing: -.025em;
 }
 .after-dark-order .order-item.has-photo .order-item-name {
   padding-top: .65rem;
@@ -3467,7 +3407,11 @@ button:disabled { opacity: .5; cursor: not-allowed; }
   padding-left: 1rem;
   border-left: 1px solid rgba(244,234,220,.1);
 }
-.after-dark-order .order-item-price { font-size: 1.35rem; }
+.after-dark-order .order-item-price {
+  font-family: var(--serif);
+  font-size: 1.25rem;
+  font-weight: 600;
+}
 .after-dark-order .order-item .order-dish-details {
   width: min(100%, 430px);
   margin: .5rem 0 0;
@@ -3477,20 +3421,6 @@ button:disabled { opacity: .5; cursor: not-allowed; }
   border-bottom-color: rgba(228,187,104,.55);
   background: linear-gradient(90deg, rgba(228,187,104,.055), transparent 82%);
   box-shadow: none;
-}
-.after-dark-order .order-item-name {
-  max-width: 34rem;
-  font-family: var(--serif);
-  font-size: clamp(1.35rem, 1.65vw, 1.75rem);
-  font-weight: 400;
-  line-height: 1.08;
-  letter-spacing: -.025em;
-}
-.after-dark-order .order-item-bottom { margin-top: 1.1rem; }
-.after-dark-order .order-item-price {
-  font-family: var(--serif);
-  font-size: 1.25rem;
-  font-weight: 600;
 }
 .after-dark-order .btn-add-small {
   width: auto;
@@ -3910,8 +3840,7 @@ button:disabled { opacity: .5; cursor: not-allowed; }
       "allergens"
       "bottom";
   }
-  .after-dark-order .order-item.has-photo .order-dish-photo,
-  .after-dark-order .order-item.no-photo::before {
+  .after-dark-order .order-item.has-photo .order-dish-photo {
     width: 72px;
     height: 72px;
     min-height: 72px;
@@ -3990,7 +3919,6 @@ button:disabled { opacity: .5; cursor: not-allowed; }
     height: 72px;
     aspect-ratio: 1;
   }
-  .after-dark-menu .dish-photo-thumb span { display: none; }
 }
 
 /* Reduced motion */

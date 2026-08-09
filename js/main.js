@@ -790,7 +790,6 @@ function renderOrderItems() {
         container.innerHTML = menuData[category].map(item => {
             const itemState = getItemAvailability(item, category);
             const dishImage = item.image || MENU_IMAGE_FALLBACKS[item.id] || '';
-            const dishMonogram = escapeHtml(item.name.trim().charAt(0).toLocaleUpperCase('it') || '•');
             const disabledAttribute = itemState.available ? '' : ' disabled';
             const availabilityHtml = itemState.available
                 ? ''
@@ -801,13 +800,13 @@ function renderOrderItems() {
                 ? `<details class="dish-details order-dish-details"><summary>Ingredienti</summary><p class="dish-description">${escapeHtml(item.ingredients)}</p></details>`
                 : '<details class="dish-details order-dish-details"><summary>Ingredienti</summary><p class="dish-description dish-description-muted">Da confermare</p></details>';
             const orderPhotoHtml = dishImage
-                ? `<button class="dish-photo-trigger order-dish-photo" type="button" data-photo-src="${escapeHtml(dishImage)}" data-photo-name="${escapeHtml(item.name)}" aria-label="Apri la foto di ${escapeHtml(item.name)}" aria-controls="dishPhotoDialog" aria-haspopup="dialog" data-track="dish_photo"><img src="${escapeHtml(dishImage)}" alt="" loading="lazy" decoding="async"><span>Guarda il piatto</span></button>`
+                ? `<button class="dish-photo-trigger order-dish-photo" type="button" data-photo-src="${escapeHtml(dishImage)}" data-photo-name="${escapeHtml(item.name)}" aria-label="Apri la foto di ${escapeHtml(item.name)}" aria-controls="dishPhotoDialog" aria-haspopup="dialog" data-track="dish_photo"><img src="${escapeHtml(dishImage)}" alt="" loading="lazy" decoding="async"></button>`
                 : '';
             
             if (isPizza) {
                 const ingredientsJson = escapeHtml(JSON.stringify(ingredientsArray));
                 return `
-                    <div class="order-item order-item-pizza${dishImage ? ' has-photo' : ' no-photo'}${itemState.available ? '' : ' is-unavailable'}" data-monogram="${dishMonogram}">
+                    <div class="order-item order-item-pizza${dishImage ? ' has-photo' : ' no-photo'}${itemState.available ? '' : ' is-unavailable'}">
                         ${orderPhotoHtml}
                         <div class="order-item-name">${escapeHtml(item.name)}</div>
                         ${availabilityHtml}
@@ -822,7 +821,7 @@ function renderOrderItems() {
             }
             
             return `
-                <div class="order-item${dishImage ? ' has-photo' : ' no-photo'}${itemState.available ? '' : ' is-unavailable'}" data-monogram="${dishMonogram}">
+                <div class="order-item${dishImage ? ' has-photo' : ' no-photo'}${itemState.available ? '' : ' is-unavailable'}">
                     ${orderPhotoHtml}
                     <div class="order-item-name">${escapeHtml(item.name)}</div>
                     ${availabilityHtml}
@@ -879,7 +878,7 @@ function renderMenuItems() {
             
             const dishImage = item.image || MENU_IMAGE_FALLBACKS[item.id] || '';
             const photoButtonHtml = dishImage
-                ? `<button class="dish-photo-trigger dish-photo-thumb" type="button" data-photo-src="${escapeHtml(dishImage)}" data-photo-name="${escapeHtml(item.name)}" aria-label="Apri la foto di ${escapeHtml(item.name)}" aria-controls="dishPhotoDialog" aria-haspopup="dialog" data-track="dish_photo"><img src="${escapeHtml(dishImage)}" alt="" loading="lazy" decoding="async"><span>Apri foto</span></button>`
+                ? `<button class="dish-photo-trigger dish-photo-thumb" type="button" data-photo-src="${escapeHtml(dishImage)}" data-photo-name="${escapeHtml(item.name)}" aria-label="Apri la foto di ${escapeHtml(item.name)}" aria-controls="dishPhotoDialog" aria-haspopup="dialog" data-track="dish_photo"><img src="${escapeHtml(dishImage)}" alt="" loading="lazy" decoding="async"></button>`
                 : '';
             const availabilityHtml = itemState.available
                 ? ''
