@@ -4032,8 +4032,16 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 
 .after-dark-menu .menu-main,
 .after-dark-order .order-page {
-  background: #f3eadc;
+  background: #fbf5ea;
   color: #231612;
+}
+.after-dark-menu .navbar,
+.after-dark-order .navbar { background: #1b100d; }
+.after-dark-menu .nav-container,
+.after-dark-order .nav-container {
+  border-color: rgba(228,187,104,.28);
+  background: #1b100d;
+  box-shadow: 0 8px 24px rgba(23,12,8,.18);
 }
 .after-dark-menu .menu-category-intro,
 .after-dark-order .order-menu h2 { border-color: #cbb69e; }
@@ -4111,12 +4119,58 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 }
 
 @media (max-width: 620px) {
+  .after-dark-menu .navbar,
+  .after-dark-order .navbar { height: 72px; }
+  .after-dark-menu .menu-filters,
+  .after-dark-order .menu-filters {
+    border-bottom-color: #c9b299;
+    box-shadow: 0 5px 14px rgba(47,28,20,.08);
+  }
+  .after-dark-menu .filter-index-label,
+  .after-dark-menu .filter-btn,
+  .after-dark-order .filter-index-label,
+  .after-dark-order .filter-btn { min-height: 44px; }
+  .after-dark-menu .menu-category-intro {
+    gap: .5rem;
+    padding-bottom: 1rem;
+  }
+  .after-dark-menu .menu-category-intro h2 { font-size: 2.15rem; }
+  .after-dark-menu .menu-category-summary p { font-size: .82rem; }
   .after-dark-menu .menu-item-content,
   .after-dark-order .order-item { padding-block: 1rem; }
   .after-dark-menu .menu-item-header h3,
   .after-dark-order .order-item-name { font-size: 1.08rem; }
   .after-dark-menu .dish-description,
   .after-dark-order .order-pizza-ingredients { font-size: .78rem; }
+  .after-dark-menu .menu-item-content.has-photo .menu-item-layout {
+    grid-template-columns: 48px minmax(0, 1fr);
+    gap: .7rem;
+  }
+  .after-dark-menu .menu-item-content.has-photo .menu-item-copy {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .after-dark-menu .dish-photo-thumb {
+    grid-column: 1;
+    grid-row: 1;
+    width: 48px;
+    height: 48px;
+  }
+  .after-dark-menu .menu-item-header h3 {
+    font-family: var(--sans);
+    font-size: .95rem;
+    font-weight: 700;
+    line-height: 1.22;
+    letter-spacing: -.02em;
+  }
+  .after-dark-menu .price { margin-top: .28rem; font-size: .88rem; }
+  .after-dark-menu .dish-description {
+    font-size: .76rem;
+    line-height: 1.38;
+  }
+  .after-dark-menu .allergens { margin-top: .45rem; gap: .25rem; }
+  .after-dark-menu .allergens::before { margin-right: .15rem; }
+  .after-dark-menu .allergen { font-size: .57rem; }
 }
 
 /* Reduced motion */
