@@ -125,10 +125,10 @@
     if (order.fulfillment.address) message += `📍 *Indirizzo:* ${order.fulfillment.address}\n`;
     message += `\n📋 *ORDINE:*\n`;
     order.items.forEach(item => {
-      message += `• ${item.qty}x ${item.name} = €${(item.price * item.qty).toFixed(2)}\n`;
+      message += `• ${item.qty}x ${item.name} = € ${(item.price * item.qty).toFixed(2)}\n`;
       if (item.customDetails) message += `  └ ${item.customDetails}\n`;
     });
-    message += `\n💰 *TOTALE: €${order.total.toFixed(2)}*`;
+    message += `\n💰 *TOTALE: € ${order.total.toFixed(2)}*`;
     if (order.notes) message += `\n\n📝 *Note:* ${order.notes}`;
     message += "\n\n⏳ Attendo conferma di disponibilità e orario.";
     return message;

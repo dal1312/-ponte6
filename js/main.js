@@ -10,7 +10,7 @@ function buildWhatsAppUrl(message = '') {
 }
 
 function formatPrice(value) {
-    return `€${Number(value).toFixed(2).replace('.', ',')}`;
+    return `€\u00a0${Number(value).toFixed(2).replace('.', ',')}`;
 }
 
 function escapeHtml(value) {
@@ -288,7 +288,7 @@ function createPizzaModal() {
                                     <div class="extra-checkbox">✓</div>
                                     <span class="extra-name">${e.name}</span>
                                 </div>
-                                <span class="extra-price">+€${e.price.toFixed(2)}</span>
+                                <span class="extra-price">+ € ${e.price.toFixed(2).replace('.', ',')}</span>
                             </label>
                         `).join('')}
                     </div>
@@ -311,7 +311,7 @@ function createPizzaModal() {
             <div class="modal-footer">
                 <div class="modal-total">
                     <span>Totale</span>
-                    <span class="modal-total-price" id="modalTotal">€7,00</span>
+                    <span class="modal-total-price" id="modalTotal">€ 7,00</span>
                 </div>
                 <button class="btn-add-custom" id="addCustomPizza" type="button">
                     Aggiungi al Carrello
