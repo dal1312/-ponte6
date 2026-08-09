@@ -77,11 +77,13 @@ test('filtri aggiornano il menu', async ({ page }) => {
   await expect(page.getByRole('searchbox')).toHaveCount(0);
   await expect(page.getByLabel('Prezzo massimo')).toHaveCount(0);
   await expect(page.getByText('Solo piatti con foto')).toHaveCount(0);
-  await page.getByLabel('Nascondi allergene').selectOption('latte');
-  await expect(page.getByRole('heading', { name: 'Margherita' })).toBeHidden();
-  await expect(page.getByRole('heading', { name: 'Marinara' })).toBeVisible();
+  await expect(page.getByLabel('Nascondi allergene')).toHaveCount(0);
+  await expect(page.locator('.filter-scroll-cue')).toHaveCount(1);
   await page.getByRole('button', { name: 'Primi' }).click();
   await expect(page.locator('#menuCategoryCount')).toHaveCount(0);
+  const firstVisibleDish = page.locator('.menu-item:visible').first();
+  await expect(firstVisibleDish).toHaveClass(/visible/);
+  await expect(firstVisibleDish).toHaveCSS('opacity', '1');
 });
 
 test('allergeni mostrano numero e provenienza', async ({ page }) => {
@@ -96,6 +98,15 @@ test('allergeni mostrano numero e provenienza', async ({ page }) => {
   await expect(confirmedDish.locator('.allergen-confirmed')).toHaveCount(2);
   await expect(confirmedDish.locator('.allergens')).toContainText('1 Glutine');
   await expect(confirmedDish.locator('.allergens')).toContainText('7 Latte');
+});
+
+test('legenda allergeni resta compatta ed espandibile', async ({ page }) => {
+  await page.goto('/menu.html');
+  const legend = page.getByText('Allergeni e informazioni', { exact: true });
+  await expect(legend).toBeVisible();
+  await expect(page.getByText(/Numero pieno = dichiarato/)).toBeHidden();
+  await legend.click();
+  await expect(page.getByText(/Numero pieno = dichiarato/)).toBeVisible();
 });
 
 test('carrello persiste e personalizza una pizza', async ({ page }) => {

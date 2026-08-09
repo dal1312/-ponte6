@@ -860,6 +860,17 @@ if (document.getElementById('dishPhotoDialog')) setupDishPhotoDialog();
    MENU FILTERS
 ======================================== */
 const filterBtns = document.querySelectorAll('.filter-btn');
+const filterScroller = document.querySelector('#menuFilters .container');
+const filterScrollCue = document.querySelector('#menuFilters .filter-scroll-cue');
+if (filterScroller && filterScrollCue) {
+    const syncFilterScrollCue = () => {
+        const reachedEnd = filterScroller.scrollLeft + filterScroller.clientWidth >= filterScroller.scrollWidth - 4;
+        filterScrollCue.toggleAttribute('hidden', reachedEnd);
+    };
+    filterScroller.addEventListener('scroll', syncFilterScrollCue, { passive: true });
+    window.addEventListener('resize', syncFilterScrollCue);
+    requestAnimationFrame(syncFilterScrollCue);
+}
 const menuCategoryCopy = {
     antipasti: 'Per iniziare con il passo giusto.',
     primi: 'Pasta fresca e ricette della tradizione romagnola.',
@@ -884,17 +895,21 @@ function updateMenuCategoryIntro(category) {
 
 function applyMenuFilters() {
     const activeCategory = document.querySelector('#menuFilters .filter-btn.active')?.dataset.category || 'all';
-    const excludedAllergen = (document.getElementById('menuExcludeAllergen')?.value || '').toLocaleLowerCase('it');
     const items = [...document.querySelectorAll('#menu-grid .menu-item')];
     let visibleCount = 0;
 
     items.forEach(item => {
         const categoryMatches = activeCategory === 'all' || item.dataset.category === activeCategory;
-        const allergenMatches = !excludedAllergen || !item.dataset.allergens.includes(excludedAllergen);
-        const visible = categoryMatches && allergenMatches;
+        const visible = categoryMatches;
         item.hidden = !visible;
         item.style.display = visible ? '' : 'none';
-        if (visible) visibleCount += 1;
+        if (visible) {
+            // Gli elementi inizialmente nascosti non entrano nell'IntersectionObserver:
+            // rendili leggibili appena il filtro li mostra.
+            item.classList.add('visible');
+            observer?.unobserve(item);
+            visibleCount += 1;
+        }
     });
 
     const noResults = document.getElementById('menuNoResults');
@@ -933,5 +948,3 @@ if (initialMenuFilter && document.getElementById('menu-grid')) {
     updateMenuCategoryIntro(initialCategory);
     applyMenuFilters();
 }
-
-document.getElementById('menuExcludeAllergen')?.addEventListener('change', applyMenuFilters);

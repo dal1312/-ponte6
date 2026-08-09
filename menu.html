@@ -102,33 +102,11 @@
         <button class="filter-btn" data-category="vini_bianchi" aria-pressed="false">Vini bianchi</button>
         <button class="filter-btn" data-category="vini_rossi" aria-pressed="false">Vini rossi</button>
     </div>
+    <span class="filter-scroll-cue" aria-hidden="true">→</span>
 </div>
 
 <main class="menu-main">
     <div class="container">
-        <section class="menu-tools" aria-label="Filtri menu">
-            <div class="menu-tool-field">
-                <label for="menuExcludeAllergen">Nascondi allergene</label>
-                <select id="menuExcludeAllergen">
-                    <option value="">Nessuno</option>
-                    <option value="glutine">Glutine</option>
-                    <option value="crostacei">Crostacei</option>
-                    <option value="uova">Uova</option>
-                    <option value="pesce">Pesce</option>
-                    <option value="arachidi">Arachidi</option>
-                    <option value="soia">Soia</option>
-                    <option value="latte">Latte</option>
-                    <option value="frutta a guscio">Frutta a guscio</option>
-                    <option value="sedano">Sedano</option>
-                    <option value="senape">Senape</option>
-                    <option value="sesamo">Sesamo</option>
-                    <option value="solfiti">Solfiti</option>
-                    <option value="lupini">Lupini</option>
-                    <option value="molluschi">Molluschi</option>
-                </select>
-            </div>
-            <p class="menu-filter-safety">Il filtro considera dati dichiarati e deduzioni evidenziate. Non certifica l’assenza di allergeni o contaminazioni.</p>
-        </section>
         <section class="menu-category-intro" id="menuCategoryIntro" aria-live="polite">
             <div>
                 <span class="menu-category-kicker">La carta</span>
@@ -144,9 +122,9 @@
         <p class="menu-no-results" id="menuNoResults" hidden>Nessun piatto corrisponde ai filtri selezionati.</p>
 
         <div class="allergens-disclaimer animate-on-scroll">
-            <p><strong>Allergeni:</strong> numero pieno = dichiarato; numero tratteggiato = dedotto. Verifica sempre con il personale.</p>
             <details class="allergen-legend">
-                <summary>Legenda 1–14 · Reg. (UE) 1169/2011</summary>
+                <summary>Allergeni e informazioni</summary>
+                <p>Numero pieno = dichiarato; numero tratteggiato = dedotto. Verifica sempre con il personale.</p>
                 <ol>
                     <li>Glutine</li><li>Crostacei</li><li>Uova</li><li>Pesce</li>
                     <li>Arachidi</li><li>Soia</li><li>Latte</li><li>Frutta a guscio</li>
@@ -182,6 +160,6 @@
 <script src="js/menu-data.js"></script>
 <script src="js/core.js?v=80"></script>
 <script src="js/site-ui.js?v=80"></script>
-<script src="js/main.js?v=80"></script>
+<script src="js/main.js?v=86"></script>
 </body>
 </html>

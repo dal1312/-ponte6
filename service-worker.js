@@ -1,4 +1,4 @@
-const CACHE_VERSION = "v80";
+const CACHE_VERSION = "v86";
 const STATIC_CACHE = `ponte6-static-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `ponte6-runtime-${CACHE_VERSION}`;
 const RUNTIME_LIMIT = 50;
@@ -15,7 +15,7 @@ const APP_SHELL = [
   "./css/styles.css",
   "./js/core.js?v=80",
   "./js/site-ui.js?v=80",
-  "./js/main.js?v=80",
+  "./js/main.js?v=86",
   "./js/site-config.js",
   "./js/site.js",
   "./js/order.js",
