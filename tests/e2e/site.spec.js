@@ -1,15 +1,77 @@
 const { test, expect } = require('@playwright/test');
 
+test('titoli editoriali conservano una frase accessibile', async ({ page }) => {
+  const pages = [
+    ['/index.html', 'Dopo il ponte, la tavola si accende.'],
+    ['/menu.html', 'Scegli il tuo posto a tavola.'],
+    ['/ordina.html', 'Il tuo ordine, senza intermediari.'],
+    ['/contatti.html', 'Trova il ponte, poi trova il tavolo.'],
+    ['/privacy.html', 'Privacy, in modo semplice.'],
+    ['/offline.html', 'La connessione si è fermata.']
+  ];
+
+  for (const [path, name] of pages) {
+    await page.goto(path);
+    await expect(page.getByRole('heading', { level: 1, name })).toBeVisible();
+  }
+
+  await page.goto('/index.html');
+  await expect(page.locator('.hero-note strong')).toHaveText('La serata comincia qui.');
+  await page.goto('/menu.html');
+  await expect(page.locator('.menu-hero-note strong')).toHaveText("Dall'antipasto all'ultima fetta.");
+});
+
+test('font editoriali sono self-hosted e caricati', async ({ page }) => {
+  const externalFontRequests = [];
+  page.on('request', request => {
+    if (/fonts\.(googleapis|gstatic)\.com/.test(request.url())) externalFontRequests.push(request.url());
+  });
+
+  await page.goto('/offline.html');
+  await page.evaluate(() => document.fonts.ready);
+
+  const fontResources = await page.evaluate(() => performance
+    .getEntriesByType('resource')
+    .map(entry => new URL(entry.name).pathname));
+
+  expect(fontResources).toContain('/assets/fonts/dm-sans-latin.woff2');
+  expect(fontResources).toContain('/assets/fonts/italiana-latin.woff2');
+  expect(externalFontRequests).toEqual([]);
+});
+
 test('menu mobile gestisce stato e tastiera', async ({ page, isMobile }) => {
   test.skip(!isMobile, 'Scenario mobile');
   await page.goto('/index.html');
-  const trigger = page.getByRole('button', { name: 'Apri menu' });
+  const trigger = page.locator('.mobile-menu-btn');
+  const mobileMenu = page.locator('#mobileMenu');
+  await expect(trigger).toHaveAccessibleName('Apri menu');
+  await expect(mobileMenu).toHaveCSS('box-shadow', 'none');
   await trigger.click();
   await expect(trigger).toHaveAttribute('aria-expanded', 'true');
-  await expect(page.locator('#mobileMenu')).toHaveAttribute('aria-hidden', 'false');
+  await expect(trigger).toHaveAccessibleName('Chiudi menu');
+  await expect(mobileMenu).toHaveAttribute('aria-hidden', 'false');
+  await expect(mobileMenu).not.toHaveCSS('box-shadow', 'none');
+  await expect(page.getByRole('link', { name: 'Home', exact: true })).toBeFocused();
+  await page.keyboard.press('Shift+Tab');
+  await expect(trigger).toBeFocused();
+  await page.keyboard.press('Shift+Tab');
+  await expect(page.getByRole('link', { name: 'Prenota su WhatsApp' })).toBeFocused();
+  await page.keyboard.press('Tab');
+  await expect(trigger).toBeFocused();
   await page.keyboard.press('Escape');
   await expect(trigger).toHaveAttribute('aria-expanded', 'false');
+  await expect(trigger).toHaveAccessibleName('Apri menu');
+  await expect(mobileMenu).toHaveCSS('box-shadow', 'none');
   await expect(trigger).toBeFocused();
+
+  await trigger.click();
+  await page.locator('main').click({ position: { x: 8, y: 400 } });
+  await expect(trigger).toHaveAttribute('aria-expanded', 'false');
+
+  await trigger.click();
+  await page.setViewportSize({ width: 1024, height: 768 });
+  await expect(page.locator('#mobileMenu')).toHaveAttribute('aria-hidden', 'true');
+  await expect(page.locator('body')).not.toHaveClass(/mobile-menu-open/);
 });
 
 test('filtri aggiornano il menu', async ({ page }) => {
@@ -52,6 +114,22 @@ test('carrello persiste e personalizza una pizza', async ({ page }) => {
   await expect(page.locator('.cart-item-custom')).toContainText('ben cotta');
 });
 
+test('drawer carrello resta fuori schermo al breakpoint tablet', async ({ page }) => {
+  await page.setViewportSize({ width: 1024, height: 768 });
+  await page.goto('/ordina.html');
+  await expect(page.locator('#cart')).not.toHaveAttribute('aria-hidden', 'true');
+
+  await page.setViewportSize({ width: 768, height: 1024 });
+  await expect(page.locator('#cart')).toHaveAttribute('aria-hidden', 'true');
+  await expect.poll(async () => {
+    const cartBox = await page.locator('#cart').boundingBox();
+    return cartBox?.y ?? 0;
+  }).toBeGreaterThanOrEqual(1024);
+
+  await page.setViewportSize({ width: 1024, height: 768 });
+  await expect(page.locator('#cart')).not.toHaveAttribute('aria-hidden', 'true');
+});
+
 test('ordine crea ID, riepilogo e link WhatsApp', async ({ page, isMobile }) => {
   await page.goto('/ordina.html');
   await page.getByRole('button', { name: /Aggiungi Tartare/ }).click();
@@ -71,4 +149,24 @@ test('ordine crea ID, riepilogo e link WhatsApp', async ({ page, isMobile }) => 
 test('URL ordine legacy converge sulla pagina unica', async ({ page }) => {
   await page.goto('/ordina-rapido.html');
   await expect(page).toHaveURL(/ordina\.html$/);
+});
+
+test('privacy mostra una sola azione coerente con lo stato', async ({ page }) => {
+  await page.goto('/privacy.html');
+  const optOut = page.getByRole('button', { name: /Disattiva misurazioni locali/ });
+  const optIn = page.getByRole('button', { name: /Riattiva misurazioni locali/ });
+
+  await expect(page.getByRole('status')).toHaveText('Misurazioni locali attive.');
+  await expect(optOut).toBeVisible();
+  await expect(optIn).toBeHidden();
+
+  await optOut.click();
+  await expect(page.getByRole('status')).toHaveText('Misurazioni locali disattivate.');
+  await expect(optOut).toBeHidden();
+  await expect(optIn).toBeVisible();
+
+  await page.reload();
+  await expect(page.getByRole('status')).toHaveText('Misurazioni locali disattivate.');
+  await optIn.click();
+  await expect(page.getByRole('status')).toHaveText('Misurazioni locali riattivate.');
 });

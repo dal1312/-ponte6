@@ -3,18 +3,21 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="theme-color" content="#8B1A1A">
+    <meta name="theme-color" content="#17100d">
     <title>Offline | Al Ponte di Schiavonia</title>
+    <link rel="preload" href="assets/fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="assets/fonts/italiana-latin.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="css/styles.css">
   </head>
-  <body>
-    <a class="logo" href="index.html" aria-label="Al Ponte di Schiavonia, Home">
-      <img src="assets/home/logo.png" alt="Logo Al Ponte di Schiavonia">
-      <div><strong>Al Ponte di Schiavonia</strong><span>Trattoria e Pizzeria</span></div>
-    </a>
-    <main class="container offline-shell">
-      <h1>Connessione assente</h1>
-      <p>Le pagine già visitate restano disponibili. Riprova quando la connessione torna attiva.</p>
+  <body class="utility-page utility-offline">
+    <main class="utility-card offline-card">
+      <a class="logo" href="index.html" aria-label="Al Ponte di Schiavonia, Home">
+        <img src="assets/home/logo.png" alt="Logo Al Ponte di Schiavonia">
+        <div><strong>Al Ponte di Schiavonia</strong><span>Trattoria e Pizzeria</span></div>
+      </a>
+      <span class="section-label light">STATO / OFFLINE</span>
+      <h1 aria-label="La connessione si è fermata.">La connessione<br><em>si è fermata.</em></h1>
+      <p>Le pagine già visitate restano disponibili. Quando la rete torna attiva, puoi riprendere da dove eri rimasto.</p>
       <a class="btn btn-primary" href="./">Torna alla home</a>
     </main>
   </body>

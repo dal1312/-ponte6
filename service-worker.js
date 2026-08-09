@@ -1,4 +1,4 @@
-const STATIC_CACHE = "ponte6-static-v33";
+const STATIC_CACHE = "ponte6-static-v67";
 const RUNTIME_CACHE = "ponte6-runtime-v1";
 const RUNTIME_LIMIT = 50;
 
@@ -21,6 +21,8 @@ const APP_SHELL = [
   "./favicon.ico",
   "./assets/icons/icon-192.png",
   "./assets/icons/icon-512.png",
+  "./assets/fonts/dm-sans-latin.woff2",
+  "./assets/fonts/italiana-latin.woff2",
   "./assets/home/logo.png",
   "./assets/home/sala.webp",
   "./assets/home/sala-640.webp",

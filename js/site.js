@@ -99,15 +99,32 @@
   });
 
   window.PonteSite = { getRestaurantStatus, analytics };
-  document.getElementById("privacyOptOut")?.addEventListener("click", () => {
+  const privacyOptOut = document.getElementById("privacyOptOut");
+  const privacyOptIn = document.getElementById("privacyOptIn");
+  const privacyStatus = document.getElementById("privacyStatus");
+  const renderPrivacyState = message => {
+    if (!privacyStatus) return;
+    const doNotTrack = navigator.doNotTrack === "1";
+    const optedOut = localStorage.getItem("ponte-analytics-optout") === "1";
+    privacyOptOut?.toggleAttribute("hidden", doNotTrack || optedOut);
+    privacyOptIn?.toggleAttribute("hidden", doNotTrack || !optedOut);
+    privacyStatus.textContent = message || (doNotTrack
+      ? "Do Not Track attivo: misurazioni locali disattivate."
+      : optedOut
+        ? "Misurazioni locali disattivate."
+        : "Misurazioni locali attive.");
+    privacyStatus.dataset.state = doNotTrack || optedOut ? "off" : "on";
+  };
+  privacyOptOut?.addEventListener("click", () => {
     analytics.optOut();
-    document.getElementById("privacyStatus").textContent = "Misurazioni locali disattivate.";
+    renderPrivacyState("Misurazioni locali disattivate.");
   });
-  document.getElementById("privacyOptIn")?.addEventListener("click", () => {
+  privacyOptIn?.addEventListener("click", () => {
     analytics.optIn();
-    document.getElementById("privacyStatus").textContent = "Misurazioni locali riattivate.";
+    renderPrivacyState("Misurazioni locali riattivate.");
   });
   bindConfig();
   renderStatus();
   renderHours();
+  renderPrivacyState();
 })();

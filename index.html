@@ -9,9 +9,8 @@
   <link rel="canonical" href="https://dal1312.github.io/-ponte6/">
   <link rel="manifest" href="manifest.json">
   <link rel="icon" href="favicon.ico" sizes="any">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Italiana&display=swap" rel="stylesheet">
+  <link rel="preload" href="assets/fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/italiana-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="css/styles.css">
   <meta property="og:type" content="restaurant">
   <meta property="og:title" content="Al Ponte di Schiavonia | Trattoria e Pizzeria a Forlì">
@@ -56,10 +55,10 @@
         <div><strong>Al Ponte di Schiavonia</strong><span>Trattoria e Pizzeria</span></div>
       </a>
       <nav class="nav-links" aria-label="Navigazione principale">
+        <a href="index.html" class="active" aria-current="page">Home</a>
         <a href="menu.html">Menu</a>
-        <a href="#locale" class="active" aria-current="page">Il locale</a>
+        <a href="ordina.html">Ordina</a>
         <a href="contatti.html">Contatti</a>
-        <a href="ordina.html">Ordina online</a>
       </nav>
       <a class="btn-prenota-nav" href="https://wa.me/39054329448" data-config-href="whatsapp" data-track="booking_whatsapp" target="_blank" rel="noopener">Prenota</a>
       <button class="mobile-menu-btn" aria-label="Apri menu" aria-controls="mobileMenu" aria-expanded="false" type="button">
@@ -71,15 +70,15 @@
   </nav>
 
   <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+    <a href="index.html" class="active" aria-current="page">Home</a>
     <a href="menu.html">Menu</a>
-    <a href="#locale" class="active" aria-current="page">Il locale</a>
+    <a href="ordina.html">Ordina</a>
     <a href="contatti.html">Contatti</a>
-    <a href="ordina.html">Ordina online</a>
     <a href="https://wa.me/39054329448" data-config-href="whatsapp" data-track="booking_whatsapp" class="btn-whatsapp" target="_blank" rel="noopener">Prenota su WhatsApp</a>
   </div>
 
   <button class="floating-cart" id="floatingCart" aria-label="Apri carrello" type="button">
-    <span>🧺</span>
+    <svg class="floating-cart-symbol" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h16l-1.3 10H5.3L4 9Z"/><path d="m8 9 4-5 4 5"/></svg>
     <span class="cart-count">0</span>
   </button>
 
@@ -89,7 +88,7 @@
         <div>
           <div class="hero-badge">Forlì · dal 1978</div>
           <div class="restaurant-status" data-restaurant-status aria-live="polite"></div>
-          <h1 class="hero-title">Dopo il ponte,<br>la tavola si <em>accende.</em></h1>
+          <h1 class="hero-title" aria-label="Dopo il ponte, la tavola si accende.">Dopo il ponte,<br>la tavola si <em>accende.</em></h1>
           <p class="hero-description">Pasta fresca, pizza e cucina romagnola. Una serata che comincia dal menu e resta al tavolo.</p>
           <div class="hero-cta"><a class="btn btn-primary" href="ordina.html" data-track="order_start">Ordina adesso</a><a class="btn btn-outline" href="menu.html" data-track="menu_open">Scopri il menu</a></div>
           <div class="hero-facts hero-facts-compact" aria-label="Punti forti">
@@ -98,15 +97,16 @@
             <div class="hero-fact"><strong>Diretto</strong><span>Dal tavolo a noi</span></div>
           </div>
         </div>
-        <div class="hero-note"><strong>La serata<br>comincia qui.</strong><span>Menu, ordine diretto e un tavolo da raggiungere.</span></div>
+        <div class="hero-note"><strong>La serata <span class="editorial-line">comincia qui.</span></strong><span>Menu, ordine diretto e un tavolo da raggiungere.</span></div>
       </div>
     </section>
 
     <section class="home-focus" id="locale">
+      <div class="home-focus-word" aria-hidden="true">SCHIAVONIA · FORLÌ</div>
       <div class="container home-focus-grid">
         <div class="home-focus-copy">
           <div class="section-label">Il locale</div>
-          <h2>Il nostro tavolo.<br><em>La tua sera.</em></h2>
+          <h2 aria-label="Il nostro tavolo. La tua sera.">Il nostro tavolo.<br><em>La tua sera.</em></h2>
           <p>Una cucina fatta di gesti, un forno sempre vivo e una sala dove il tempo rallenta al punto giusto.</p>
           <div class="home-route-list" aria-label="Percorsi principali">
             <a href="menu.html"><span>01</span><strong>Guarda il menu</strong></a>
@@ -123,7 +123,7 @@
 
     <section class="menu-callout">
       <div class="container">
-        <div class="menu-head"><h2>La carta<br>della sera.</h2><div class="menu-side"><p>Pasta fresca, piatti di terra e di mare, pizza e dolci. Una selezione da leggere con calma, poi scegliere d'istinto.</p><a href="menu.html">Apri il menu completo →</a></div></div>
+        <div class="menu-head"><h2 aria-label="La carta della sera.">La carta<br>della sera.</h2><div class="menu-side"><p>Pasta fresca, piatti di terra e di mare, pizza e dolci. Una selezione da leggere con calma, poi scegliere d'istinto.</p><a href="menu.html">Apri il menu completo →</a></div></div>
         <div class="plates">
           <a class="plate" href="menu.html"><picture><source type="image/webp" srcset="assets/home/tortelli-640.webp 640w, assets/home/tortelli.webp 1360w" sizes="(max-width: 768px) 100vw, 33vw"><img src="assets/home/tortelli.jpg" alt="Tortelli" width="1360" height="644" loading="lazy" decoding="async"></picture><span>Pasta fresca</span></a>
           <a class="plate" href="menu.html"><picture><source type="image/webp" srcset="assets/home/tartare-640.webp 640w, assets/home/tartare.webp 1000w" sizes="(max-width: 768px) 100vw, 33vw"><img src="assets/home/tartare.jpg" alt="Tartare" width="1000" height="1200" loading="lazy" decoding="async"></picture><span>Cucina</span></a>
@@ -134,7 +134,7 @@
 
     <section class="visit visit-compact">
       <div class="container visit-card">
-        <div><div class="section-label">Vieni a trovarci</div><h2>Arrivare è già<br>parte della serata.</h2></div>
+        <div><div class="section-label">Vieni a trovarci</div><h2 aria-label="Arrivare è già parte della serata.">Arrivare è già<br>parte della serata.</h2></div>
         <div class="details"><span data-config-text="address">Viale Livio Salinatore 86, Forlì</span><a href="tel:+39054329448" data-config-href="tel" data-config-text="phone">+39 0543 29448</a></div>
         <div class="visit-actions"><a class="btn btn-primary" href="ordina.html">Ordina online</a><a class="btn btn-outline" href="contatti.html">Contatti</a></div>
       </div>

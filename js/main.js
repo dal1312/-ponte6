@@ -39,6 +39,32 @@ const ALLERGEN_REFERENCES = Object.freeze({
     'Molluschi': 14
 });
 
+const MENU_IMAGE_FALLBACKS = Object.freeze({
+    304039: 'assets/menu-images/304039_Cappelletti_al_Rag_della_Nonna_Franca.webp',
+    304044: 'assets/menu-images/generated_cotoletta_milanese.png',
+    307352: 'assets/menu-images/307352_Tartare_di_Controfiletto_Irlandese_con_Senape_al_Miele_e_Frutta_Fresca.webp',
+    307611: 'assets/menu-images/generated_bruciatini.png',
+    307616: 'assets/menu-images/307616_Degustazione_di_Formaggi_del_Territorio_e_Piadina_Romagnola.webp',
+    307627: 'assets/menu-images/307627_Cozze_alla_Tarantina.webp',
+    307633: 'assets/menu-images/307633_Acciughe_del_Mar_Cantabrico_e_Burrata.webp',
+    307635: 'assets/menu-images/307635_Tagliatelle_al_Rag_della_Nonna_Franca.webp',
+    307643: 'assets/menu-images/307643_Cappelletti_al_Crudo_di_Parma_Ciliegini_e_Pesto_di_Rucola.webp',
+    307651: 'assets/menu-images/307651_Tortelli_di_Ricotta_e_Spinaci_con_Guanciale_Salvia_Crema_di_Burro_Chiarificato.webp',
+    307660: 'assets/menu-images/307660_Strozzapreti_ai_Porcini_con_Scaglie_di_Pecorino_di_Fossa_di_Sogliano.webp',
+    307669: 'assets/menu-images/generated_tagliolini_scoglio.png',
+    307678: 'assets/menu-images/307678_Gnocchetti_alle_Vongole_su_Crema_di_Zucchine_e_Datterini.webp',
+    307686: 'assets/menu-images/improved_galletto_agrumi.png',
+    307947: 'assets/menu-images/307947_Tagliata_di_Controfiletto_di_Manzo_Argentino_al_Sale_di_Cervia_con_Patate_Rustiche_al_Forno.webp',
+    307949: 'assets/menu-images/generated_filetto_porcini.png',
+    307950: 'assets/menu-images/generated_filetto_pepe_rosa_clean.png',
+    307951: 'assets/menu-images/generated_fritto_mare_verdure.png',
+    307953: 'assets/menu-images/307953_Polpo_Cotto_a_Bassa_Temperatura_su_Crema_di_Patate_e_Gocce_di_Prezzemolo.webp',
+    380901: 'assets/menu-images/generated_grigliata_carne.png',
+    493656: 'assets/menu-images/493656_Flan_di_Zucca_e_Porri_su_Crema_di_Gorgonzola.webp',
+    493678: 'assets/menu-images/improved_baccala_white.png',
+    520062: 'assets/menu-images/generated_lasagne_romagnola.png'
+});
+
 function renderAllergens(item, compact = false) {
     if (!item.allergens?.length) return '';
     const inferred = new Set(item.allergens_inferred || []);
@@ -46,7 +72,8 @@ function renderAllergens(item, compact = false) {
         const reference = ALLERGEN_REFERENCES[allergen];
         const isInferred = inferred.has(allergen);
         const sourceLabel = isInferred ? 'dedotto dagli ingredienti o dalla categoria' : 'dichiarato dal ristorante';
-        return `<span class="allergen${isInferred ? ' allergen-inferred' : ' allergen-confirmed'}" title="${escapeHtml(sourceLabel)}"><b>${reference || '?'}</b> ${escapeHtml(allergen)}${isInferred && !compact ? '<small>dedotto</small>' : ''}</span>`;
+        const tagHtml = isInferred ? ' <small class="allergen-tag">(dedotto)</small>' : '';
+        return `<span class="allergen${isInferred ? ' allergen-inferred' : ' allergen-confirmed'}" title="${escapeHtml(sourceLabel)}"><b>${reference || '?'}</b> ${escapeHtml(allergen)}${tagHtml}</span>`;
     }).join('');
     return `<div class="allergens${compact ? ' allergens-compact' : ''}" aria-label="Allergeni numerati">${badges}</div>`;
 }
@@ -102,15 +129,19 @@ const mobileMenu = document.getElementById('mobileMenu');
 if (mobileMenuBtn && mobileMenu) {
     const closeMobileMenu = ({ restoreFocus = false } = {}) => {
         mobileMenu.classList.remove('active');
+        document.body.classList.remove('mobile-menu-open');
         mobileMenu.setAttribute('aria-hidden', 'true');
         mobileMenuBtn.setAttribute('aria-expanded', 'false');
+        mobileMenuBtn.setAttribute('aria-label', 'Apri menu');
         if (restoreFocus) mobileMenuBtn.focus();
     };
 
     mobileMenuBtn.addEventListener('click', () => {
         const isOpen = mobileMenu.classList.toggle('active');
+        document.body.classList.toggle('mobile-menu-open', isOpen);
         mobileMenu.setAttribute('aria-hidden', String(!isOpen));
         mobileMenuBtn.setAttribute('aria-expanded', String(isOpen));
+        mobileMenuBtn.setAttribute('aria-label', isOpen ? 'Chiudi menu' : 'Apri menu');
         if (isOpen) mobileMenu.querySelector('a')?.focus();
     });
     
@@ -120,9 +151,32 @@ if (mobileMenuBtn && mobileMenu) {
         });
     });
 
+    document.addEventListener('pointerdown', event => {
+        if (!mobileMenu.classList.contains('active')) return;
+        if (mobileMenu.contains(event.target) || mobileMenuBtn.contains(event.target)) return;
+        closeMobileMenu({ restoreFocus: true });
+    });
+
+    window.matchMedia('(max-width: 768px)').addEventListener?.('change', event => {
+        if (!event.matches && mobileMenu.classList.contains('active')) closeMobileMenu();
+    });
+
     document.addEventListener('keydown', event => {
-        if (event.key === 'Escape' && mobileMenu.classList.contains('active')) {
+        if (!mobileMenu.classList.contains('active')) return;
+        if (event.key === 'Escape') {
             closeMobileMenu({ restoreFocus: true });
+            return;
+        }
+        if (event.key === 'Tab') {
+            const links = [...mobileMenu.querySelectorAll('a')];
+            const last = links.at(-1);
+            if (event.shiftKey && document.activeElement === mobileMenuBtn) {
+                event.preventDefault();
+                last?.focus();
+            } else if (!event.shiftKey && document.activeElement === last) {
+                event.preventDefault();
+                mobileMenuBtn.focus();
+            }
         }
     });
 }
@@ -224,7 +278,7 @@ function createPizzaModal() {
             <div class="modal-body">
                 <!-- EXTRA -->
                 <div class="modal-section">
-                    <div class="modal-section-title">🧀 Aggiunte Extra</div>
+                    <div class="modal-section-title"><span aria-hidden="true">01</span>Aggiunte extra</div>
                     <div class="extra-list" id="extraList">
                         ${pizzaExtras.map(e => `
                             <label class="extra-item" data-extra="${e.id}">
@@ -241,13 +295,13 @@ function createPizzaModal() {
 
                 <!-- RIMOZIONI INGREDIENTI -->
                 <div class="modal-section" id="removeSection">
-                    <div class="modal-section-title">🚫 Rimuovi Ingredienti</div>
+                    <div class="modal-section-title"><span aria-hidden="true">02</span>Rimuovi ingredienti</div>
                     <div class="remove-list" id="removeList"></div>
                 </div>
 
                 <!-- NOTE -->
                 <div class="modal-section">
-                    <div class="modal-section-title">📝 Note Speciali</div>
+                    <div class="modal-section-title"><span aria-hidden="true">03</span>Note speciali</div>
                     <div class="modal-notes">
                         <textarea id="pizzaNotes" placeholder="Es: senza cipolla, ben cotta, impasto sottile..."></textarea>
                     </div>
@@ -259,7 +313,7 @@ function createPizzaModal() {
                     <span class="modal-total-price" id="modalTotal">€7,00</span>
                 </div>
                 <button class="btn-add-custom" id="addCustomPizza" type="button">
-                    🛒 Aggiungi al Carrello
+                    Aggiungi al Carrello
                 </button>
             </div>
         </div>
@@ -301,7 +355,7 @@ function openPizzaModal(pizzaName, pizzaPrice, pizzaIngredients) {
     removedIngredients = [];
     pizzaNotes = '';
 
-    document.getElementById('modalPizzaName').textContent = `🍕 ${pizzaName}`;
+    document.getElementById('modalPizzaName').textContent = pizzaName;
     document.getElementById('pizzaNotes').value = '';
 
     document.querySelectorAll('.extra-item').forEach(item => {
@@ -449,10 +503,16 @@ class Cart {
         this.save();
         this.render();
         this.updateUI();
+        const floatingCart = document.getElementById('floatingCart');
+        if (floatingCart) {
+            floatingCart.classList.remove('cart-bounce');
+            void floatingCart.offsetWidth;
+            floatingCart.classList.add('cart-bounce');
+        }
         this.showNotification(`✓ ${candidate.name} aggiunto`);
         window.PonteSite?.analytics.track('add_to_cart', { item: candidate.name, price: candidate.price });
     }
-    
+
     load() {
         try {
             const savedCart = localStorage.getItem('cart');
@@ -515,7 +575,7 @@ class Cart {
             cartItems.innerHTML = `
                 <div class="cart-empty">
                     <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
-                    <p>Il carrello è vuoto.<br>Aggiungi qualcosa di buono!</p>
+                    <p aria-label="Il carrello è vuoto. Aggiungi qualcosa di buono!">Il carrello è vuoto.<br>Aggiungi qualcosa di buono!</p>
                 </div>
             `;
             return;
@@ -626,15 +686,33 @@ class Cart {
 
         const floatingCart = document.getElementById('floatingCart');
         const cartPanel = document.getElementById('cart');
-        if (cartPanel && window.matchMedia('(max-width: 768px)').matches) {
-            cartPanel.setAttribute('aria-hidden', 'true');
-        }
+        const drawerMedia = window.matchMedia('(max-width: 768px)');
+        const syncDrawerMode = () => {
+            if (!cartPanel) return;
+            if (drawerMedia.matches) {
+                cartPanel.setAttribute(
+                    'aria-hidden',
+                    document.body.classList.contains('cart-drawer-open') ? 'false' : 'true'
+                );
+                return;
+            }
+            document.body.classList.remove('cart-drawer-open');
+            cartPanel.removeAttribute('aria-hidden');
+        };
+        syncDrawerMode();
+        drawerMedia.addEventListener?.('change', syncDrawerMode);
         if (floatingCart) {
             floatingCart.addEventListener('click', () => {
                 if (document.getElementById('orderForm')) {
-                    document.body.classList.add('cart-drawer-open');
-                    document.getElementById('cart')?.setAttribute('aria-hidden', 'false');
-                    document.getElementById('closeCartDrawer')?.focus();
+                    if (drawerMedia.matches) {
+                        document.body.classList.add('cart-drawer-open');
+                        cartPanel?.setAttribute('aria-hidden', 'false');
+                        document.getElementById('closeCartDrawer')?.focus();
+                    } else {
+                        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                        cartPanel?.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+                        cartPanel?.focus({ preventScroll: true });
+                    }
                 } else {
                     window.location.href = 'ordina.html';
                 }
@@ -643,8 +721,8 @@ class Cart {
 
         const closeDrawer = () => {
             document.body.classList.remove('cart-drawer-open');
-            if (window.matchMedia('(max-width: 768px)').matches) {
-                document.getElementById('cart')?.setAttribute('aria-hidden', 'true');
+            if (drawerMedia.matches) {
+                cartPanel?.setAttribute('aria-hidden', 'true');
             }
             floatingCart?.focus();
         };
@@ -711,6 +789,8 @@ function renderOrderItems() {
         
         container.innerHTML = menuData[category].map(item => {
             const itemState = getItemAvailability(item, category);
+            const dishImage = item.image || MENU_IMAGE_FALLBACKS[item.id] || '';
+            const dishMonogram = escapeHtml(item.name.trim().charAt(0).toLocaleUpperCase('it') || '•');
             const disabledAttribute = itemState.available ? '' : ' disabled';
             const availabilityHtml = itemState.available
                 ? ''
@@ -720,31 +800,36 @@ function renderOrderItems() {
             const ingredientDetailsHtml = item.ingredients
                 ? `<details class="dish-details order-dish-details"><summary>Ingredienti</summary><p class="dish-description">${escapeHtml(item.ingredients)}</p></details>`
                 : '<details class="dish-details order-dish-details"><summary>Ingredienti</summary><p class="dish-description dish-description-muted">Da confermare</p></details>';
+            const orderPhotoHtml = dishImage
+                ? `<button class="dish-photo-trigger order-dish-photo" type="button" data-photo-src="${escapeHtml(dishImage)}" data-photo-name="${escapeHtml(item.name)}" aria-label="Apri la foto di ${escapeHtml(item.name)}" aria-controls="dishPhotoDialog" aria-haspopup="dialog" data-track="dish_photo"><img src="${escapeHtml(dishImage)}" alt="" loading="lazy" decoding="async"><span>Guarda il piatto</span></button>`
+                : '';
             
             if (isPizza) {
                 const ingredientsJson = escapeHtml(JSON.stringify(ingredientsArray));
                 return `
-                    <div class="order-item order-item-pizza${itemState.available ? '' : ' is-unavailable'}">
+                    <div class="order-item order-item-pizza${dishImage ? ' has-photo' : ' no-photo'}${itemState.available ? '' : ' is-unavailable'}" data-monogram="${dishMonogram}">
+                        ${orderPhotoHtml}
                         <div class="order-item-name">${escapeHtml(item.name)}</div>
                         ${availabilityHtml}
                         ${ingredientDetailsHtml}
                         ${allergensHtml}
                         <div class="order-item-bottom">
                             <span class="order-item-price">${formatPrice(item.price)}</span>
-                            <button class="btn-add-small btn-customize-order" type="button" data-name="${escapeHtml(item.name)}" data-price="${item.price}" data-ingredients='${ingredientsJson}' aria-label="${itemState.available ? 'Personalizza' : 'Non disponibile'} ${escapeHtml(item.name)}"${disabledAttribute}>🍕</button>
+                            <button class="btn-add-small btn-customize-order" type="button" data-name="${escapeHtml(item.name)}" data-price="${item.price}" data-ingredients='${ingredientsJson}' aria-label="${itemState.available ? 'Personalizza' : 'Non disponibile'} ${escapeHtml(item.name)}"${disabledAttribute}>Personalizza</button>
                         </div>
                     </div>
                 `;
             }
             
             return `
-                <div class="order-item${itemState.available ? '' : ' is-unavailable'}">
+                <div class="order-item${dishImage ? ' has-photo' : ' no-photo'}${itemState.available ? '' : ' is-unavailable'}" data-monogram="${dishMonogram}">
+                    ${orderPhotoHtml}
                     <div class="order-item-name">${escapeHtml(item.name)}</div>
                     ${availabilityHtml}
                     ${allergensHtml}
                     <div class="order-item-bottom">
                         <span class="order-item-price">${formatPrice(item.price)}</span>
-                        <button class="btn-add-small" type="button" data-name="${escapeHtml(item.name)}" data-price="${item.price}" aria-label="${itemState.available ? 'Aggiungi' : 'Non disponibile'} ${escapeHtml(item.name)}"${disabledAttribute}>+</button>
+                        <button class="btn-add-small" type="button" data-name="${escapeHtml(item.name)}" data-price="${item.price}" aria-label="${itemState.available ? 'Aggiungi' : 'Non disponibile'} ${escapeHtml(item.name)}"${disabledAttribute}>Aggiungi</button>
                     </div>
                 </div>
             `;
@@ -792,8 +877,9 @@ function renderMenuItems() {
                 ? `<div class="menu-item-meta">${descHtml}${allergensHtml}</div>`
                 : '';
             
-            const photoButtonHtml = item.image
-                ? `<button class="dish-photo-trigger" type="button" data-photo-src="${escapeHtml(item.image)}" data-photo-name="${escapeHtml(item.name)}" aria-controls="dishPhotoDialog" aria-haspopup="dialog" data-track="dish_photo">Vedi piatto</button>`
+            const dishImage = item.image || MENU_IMAGE_FALLBACKS[item.id] || '';
+            const photoButtonHtml = dishImage
+                ? `<button class="dish-photo-trigger dish-photo-thumb" type="button" data-photo-src="${escapeHtml(dishImage)}" data-photo-name="${escapeHtml(item.name)}" aria-label="Apri la foto di ${escapeHtml(item.name)}" aria-controls="dishPhotoDialog" aria-haspopup="dialog" data-track="dish_photo"><img src="${escapeHtml(dishImage)}" alt="" loading="lazy" decoding="async"><span>Apri foto</span></button>`
                 : '';
             const availabilityHtml = itemState.available
                 ? ''
@@ -802,14 +888,18 @@ function renderMenuItems() {
 
             html += `
                 <div class="menu-item animate-on-scroll category-${escapeHtml(category)}${itemState.available ? '' : ' is-unavailable'}" data-category="${escapeHtml(category)}" data-allergens="${escapeHtml(allergenData)}">
-                    <div class="menu-item-content">
-                        <div class="menu-item-header">
-                            <h3>${escapeHtml(item.name)}</h3>
-                            <span class="price">${formatPrice(item.price)}</span>
+                    <div class="menu-item-content${dishImage ? ' has-photo' : ''}">
+                        <div class="menu-item-layout">
+                            <div class="menu-item-copy">
+                                <div class="menu-item-header">
+                                    <h3>${escapeHtml(item.name)}</h3>
+                                    <span class="price">${formatPrice(item.price)}</span>
+                                </div>
+                                ${availabilityHtml}
+                                ${detailsHtml}
+                            </div>
+                            ${photoButtonHtml}
                         </div>
-                        ${availabilityHtml}
-                        ${detailsHtml}
-                        ${photoButtonHtml}
                     </div>
                 </div>
             `;

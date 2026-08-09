@@ -22,6 +22,8 @@ const targets = [
   'favicon.ico',
   'assets/icons/icon-192.png',
   'assets/icons/icon-512.png',
+  'assets/fonts/dm-sans-latin.woff2',
+  'assets/fonts/italiana-latin.woff2',
   'assets/home/logo.png',
   'assets/home/sala.jpg',
   'assets/home/esterno.jpg',
@@ -47,7 +49,8 @@ const contentTypes = {
   '.png': 'image/png',
   '.jpg': 'image/jpeg',
   '.webp': 'image/webp',
-  '.ico': 'image/x-icon'
+  '.ico': 'image/x-icon',
+  '.woff2': 'font/woff2'
 };
 
 const server = http.createServer(async (request, response) => {

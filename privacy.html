@@ -6,23 +6,27 @@
     <title>Privacy | Al Ponte di Schiavonia</title>
     <meta name="description" content="Informazioni sul trattamento locale dei dati e sulle misurazioni privacy-first del sito Al Ponte di Schiavonia.">
     <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#17100d">
     <link rel="canonical" href="https://dal1312.github.io/-ponte6/privacy.html">
+    <link rel="preload" href="assets/fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="assets/fonts/italiana-latin.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="css/styles.css">
 </head>
-<body class="offline-page">
-    <main class="offline-card privacy-card">
+<body class="utility-page utility-privacy">
+    <main class="utility-card privacy-card">
         <a class="logo" href="index.html" aria-label="Torna alla home">
             <img src="assets/home/logo.png" alt="Logo Al Ponte di Schiavonia">
             <div><strong>Al Ponte di Schiavonia</strong><span>Privacy</span></div>
         </a>
-        <h1>Privacy, in modo semplice.</h1>
+        <span class="section-label light">PRIVACY / CONTROLLO LOCALE</span>
+        <h1 aria-label="Privacy, in modo semplice.">Privacy,<br><em>in modo semplice.</em></h1>
         <p>Il carrello, le bozze ordine e i contatori di utilizzo restano nel browser tramite localStorage. Il sito non usa cookie pubblicitari e rispetta il segnale “Do Not Track”.</p>
         <p>Nessun ordine viene inviato automaticamente: i dati arrivano al ristorante solo quando scegli di aprire e inviare il messaggio WhatsApp. Un eventuale endpoint statistico resta disattivato finché non viene configurato.</p>
+        <p class="privacy-state" id="privacyStatus" role="status" aria-live="polite"></p>
         <div class="privacy-actions">
             <button class="btn btn-outline" id="privacyOptOut" type="button">Disattiva misurazioni locali</button>
             <button class="btn btn-primary" id="privacyOptIn" type="button">Riattiva misurazioni locali</button>
         </div>
-        <p id="privacyStatus" role="status" aria-live="polite"></p>
         <a class="btn-link" href="index.html">← Torna alla home</a>
     </main>
     <script src="js/site-config.js"></script>
