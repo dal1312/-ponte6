@@ -103,6 +103,8 @@ test('allergeni mostrano numero e provenienza', async ({ page }) => {
 test('carrello persiste e personalizza una pizza', async ({ page }) => {
   await page.goto('/ordina.html');
   await page.getByRole('button', { name: 'Pizze' }).click();
+  const americana = page.locator('.order-item').filter({ hasText: 'Americana' });
+  await expect(americana.locator('.order-pizza-ingredients')).toContainText('Fior di Latte, Pomodoro, Wurstel, Patate Fritte');
   await page.getByRole('button', { name: 'Personalizza Americana' }).click();
   await page.getByText('Mozzarella di Bufala DOP', { exact: true }).click();
   await expect(page.getByRole('checkbox', { name: /Mozzarella di Bufala DOP/ })).toBeChecked();

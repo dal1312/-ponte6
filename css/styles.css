@@ -1704,6 +1704,12 @@ section { padding: 104px 0; }
 .order-dish-details summary { padding: .55rem .65rem; font-size: .64rem; }
 .order-dish-details .dish-description { padding: 0 .65rem .65rem; font-size: .8rem; }
 .order-item-pizza { min-height: 138px; }
+.order-pizza-ingredients {
+  margin: .35rem 0 .15rem;
+  color: rgba(255,248,236,.7);
+  font-size: .78rem;
+  line-height: 1.45;
+}
 
 .order-dish-photo {
   position: relative;
@@ -1749,6 +1755,7 @@ section { padding: 104px 0; }
 .order-item .order-item-name { grid-area: name; }
 .order-item .availability-badge { grid-area: availability; justify-self: start; }
 .order-item .order-dish-details { grid-area: details; }
+.order-item .order-pizza-ingredients { grid-area: details; }
 .order-item .allergens { grid-area: allergens; }
 .order-item .order-item-bottom { grid-area: bottom; }
 

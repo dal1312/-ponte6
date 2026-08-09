@@ -797,8 +797,8 @@ function renderOrderItems() {
             const ingredientsArray = item.ingredients ? item.ingredients.split(', ').filter(i => i.trim()) : [];
             const allergensHtml = renderAllergens(item, true);
             const ingredientDetailsHtml = item.ingredients
-                ? `<details class="dish-details order-dish-details"><summary>Ingredienti</summary><p class="dish-description">${escapeHtml(item.ingredients)}</p></details>`
-                : '<details class="dish-details order-dish-details"><summary>Ingredienti</summary><p class="dish-description dish-description-muted">Da confermare</p></details>';
+                ? `<p class="order-pizza-ingredients">${escapeHtml(item.ingredients)}</p>`
+                : '<p class="order-pizza-ingredients dish-description-muted">Ingredienti da confermare</p>';
             const orderPhotoHtml = dishImage
                 ? `<button class="dish-photo-trigger order-dish-photo" type="button" data-photo-src="${escapeHtml(dishImage)}" data-photo-name="${escapeHtml(item.name)}" aria-label="Apri la foto di ${escapeHtml(item.name)}" aria-controls="dishPhotoDialog" aria-haspopup="dialog" data-track="dish_photo"><img src="${escapeHtml(dishImage)}" alt="" loading="lazy" decoding="async"></button>`
                 : '';
