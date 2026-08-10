@@ -3,3 +3,4 @@ output/playwright/
 .playwright-cli/
 test-results/
 __pycache__/
+backup_*.zip

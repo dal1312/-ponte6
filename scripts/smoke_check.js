@@ -12,6 +12,8 @@ const targets = [
   'offline.html',
   'privacy.html',
   'css/styles.css',
+  'js/core.js',
+  'js/site-ui.js',
   'js/main.js',
   'js/site-config.js',
   'js/site.js',
@@ -22,6 +24,8 @@ const targets = [
   'favicon.ico',
   'assets/icons/icon-192.png',
   'assets/icons/icon-512.png',
+  'assets/fonts/dm-sans-latin.woff2',
+  'assets/fonts/italiana-latin.woff2',
   'assets/home/logo.png',
   'assets/home/sala.jpg',
   'assets/home/esterno.jpg',
@@ -39,6 +43,8 @@ const targets = [
   'assets/home/bancone.webp'
 ];
 
+const menuImagesDirectory = path.join(root, 'assets', 'menu-images');
+
 const contentTypes = {
   '.css': 'text/css; charset=utf-8',
   '.html': 'text/html; charset=utf-8',
@@ -47,7 +53,8 @@ const contentTypes = {
   '.png': 'image/png',
   '.jpg': 'image/jpeg',
   '.webp': 'image/webp',
-  '.ico': 'image/x-icon'
+  '.ico': 'image/x-icon',
+  '.woff2': 'font/woff2'
 };
 
 const server = http.createServer(async (request, response) => {
@@ -71,7 +78,11 @@ server.listen(0, '127.0.0.1', async () => {
   let ok = true;
 
   try {
-    for (const target of targets) {
+    const menuImages = (await fs.readdir(menuImagesDirectory))
+      .filter(file => file.endsWith('.webp'))
+      .map(file => `assets/menu-images/${file}`);
+
+    for (const target of [...targets, ...menuImages]) {
       const response = await fetch(`http://127.0.0.1:${port}/${target}`);
       const body = await response.arrayBuffer();
       const passed = response.ok && body.byteLength > 0;

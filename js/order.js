@@ -125,10 +125,10 @@
     if (order.fulfillment.address) message += `📍 *Indirizzo:* ${order.fulfillment.address}\n`;
     message += `\n📋 *ORDINE:*\n`;
     order.items.forEach(item => {
-      message += `• ${item.qty}x ${item.name} = €${(item.price * item.qty).toFixed(2)}\n`;
+      message += `• ${item.qty}x ${item.name} = € ${(item.price * item.qty).toFixed(2)}\n`;
       if (item.customDetails) message += `  └ ${item.customDetails}\n`;
     });
-    message += `\n💰 *TOTALE: €${order.total.toFixed(2)}*`;
+    message += `\n💰 *TOTALE: € ${order.total.toFixed(2)}*`;
     if (order.notes) message += `\n\n📝 *Note:* ${order.notes}`;
     message += "\n\n⏳ Attendo conferma di disponibilità e orario.";
     return message;
@@ -147,13 +147,6 @@
       <div class="receipt-total"><span>Totale</span><strong>${formatPrice(order.total)}</strong></div>
     `;
     whatsappLink.href = buildWhatsAppUrl(buildMessage(order));
-  }
-
-  function saveDraft(order) {
-    let drafts = [];
-    try { drafts = JSON.parse(localStorage.getItem("ponte-order-drafts") || "[]"); } catch { drafts = []; }
-    drafts.push(order);
-    localStorage.setItem("ponte-order-drafts", JSON.stringify(drafts.slice(-10)));
   }
 
   async function sendToConfiguredApi(order) {
@@ -186,7 +179,6 @@
     }
 
     currentOrder = buildOrder(data);
-    saveDraft(currentOrder);
     renderReceipt(currentOrder);
     feedback.textContent = "Riepilogo pronto: controlla i dati prima di aprire WhatsApp.";
     feedback.className = "form-feedback is-success";
@@ -211,4 +203,7 @@
 
   setupDateRange();
   configureModes();
+  // Le vecchie versioni salvavano dati personali completi senza scadenza.
+  // La bozza vive ora soltanto in memoria fino alla chiusura della pagina.
+  localStorage.removeItem("ponte-order-drafts");
 })();

@@ -8,9 +8,8 @@
     <meta name="description" content="Menu completo: antipasti, primi romagnoli, 32 pizze al forno a legna, secondi di carne e pesce, contorni e dolci. Ingredienti freschi e tradizione dal 1978.">
     <link rel="icon" href="favicon.ico" sizes="any">
     <link rel="manifest" href="manifest.json">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Italiana&display=swap" rel="stylesheet">
+    <link rel="preload" href="assets/fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="assets/fonts/italiana-latin.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="css/styles.css">
     <meta property="og:type" content="website">
     <meta property="og:title" content="Menu | Al Ponte di Schiavonia">
@@ -48,7 +47,7 @@
     }
     </script>
 </head>
-<body class="menu-page">
+<body class="menu-page after-dark-menu">
 
 <nav class="navbar" id="navbar">
     <div class="container nav-container">
@@ -77,25 +76,21 @@
     <a href="https://wa.me/39054329448" data-config-href="whatsapp" data-track="booking_whatsapp" class="btn-whatsapp">Prenota su WhatsApp</a>
 </div>
 
-<button class="floating-cart" id="floatingCart" aria-label="Apri carrello" type="button">
-    <span>🧺</span>
-    <span class="cart-count">0</span>
-</button>
-
 <header class="page-hero menu-page-hero">
     <div class="container">
         <div class="menu-hero-copy">
-            <span class="section-label light">IL FORNO È ACCESO</span>
-            <h1 class="page-title">Pizza fatta<br><em>con calma.</em></h1>
-            <p class="page-subtitle">Impasto, ingredienti scelti e il calore del forno: qui trovi tutte le nostre pizze, una per una.</p>
+            <span class="section-label light">LA CARTA DELLA SERA</span>
+            <h1 class="page-title" aria-label="Scegli il tuo posto a tavola.">Scegli il tuo<br><em>posto a tavola.</em></h1>
+            <p class="page-subtitle">Pasta fresca, pizza, cucina e vino. Leggi con calma, scegli d'istinto.</p>
         </div>
-        <div class="menu-hero-note"><span>La carta</span><strong>Dal classico<br>alla voglia del giorno.</strong></div>
+        <div class="menu-hero-note"><span>Il ritmo</span><strong>Dall'antipasto <span class="editorial-line">all'ultima fetta.</span></strong></div>
     </div>
 </header>
 
 <!-- FILTRI CATEGORIE STICKY -->
 <div class="menu-filters" id="menuFilters">
     <div class="container">
+        <span class="filter-index-label" aria-hidden="true">Indice</span>
         <button class="filter-btn" data-category="antipasti" aria-pressed="false">Antipasti</button>
         <button class="filter-btn" data-category="primi" aria-pressed="false">Primi</button>
         <button class="filter-btn active" data-category="pizze" aria-pressed="true">Pizze</button>
@@ -107,40 +102,11 @@
         <button class="filter-btn" data-category="vini_bianchi" aria-pressed="false">Vini bianchi</button>
         <button class="filter-btn" data-category="vini_rossi" aria-pressed="false">Vini rossi</button>
     </div>
+    <span class="filter-scroll-cue" aria-hidden="true">→</span>
 </div>
 
 <main class="menu-main">
     <div class="container">
-        <section class="menu-tools" aria-label="Ricerca e filtri menu">
-            <div class="menu-search-field">
-                <label for="menuSearch">Cerca nel menu</label>
-                <input id="menuSearch" type="search" placeholder="Es. tortelli, burrata, pesce…" autocomplete="off">
-            </div>
-            <div class="menu-tool-field">
-                <label for="menuMaxPrice">Prezzo massimo</label>
-                <select id="menuMaxPrice">
-                    <option value="">Qualsiasi prezzo</option>
-                    <option value="10">Fino a €10</option>
-                    <option value="12">Fino a €12</option>
-                    <option value="15">Fino a €15</option>
-                </select>
-            </div>
-            <div class="menu-tool-field">
-                <label for="menuExcludeAllergen">Nascondi allergene dichiarato</label>
-                <select id="menuExcludeAllergen">
-                    <option value="">Nessuno</option>
-                    <option value="glutine">Glutine</option>
-                    <option value="latte e derivati">Latte e derivati</option>
-                    <option value="uova e derivati">Uova e derivati</option>
-                    <option value="pesce">Pesce</option>
-                    <option value="crostacei">Crostacei</option>
-                    <option value="molluschi">Molluschi</option>
-                </select>
-            </div>
-            <label class="menu-photo-filter"><input id="menuPhotoOnly" type="checkbox"> Solo piatti con foto</label>
-            <button class="menu-reset-filters" id="menuResetFilters" type="button">Azzera filtri</button>
-            <p class="menu-filter-safety">Il filtro allergeni nasconde solo i piatti in cui l’allergene è dichiarato: non certifica l’assenza negli altri.</p>
-        </section>
         <section class="menu-category-intro" id="menuCategoryIntro" aria-live="polite">
             <div>
                 <span class="menu-category-kicker">La carta</span>
@@ -148,7 +114,6 @@
             </div>
             <div class="menu-category-summary">
                 <p id="menuCategoryCopy">Impasto, forno e ingredienti scelti: la pizza come piace a noi.</p>
-                <span id="menuCategoryCount"></span>
             </div>
         </section>
         <div class="menu-grid" id="menu-grid">
@@ -157,12 +122,21 @@
         <p class="menu-no-results" id="menuNoResults" hidden>Nessun piatto corrisponde ai filtri selezionati.</p>
 
         <div class="allergens-disclaimer animate-on-scroll">
-            <p><strong>⚠️ Informazioni allergeni:</strong> Le indicazioni mostrate provengono dai dati forniti dal ristorante e non sono dedotte automaticamente. Ingredienti e lavorazioni possono variare: in caso di allergie o intolleranze, contatta sempre il personale prima di ordinare.</p>
+            <details class="allergen-legend">
+                <summary>Allergeni e informazioni</summary>
+                <p>Numero pieno = dichiarato; numero tratteggiato = dedotto. Verifica sempre con il personale.</p>
+                <ol>
+                    <li>Glutine</li><li>Crostacei</li><li>Uova</li><li>Pesce</li>
+                    <li>Arachidi</li><li>Soia</li><li>Latte</li><li>Frutta a guscio</li>
+                    <li>Sedano</li><li>Senape</li><li>Sesamo</li><li>Solfiti</li>
+                    <li>Lupini</li><li>Molluschi</li>
+                </ol>
+            </details>
         </div>
     </div>
 </main>
 
-<dialog class="dish-photo-dialog" id="dishPhotoDialog" aria-labelledby="dishPhotoTitle">
+<dialog class="dish-photo-dialog" id="dishPhotoDialog" aria-labelledby="dishPhotoTitle" role="dialog" aria-modal="true">
     <figure class="dish-photo-frame">
         <img id="dishPhotoImage" alt="">
         <button class="dish-photo-close" id="dishPhotoClose" type="button" aria-label="Chiudi foto">Chiudi</button>
@@ -184,6 +158,8 @@
 <script src="js/site-config.js"></script>
 <script src="js/site.js"></script>
 <script src="js/menu-data.js"></script>
-<script src="js/main.js"></script>
+<script src="js/core.js?v=80"></script>
+<script src="js/site-ui.js?v=80"></script>
+<script src="js/main.js?v=86"></script>
 </body>
 </html>

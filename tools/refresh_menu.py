@@ -4,6 +4,7 @@ import argparse
 import csv
 import json
 import re
+import unicodedata
 from html import unescape
 from html.parser import HTMLParser
 from pathlib import Path
@@ -32,6 +33,62 @@ CATEGORY_MAP = {
     "Dessert": "dessert",
 }
 
+ALLERGEN_REFERENCES = {
+    "Glutine": 1,
+    "Crostacei": 2,
+    "Uova": 3,
+    "Pesce": 4,
+    "Arachidi": 5,
+    "Soia": 6,
+    "Latte": 7,
+    "Frutta a guscio": 8,
+    "Sedano": 9,
+    "Senape": 10,
+    "Sesamo": 11,
+    "Solfiti": 12,
+    "Lupini": 13,
+    "Molluschi": 14,
+}
+
+ALLERGEN_ALIASES = {
+    "cereali": "Glutine",
+    "cereali contenenti glutine": "Glutine",
+    "glutine": "Glutine",
+    "crostacei": "Crostacei",
+    "uova": "Uova",
+    "uova e derivati": "Uova",
+    "pesce": "Pesce",
+    "arachidi": "Arachidi",
+    "soia": "Soia",
+    "latte": "Latte",
+    "latte e derivati": "Latte",
+    "frutta a guscio": "Frutta a guscio",
+    "sedano": "Sedano",
+    "senape": "Senape",
+    "sesamo": "Sesamo",
+    "solfiti": "Solfiti",
+    "anidride solforosa e solfiti": "Solfiti",
+    "lupini": "Lupini",
+    "molluschi": "Molluschi",
+}
+
+ALLERGEN_PATTERNS = {
+    "Glutine": r"\b(farina|pane|piadina|pasta fresca|tagliatell|cappellet|tortell|strozzapret|crostin|focaccia|orzo|birra)\w*",
+    "Crostacei": r"\b(gamber|mazzancoll|scamp|granch|aragost|crostace)\w*",
+    "Uova": r"\b(uov|maionese|pasta fresca all.?uovo)\w*",
+    "Pesce": r"\b(accii?ugh|baccala|baccalà|tonn|salmone|pesce|sardin|sgombr)\w*",
+    "Arachidi": r"\b(arachid)\w*",
+    "Soia": r"\b(soia|tofu|edamame)\w*",
+    "Latte": r"\b(latte|fiordilatte|fior di latte|mozzarella|burrata|grana|parmigian|pecorin|formaggi?|gorgonzola|scamorza|ricotta|squacquerone|burro|panna|mascarpone)\w*",
+    "Frutta a guscio": r"\b(mandorl|nocciol|noci|noce|pistacch|anacard|pecan)\w*",
+    "Sedano": r"\b(sedano)\w*",
+    "Senape": r"\b(senape)\w*",
+    "Sesamo": r"\b(sesamo|tahina)\w*",
+    "Solfiti": r"\b(solfit|anidride solforosa)\w*",
+    "Lupini": r"\b(lupin)\w*",
+    "Molluschi": r"\b(cozz|vongol|seppi|polpo|calamar|totan|mollusc)\w*",
+}
+
 
 class TextExtractor(HTMLParser):
     def __init__(self) -> None:
@@ -49,6 +106,76 @@ def clean_html(value: str | None) -> str:
     parser.feed(value)
     text = " ".join(parser.parts)
     return unescape(re.sub(r"\s+", " ", text)).strip()
+
+
+def normalize_text(value: str) -> str:
+    normalized = unicodedata.normalize("NFKD", value.casefold())
+    return "".join(char for char in normalized if not unicodedata.combining(char))
+
+
+def canonical_allergen(value: str) -> str | None:
+    return ALLERGEN_ALIASES.get(normalize_text(value).strip())
+
+
+def ordered_allergens(values: set[str]) -> list[str]:
+    return sorted(values, key=lambda name: ALLERGEN_REFERENCES[name])
+
+
+def infer_allergens(
+    category: str,
+    name: str,
+    description: str,
+    ingredients: str,
+) -> list[str]:
+    text = normalize_text(" ".join((name, description, ingredients)))
+    inferred = {
+        allergen
+        for allergen, pattern in ALLERGEN_PATTERNS.items()
+        if re.search(pattern, text, flags=re.IGNORECASE)
+    }
+
+    # Regole di categoria applicate solo dove l'ingrediente caratteristico è
+    # parte della definizione del prodotto. Restano deduzioni, non conferme.
+    if category == "pizze":
+        inferred.add("Glutine")
+    if category == "birre":
+        inferred.add("Glutine")
+    if category in {"vini_bianchi", "vini_rossi"}:
+        inferred.add("Solfiti")
+
+    return ordered_allergens(inferred)
+
+
+def enrich_allergens(
+    category: str,
+    name: str,
+    description: str,
+    ingredients: str,
+    declared: list[str],
+    declared_source: str,
+) -> dict[str, Any]:
+    confirmed = {
+        canonical
+        for value in declared
+        if (canonical := canonical_allergen(value))
+    }
+    inferred = set(infer_allergens(category, name, description, ingredients)) - confirmed
+    confirmed_list = ordered_allergens(confirmed)
+    inferred_list = ordered_allergens(inferred)
+    combined = ordered_allergens(confirmed | inferred)
+
+    sources = []
+    if confirmed_list:
+        sources.append(declared_source or "dato dichiarato")
+    if inferred_list:
+        sources.append("deduzione automatica da nome, ingredienti o categoria")
+
+    return {
+        "allergens": combined,
+        "allergens_confirmed": confirmed_list,
+        "allergens_inferred": inferred_list,
+        "allergens_source": " + ".join(sources),
+    }
 
 
 def safe_filename(value: str, fallback: str = "image") -> str:
@@ -132,7 +259,7 @@ def item_to_app_entry(
     image_path: str,
     category: str,
 ) -> dict[str, Any]:
-    allergens = [
+    declared_allergens = [
         tag.get("name")
         for tag in item.get("allergentags", [])
         if tag.get("name")
@@ -143,18 +270,24 @@ def item_to_app_entry(
         if ingredient.get("name")
     ]
 
-    # Food-safety information must come from the restaurant source. Inferring
-    # allergens from free text can create false assurances for customers.
-    allergens = sorted(set(allergens))
+    description = clean_html(item.get("description"))
+    ingredients_text = ", ".join(ingredients)
+    allergen_data = enrich_allergens(
+        category,
+        item.get("name", ""),
+        description,
+        ingredients_text,
+        declared_allergens,
+        "Dishcovery",
+    )
 
     return {
         "id": item.get("id"),
         "name": item.get("name", ""),
         "price": float(item.get("price") or 0),
-        "description": clean_html(item.get("description")),
-        "ingredients": ", ".join(ingredients),
-        "allergens": allergens,
-        "allergens_source": "Dishcovery" if allergens else "",
+        "description": description,
+        "ingredients": ingredients_text,
+        **allergen_data,
         "image": image_path,
         "payoff": item.get("payoff") or "",
         "order": item.get("order") or 0,
@@ -195,21 +328,31 @@ def build_menu_data(data: dict[str, Any], download_images: bool) -> dict[str, li
         for category, items in beverage_data.items():
             if category not in menu_data:
                 continue
-            menu_data[category] = [
-                {
+            enriched_items = []
+            for index, item in enumerate(items):
+                name = item.get("name", "")
+                description = item.get("description", "")
+                ingredients = item.get("ingredients", "")
+                allergen_data = enrich_allergens(
+                    category,
+                    name,
+                    description,
+                    ingredients,
+                    item.get("allergens", []),
+                    item.get("allergens_source", "dato dichiarato"),
+                )
+                enriched_items.append({
                     "id": item.get("id"),
-                    "name": item.get("name", ""),
+                    "name": name,
                     "price": float(item.get("price") or 0),
-                    "description": item.get("description", ""),
-                    "ingredients": "",
-                    "allergens": item.get("allergens", []),
-                    "allergens_source": item.get("allergens_source", ""),
+                    "description": description,
+                    "ingredients": ingredients,
+                    **allergen_data,
                     "image": item.get("image", ""),
                     "payoff": "",
                     "order": index,
-                }
-                for index, item in enumerate(items)
-            ]
+                })
+            menu_data[category] = enriched_items
 
     return menu_data
 
@@ -241,6 +384,8 @@ def write_csv(data: dict[str, Any], menu_data: dict[str, list[dict[str, Any]]]) 
         "description",
         "ingredients",
         "allergens",
+        "allergens_confirmed",
+        "allergens_inferred",
         "allergens_source",
         "image",
     ]
@@ -258,6 +403,8 @@ def write_csv(data: dict[str, Any], menu_data: dict[str, list[dict[str, Any]]]) 
                         "description": item.get("description") or "",
                         "ingredients": item.get("ingredients") or "",
                         "allergens": ", ".join(item.get("allergens") or []),
+                        "allergens_confirmed": ", ".join(item.get("allergens_confirmed") or []),
+                        "allergens_inferred": ", ".join(item.get("allergens_inferred") or []),
                         "allergens_source": item.get("allergens_source") or "",
                         "image": item.get("image") or "",
                     }

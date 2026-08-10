@@ -7,9 +7,8 @@
     <link rel="canonical" href="https://dal1312.github.io/-ponte6/contatti.html">
     <meta name="description" content="Contattaci per prenotare un tavolo o ordinare. Siamo in Viale Salinatore 86, Forlì. Aperti Mar-Dom 12-14:30 e 19-23.">
     <link rel="icon" href="favicon.ico" sizes="any">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Italiana&display=swap" rel="stylesheet">
+    <link rel="preload" href="assets/fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="assets/fonts/italiana-latin.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="css/styles.css">
     <meta property="og:type" content="website">
     <meta property="og:title" content="Contatti | Al Ponte di Schiavonia">
@@ -20,7 +19,7 @@
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#8B1A1A">
 </head>
-<body class="contact-experience">
+<body class="contact-experience after-dark-contacts">
 
 <nav class="navbar" id="navbar">
     <div class="container nav-container">
@@ -49,16 +48,11 @@
     <a href="https://wa.me/39054329448" data-config-href="whatsapp" data-track="booking_whatsapp" class="btn-whatsapp">Prenota su WhatsApp</a>
 </div>
 
-<button class="floating-cart" id="floatingCart" aria-label="Apri carrello" type="button">
-    <span>🧺</span>
-    <span class="cart-count">0</span>
-</button>
-
 <header class="page-hero">
     <div class="container">
-        <span class="section-label light">VIENI A TROVARCI</span>
-        <h1 class="page-title">Una sala vera,<br><em>a Schiavonia.</em></h1>
-        <p class="page-subtitle">Prenota, chiama o passa da Viale Livio Salinatore 86. Qui si parla diretto.</p>
+        <span class="section-label light">LA SERATA INIZIA QUI</span>
+        <h1 class="page-title" aria-label="Trova il ponte, poi trova il tavolo.">Trova il ponte,<br><em>poi trova il tavolo.</em></h1>
+        <p class="page-subtitle">Prenota, chiama o passa da Viale Livio Salinatore 86. La cucina è pronta ad accoglierti.</p>
     </div>
 </header>
 
@@ -66,35 +60,37 @@
     <div class="container">
         <div class="contacts-grid">
 
-            <div class="contact-card animate-on-scroll">
-                <div class="contact-icon">📍</div>
-                <h3>Dove Siamo</h3>
+            <article class="contact-card contact-card-location animate-on-scroll">
+                <div class="contact-icon" aria-hidden="true">01</div>
+                <h3>Dove siamo</h3>
                 <p data-config-text="address">Viale Livio Salinatore 86, Forlì</p>
                 <a href="https://maps.google.com/?q=Viale+Salinatore+86+Forli" target="_blank" rel="noopener" class="btn-link">
                     Apri in Google Maps →
                 </a>
-            </div>
+            </article>
 
-            <div class="contact-card animate-on-scroll" data-delay="100">
-                <div class="contact-icon">📞</div>
+            <article class="contact-card contact-card-phone animate-on-scroll" data-delay="100">
+                <div class="contact-icon" aria-hidden="true">02</div>
                 <h3>Chiamaci</h3>
                 <p>Per prenotazioni o ordini</p>
                 <a href="tel:+39054329448" data-config-href="tel" data-config-text="phone" class="btn-link">+39 0543 29448</a>
-            </div>
+            </article>
 
-            <div class="contact-card animate-on-scroll" data-delay="200">
-                <div class="contact-icon">💬</div>
+            <article class="contact-card contact-card-message animate-on-scroll" data-delay="200">
+                <div class="contact-icon" aria-hidden="true">03</div>
                 <h3>Scrivici</h3>
                 <p>Rispondiamo subito</p>
                 <a href="https://wa.me/39054329448" data-config-href="whatsapp" data-track="contact_whatsapp" target="_blank" rel="noopener" class="btn-link">WhatsApp</a>
-            </div>
+            </article>
 
-            <div class="contact-card animate-on-scroll" data-delay="300">
-                <div class="contact-icon">🕐</div>
-                <h3>Orari</h3>
-                <div class="restaurant-status restaurant-status-card" data-restaurant-status aria-live="polite"></div>
+            <article class="contact-card contact-card-hours animate-on-scroll" data-delay="300">
+                <div class="contact-hours-intro">
+                    <div class="contact-icon" aria-hidden="true">04</div>
+                    <h3>Quando trovarci</h3>
+                    <div class="restaurant-status restaurant-status-card" data-restaurant-status aria-live="polite"></div>
+                </div>
                 <ul class="hours-list" data-hours-list></ul>
-            </div>
+            </article>
 
         </div>
 
@@ -115,10 +111,10 @@
             <p>Prenota il tuo tavolo o ordina direttamente senza commissioni.</p>
             <div class="cta-buttons">
                 <a href="https://wa.me/39054329448?text=Salve,%20vorrei%20prenotare%20un%20tavolo" data-config-href="bookingWhatsapp" data-track="booking_whatsapp" class="btn btn-whatsapp" target="_blank" rel="noopener">
-                    💬 Prenota su WhatsApp
+                    Prenota su WhatsApp
                 </a>
                 <a href="ordina.html" class="btn btn-light">
-                    🛵 Ordina Online
+                    Ordina online
                 </a>
             </div>
         </div>
@@ -135,7 +131,7 @@
 
 <script src="js/site-config.js"></script>
 <script src="js/site.js"></script>
-<script src="js/menu-data.js"></script>
-<script src="js/main.js"></script>
+<script src="js/core.js?v=80"></script>
+<script src="js/site-ui.js?v=80"></script>
 </body>
 </html>

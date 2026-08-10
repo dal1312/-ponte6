@@ -1,5 +1,6 @@
-const STATIC_CACHE = "ponte6-static-v29";
-const RUNTIME_CACHE = "ponte6-runtime-v1";
+const CACHE_VERSION = "v86";
+const STATIC_CACHE = `ponte6-static-${CACHE_VERSION}`;
+const RUNTIME_CACHE = `ponte6-runtime-${CACHE_VERSION}`;
 const RUNTIME_LIMIT = 50;
 
 const APP_SHELL = [
@@ -12,7 +13,9 @@ const APP_SHELL = [
   "./offline.html",
   "./privacy.html",
   "./css/styles.css",
-  "./js/main.js",
+  "./js/core.js?v=80",
+  "./js/site-ui.js?v=80",
+  "./js/main.js?v=86",
   "./js/site-config.js",
   "./js/site.js",
   "./js/order.js",
@@ -21,6 +24,8 @@ const APP_SHELL = [
   "./favicon.ico",
   "./assets/icons/icon-192.png",
   "./assets/icons/icon-512.png",
+  "./assets/fonts/dm-sans-latin.woff2",
+  "./assets/fonts/italiana-latin.woff2",
   "./assets/home/logo.png",
   "./assets/home/sala.webp",
   "./assets/home/sala-640.webp",
@@ -81,6 +86,15 @@ self.addEventListener("fetch", event => {
       fetch(request)
         .then(response => cacheResponse(RUNTIME_CACHE, request, response))
         .catch(async () => (await caches.match(request)) || caches.match("./offline.html"))
+    );
+    return;
+  }
+
+  if (request.destination === "script" || request.destination === "style") {
+    event.respondWith(
+      fetch(request)
+        .then(response => cacheResponse(RUNTIME_CACHE, request, response))
+        .catch(() => caches.match(request))
     );
     return;
   }
