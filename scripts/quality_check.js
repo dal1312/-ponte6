@@ -5,23 +5,29 @@ const projectRoot = process.cwd();
 const htmlFiles = fs
   .readdirSync(projectRoot)
   .filter((name) => name.endsWith('.html'));
-const jsRoot = path.join(projectRoot, 'js');
 const jsFiles = fs
-  .readdirSync(jsRoot)
+  .readdirSync(path.join(projectRoot, 'js'))
   .filter((name) => name.endsWith('.js'))
-  .map((name) => path.join(jsRoot, name));
+  .map((name) => path.join(projectRoot, 'js', name));
 const serviceWorkerPath = path.join(projectRoot, 'service-worker.js');
+
 const noCanonicalRequired = new Set(['offline.html']);
+const socialRequiredFiles = new Set(['index.html', 'menu.html', 'ordina.html', 'contatti.html']);
+const serviceWorkerScriptKeys = ['main.js', 'core.js', 'site-ui.js'];
 
 const serviceWorkerRaw = fs.readFileSync(serviceWorkerPath, 'utf8');
 const swCacheVersionMatch = serviceWorkerRaw.match(/CACHE_VERSION\s*=\s*["']([^"']+)["']/i);
 const swCacheVersion = swCacheVersionMatch ? swCacheVersionMatch[1] : null;
-const swMainScriptMatch = serviceWorkerRaw.match(/["']\.\/js\/main\.js\?v=([^"']+)["']/i);
-const swMainScriptVersion = swMainScriptMatch ? swMainScriptMatch[1] : null;
 
-const hasServiceWorkerRegister = jsFiles.some((file) =>
-  /navigator\.serviceWorker\.register/.test(fs.readFileSync(file, 'utf8'))
+const swScriptVersions = Object.fromEntries(
+  [...serviceWorkerRaw.matchAll(/["']\.\/js\/([^"']+\.js)\?v=([^"']+)["']/g)]
+    .map(([, filename, version]) => [`./js/${filename}`, version])
 );
+
+const hasServiceWorkerRegister = jsFiles.some((file) => {
+  const content = fs.readFileSync(file, 'utf8');
+  return /navigator\.serviceWorker\.register/.test(content);
+});
 
 function getAttr(tag, name) {
   const regex = new RegExp(`\\b${name}\\s*=\\s*(["'])(.*?)\\1`, 'i');
@@ -34,8 +40,11 @@ const issues = {
   images: [],
   canonical: [],
   scriptVersion: [],
-  serviceWorker: []
+  serviceWorker: [],
+  social: []
 };
+
+const referencedScriptVersions = new Map();
 
 for (const file of htmlFiles) {
   const filePath = path.join(projectRoot, file);
@@ -51,7 +60,6 @@ for (const file of htmlFiles) {
     const relTokens = rel.toLowerCase().split(/\s+/);
     const hasNoopener = relTokens.includes('noopener');
     const hasNoreferrer = relTokens.includes('noreferrer');
-
     if (!hasNoopener || !hasNoreferrer) {
       issues.links.push({ file, snippet: tag });
     }
@@ -71,35 +79,54 @@ for (const file of htmlFiles) {
     issues.canonical.push({ file, snippet: 'missing canonical link' });
   }
   if (canonicalTags.length > 1) {
-    issues.canonical.push({
-      file,
-      snippet: `multiple canonical tags (${canonicalTags.length})`
-    });
+    issues.canonical.push({ file, snippet: `multiple canonical tags (${canonicalTags.length})` });
   }
 
   const scriptTags = [...content.matchAll(/<script[^>]*\bsrc\s*=\s*["']([^"']+)["'][^>]*>/gi)];
-  scriptTags.forEach((match) => {
+  for (const match of scriptTags) {
     const src = match[1];
-    if (!src.includes('main.js')) return;
+    const fileMatch = src.match(/(?:\.\/)?(main|core|site-ui)\.js(?:\?v=([^"&']+))?/i);
+    if (!fileMatch) continue;
 
-    const versionMatch = src.match(/main\.js\?v=([^&"']+)/i);
-    if (!versionMatch) {
+    const scriptName = `${fileMatch[1].toLowerCase()}.js`;
+    const scriptFile = `./js/${scriptName}`;
+    const expectedVersion = swScriptVersions[scriptFile];
+    const version = fileMatch[2] || null;
+    if (!expectedVersion) continue;
+    if (!version || version !== expectedVersion) {
       issues.scriptVersion.push({ file, snippet: match[0] });
-      return;
     }
+    referencedScriptVersions.set(scriptFile, true);
+  }
 
-    if (swMainScriptVersion && versionMatch[1] !== swMainScriptVersion) {
-      issues.scriptVersion.push({ file, snippet: match[0] });
+  if (socialRequiredFiles.has(file)) {
+    const hasOgTitle = /property\s*=\s*["']og:title["']/i.test(content);
+    const hasOgDescription = /property\s*=\s*["']og:description["']/i.test(content);
+    const hasOgUrl = /property\s*=\s*["']og:url["']/i.test(content);
+    const hasTwitterCard = /name\s*=\s*["']twitter:card["']/i.test(content);
+
+    if (!hasOgTitle || !hasOgDescription || !hasOgUrl || !hasTwitterCard) {
+      issues.social.push({
+        file,
+        snippet: `missing: ${!hasOgTitle ? 'og:title ' : ''}${!hasOgDescription ? 'og:description ' : ''}${!hasOgUrl ? 'og:url ' : ''}${!hasTwitterCard ? 'twitter:card' : ''}`.trim()
+      });
     }
-  });
+  }
+}
+
+for (const scriptName of serviceWorkerScriptKeys) {
+  const scriptFile = `./js/${scriptName}`;
+  const expectedVersion = swScriptVersions[scriptFile];
+  if (expectedVersion && !referencedScriptVersions.get(scriptFile)) {
+    issues.scriptVersion.push({
+      file: 'pages',
+      snippet: `${scriptFile}?v=${expectedVersion} is not referenced by any HTML page`
+    });
+  }
 }
 
 if (!swCacheVersion) {
   issues.serviceWorker.push({ file: 'service-worker.js', snippet: 'Missing CACHE_VERSION const' });
-}
-
-if (!swMainScriptVersion) {
-  issues.serviceWorker.push({ file: 'service-worker.js', snippet: 'Missing ./js/main.js?v= in APP_SHELL' });
 }
 
 if (!hasServiceWorkerRegister) {
@@ -108,43 +135,38 @@ if (!hasServiceWorkerRegister) {
 
 if (issues.links.length > 0) {
   console.log('[FAIL] Anchor target="_blank" without rel="noopener noreferrer":');
-  for (const issue of issues.links) {
-    console.log(`- ${issue.file}: ${issue.snippet}`);
-  }
+  issues.links.forEach((issue) => console.log(`- ${issue.file}: ${issue.snippet}`));
 }
 
 if (issues.images.length > 0) {
   console.log('[FAIL] Images missing alt attribute:');
-  for (const issue of issues.images) {
-    console.log(`- ${issue.file}: ${issue.snippet}`);
-  }
+  issues.images.forEach((issue) => console.log(`- ${issue.file}: ${issue.snippet}`));
 }
 
 if (issues.canonical.length > 0) {
   console.log('[FAIL] Canonical metadata checks:');
-  for (const issue of issues.canonical) {
-    console.log(`- ${issue.file}: ${issue.snippet}`);
-  }
+  issues.canonical.forEach((issue) => console.log(`- ${issue.file}: ${issue.snippet}`));
 }
 
 if (issues.scriptVersion.length > 0) {
-  const expected = swMainScriptVersion ? ` (expected ?v=${swMainScriptVersion})` : '';
-  console.log(`[FAIL] script version mismatch with service-worker APP_SHELL${expected}:`);
-  for (const issue of issues.scriptVersion) {
-    console.log(`- ${issue.file}: ${issue.snippet}`);
-  }
+  const expectedInfo = swCacheVersion ? ` (cache ${swCacheVersion})` : '';
+  console.log(`[FAIL] Script version mismatch with service-worker APP_SHELL${expectedInfo}:`);
+  issues.scriptVersion.forEach((issue) => console.log(`- ${issue.file}: ${issue.snippet}`));
 }
 
 if (issues.serviceWorker.length > 0) {
   console.log('[FAIL] Service Worker checks:');
-  for (const issue of issues.serviceWorker) {
-    console.log(`- ${issue.file}: ${issue.snippet}`);
-  }
+  issues.serviceWorker.forEach((issue) => console.log(`- ${issue.file}: ${issue.snippet}`));
 }
 
-if (Object.values(issues).every((issuesList) => issuesList.length === 0)) {
+if (issues.social.length > 0) {
+  console.log('[FAIL] Social metadata checks:');
+  issues.social.forEach((issue) => console.log(`- ${issue.file}: ${issue.snippet}`));
+}
+
+if (Object.values(issues).every((list) => list.length === 0)) {
   const cacheVersionLabel = swCacheVersion ? `cache ${swCacheVersion}` : 'cache version';
-  console.log(`[OK] qa:local passed (links + images + canonical + serviceWorker + script version checks, ${cacheVersionLabel}).`);
+  console.log(`[OK] qa:local passed (links + images + canonical + serviceWorker + script version + social checks, ${cacheVersionLabel}).`);
   process.exit(0);
 }
 
