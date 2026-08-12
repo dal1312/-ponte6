@@ -6,6 +6,7 @@
     "smoke": "node scripts/smoke_check.js",
     "serve": "node scripts/static_server.js",
     "qa:local": "node scripts/smoke_check.js && node scripts/quality_check.js",
+    "qa:local:strict": "node scripts/smoke_check.js && node scripts/quality_check.js --strict",
     "test:e2e": "playwright test"
   },
   "devDependencies": {

@@ -2,6 +2,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const projectRoot = process.cwd();
+const isStrict = process.argv.includes('--strict');
 const htmlFiles = fs
   .readdirSync(projectRoot)
   .filter((name) => name.endsWith('.html'));
@@ -104,11 +105,36 @@ for (const file of htmlFiles) {
     const hasOgDescription = /property\s*=\s*["']og:description["']/i.test(content);
     const hasOgUrl = /property\s*=\s*["']og:url["']/i.test(content);
     const hasTwitterCard = /name\s*=\s*["']twitter:card["']/i.test(content);
+    const hasOgImage = /property\s*=\s*["']og:image["']/i.test(content);
+    const hasOgLocale = /property\s*=\s*["']og:locale["']/i.test(content);
+    const hasThemeColor = /name\s*=\s*["']theme-color["']/i.test(content);
 
-    if (!hasOgTitle || !hasOgDescription || !hasOgUrl || !hasTwitterCard) {
+    const missingMeta = {
+      title: hasOgTitle,
+      description: hasOgDescription,
+      url: hasOgUrl,
+      twitterCard: hasTwitterCard
+    };
+
+    if (isStrict) {
+      missingMeta.ogImage = hasOgImage;
+      missingMeta.locale = hasOgLocale;
+      missingMeta.themeColor = hasThemeColor;
+    }
+
+    const isMissing = Object.entries(missingMeta).some(([, value]) => !value);
+    if (isMissing) {
       issues.social.push({
         file,
-        snippet: `missing: ${!hasOgTitle ? 'og:title ' : ''}${!hasOgDescription ? 'og:description ' : ''}${!hasOgUrl ? 'og:url ' : ''}${!hasTwitterCard ? 'twitter:card' : ''}`.trim()
+        snippet: [
+          ...(!missingMeta.title ? ['og:title'] : []),
+          ...(!missingMeta.description ? ['og:description'] : []),
+          ...(!missingMeta.url ? ['og:url'] : []),
+          ...(!missingMeta.twitterCard ? ['twitter:card'] : []),
+          ...(isStrict && !missingMeta.ogImage ? ['og:image'] : []),
+          ...(isStrict && !missingMeta.locale ? ['og:locale'] : []),
+          ...(isStrict && !missingMeta.themeColor ? ['theme-color'] : [])
+        ].join(', ')
       });
     }
   }
@@ -160,13 +186,15 @@ if (issues.serviceWorker.length > 0) {
 }
 
 if (issues.social.length > 0) {
-  console.log('[FAIL] Social metadata checks:');
+  const strictLabel = isStrict ? ' (strict)' : '';
+  console.log(`[FAIL] Social metadata checks${strictLabel}:`);
   issues.social.forEach((issue) => console.log(`- ${issue.file}: ${issue.snippet}`));
 }
 
 if (Object.values(issues).every((list) => list.length === 0)) {
   const cacheVersionLabel = swCacheVersion ? `cache ${swCacheVersion}` : 'cache version';
-  console.log(`[OK] qa:local passed (links + images + canonical + serviceWorker + script version + social checks, ${cacheVersionLabel}).`);
+  const strictLabel = isStrict ? ' + strict social checks' : '';
+  console.log(`[OK] qa:local passed (links + images + canonical + serviceWorker + script version + social checks${strictLabel}, ${cacheVersionLabel}).`);
   process.exit(0);
 }
 
