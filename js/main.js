@@ -859,92 +859,95 @@ if (document.getElementById('dishPhotoDialog')) setupDishPhotoDialog();
 /* ========================================
    MENU FILTERS
 ======================================== */
-const filterBtns = document.querySelectorAll('.filter-btn');
-const filterScroller = document.querySelector('#menuFilters .container');
-const filterScrollCue = document.querySelector('#menuFilters .filter-scroll-cue');
-if (filterScroller && filterScrollCue) {
-    const syncFilterScrollCue = () => {
-        const reachedEnd = filterScroller.scrollLeft + filterScroller.clientWidth >= filterScroller.scrollWidth - 4;
-        filterScrollCue.toggleAttribute('hidden', reachedEnd);
+const menuFilters = document.getElementById('menuFilters');
+const filterBtns = menuFilters ? [...menuFilters.querySelectorAll('.filter-btn')] : [];
+const filterScroller = menuFilters ? menuFilters.querySelector('.container') : null;
+const filterScrollCue = menuFilters ? menuFilters.querySelector('.filter-scroll-cue') : null;
+
+if (menuFilters && filterBtns.length > 0) {
+    if (filterScroller && filterScrollCue) {
+        const syncFilterScrollCue = () => {
+            const reachedEnd = filterScroller.scrollLeft + filterScroller.clientWidth >= filterScroller.scrollWidth - 4;
+            filterScrollCue.toggleAttribute('hidden', reachedEnd);
+        };
+        filterScroller.addEventListener('scroll', syncFilterScrollCue, { passive: true });
+        window.addEventListener('resize', syncFilterScrollCue);
+        requestAnimationFrame(syncFilterScrollCue);
+    }
+
+    const menuCategoryCopy = {
+        antipasti: 'Per iniziare con il passo giusto.',
+        primi: 'Pasta fresca e ricette della tradizione romagnola.',
+        pizze: 'Impasto, forno e ingredienti scelti: la pizza come piace a noi.',
+        secondi: 'Carne e pesce, cucinati senza fretta.',
+        contorni: 'Il complemento giusto per ogni tavola.',
+        dessert: 'Una chiusura dolce, fatta in casa.',
+        bevande: 'Per accompagnare ogni piatto.',
+        birre: 'Una selezione per la pizza e per la tavola.',
+        vini_bianchi: 'Bianchi scelti per la cucina e il pesce.',
+        vini_rossi: 'Rossi da condividere, calice dopo calice.'
     };
-    filterScroller.addEventListener('scroll', syncFilterScrollCue, { passive: true });
-    window.addEventListener('resize', syncFilterScrollCue);
-    requestAnimationFrame(syncFilterScrollCue);
-}
-const menuCategoryCopy = {
-    antipasti: 'Per iniziare con il passo giusto.',
-    primi: 'Pasta fresca e ricette della tradizione romagnola.',
-    pizze: 'Impasto, forno e ingredienti scelti: la pizza come piace a noi.',
-    secondi: 'Carne e pesce, cucinati senza fretta.',
-    contorni: 'Il complemento giusto per ogni tavola.',
-    dessert: 'Una chiusura dolce, fatta in casa.',
-    bevande: 'Per accompagnare ogni piatto.',
-    birre: 'Una selezione per la pizza e per la tavola.',
-    vini_bianchi: 'Bianchi scelti per la cucina e il pesce.',
-    vini_rossi: 'Rossi da condividere, calice dopo calice.'
-};
 
-function updateMenuCategoryIntro(category) {
-    const title = document.getElementById('menuCategoryTitle');
-    const copy = document.getElementById('menuCategoryCopy');
-    const button = document.querySelector(`.filter-btn[data-category="${category}"]`);
+    function updateMenuCategoryIntro(category) {
+        const title = document.getElementById('menuCategoryTitle');
+        const copy = document.getElementById('menuCategoryCopy');
+        const button = menuFilters.querySelector(`.filter-btn[data-category="${category}"]`);
 
-    if (title && button) title.textContent = button.textContent.trim();
-    if (copy) copy.textContent = menuCategoryCopy[category] || 'Scopri la nostra selezione.';
-}
+        if (title && button) title.textContent = button.textContent.trim();
+        if (copy) copy.textContent = menuCategoryCopy[category] || 'Scopri la nostra selezione.';
+    }
 
-function applyMenuFilters() {
-    const activeCategory = document.querySelector('#menuFilters .filter-btn.active')?.dataset.category || 'all';
-    const items = [...document.querySelectorAll('#menu-grid .menu-item')];
-    let visibleCount = 0;
+    function applyMenuFilters() {
+        const activeCategory = menuFilters.querySelector('.filter-btn.active')?.dataset.category || 'all';
+        const items = [...document.querySelectorAll('#menu-grid .menu-item')];
+        let visibleCount = 0;
 
-    items.forEach(item => {
-        const categoryMatches = activeCategory === 'all' || item.dataset.category === activeCategory;
-        const visible = categoryMatches;
-        item.hidden = !visible;
-        item.style.display = visible ? '' : 'none';
-        if (visible) {
-            // Gli elementi inizialmente nascosti non entrano nell'IntersectionObserver:
-            // rendili leggibili appena il filtro li mostra.
-            item.classList.add('visible');
-            observer?.unobserve(item);
-            visibleCount += 1;
-        }
+        items.forEach(item => {
+            const categoryMatches = activeCategory === 'all' || item.dataset.category === activeCategory;
+            const visible = categoryMatches;
+            item.hidden = !visible;
+            item.style.display = visible ? '' : 'none';
+            if (visible) {
+                // Gli elementi inizialmente nascosti non entrano nell'IntersectionObserver:
+                // rendili leggibili appena il filtro li mostra.
+                item.classList.add('visible');
+                observer?.unobserve(item);
+                visibleCount += 1;
+            }
+        });
+
+        const noResults = document.getElementById('menuNoResults');
+        if (noResults) noResults.hidden = visibleCount !== 0;
+    }
+
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            filterBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            filterBtns.forEach(button => button.setAttribute('aria-pressed', String(button === btn)));
+
+            const category = btn.dataset.category;
+
+            updateMenuCategoryIntro(category);
+            applyMenuFilters();
+            window.PonteSite?.analytics.track('menu_category', { category });
+
+            const menuCategoryIntro = document.getElementById('menuCategoryIntro');
+            if (menuCategoryIntro) {
+                const stickyOffset = 160;
+                const top = menuCategoryIntro.getBoundingClientRect().top + window.scrollY - stickyOffset;
+                window.scrollTo({ top, behavior: 'smooth' });
+            }
+        });
     });
 
-    const noResults = document.getElementById('menuNoResults');
-    if (noResults) noResults.hidden = visibleCount !== 0;
-}
-
-filterBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-        filterBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        filterBtns.forEach(button => button.setAttribute('aria-pressed', String(button === btn)));
-        
-        const category = btn.dataset.category;
-
-        updateMenuCategoryIntro(category);
+    const initialMenuFilter = menuFilters.querySelector('.filter-btn.active');
+    if (initialMenuFilter && document.getElementById('menu-grid')) {
+        const initialCategory = initialMenuFilter.dataset.category;
+        filterBtns.forEach(button => {
+            button.setAttribute('aria-pressed', String(button === initialMenuFilter));
+        });
+        updateMenuCategoryIntro(initialCategory);
         applyMenuFilters();
-        window.PonteSite?.analytics.track('menu_category', { category });
-
-        const menuCategoryIntro = document.getElementById('menuCategoryIntro');
-        if (menuCategoryIntro) {
-            const stickyOffset = 160;
-            const top = menuCategoryIntro.getBoundingClientRect().top + window.scrollY - stickyOffset;
-            window.scrollTo({ top, behavior: 'smooth' });
-        }
-    });
-});
-
-
-
-const initialMenuFilter = document.querySelector('#menuFilters .filter-btn.active');
-if (initialMenuFilter && document.getElementById('menu-grid')) {
-    const initialCategory = initialMenuFilter.dataset.category;
-    filterBtns.forEach(button => {
-        button.setAttribute('aria-pressed', String(button === initialMenuFilter));
-    });
-    updateMenuCategoryIntro(initialCategory);
-    applyMenuFilters();
+    }
 }
