@@ -77,7 +77,11 @@ a { color: inherit; text-decoration: none; }
    ============================================ */
 body {
   font-family: var(--ui);
+  font-weight: 450;
   color: var(--ink);
+  letter-spacing: .006em;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
   background:
     radial-gradient(circle at 8% 0%, rgba(214,168,79,.2), transparent 30vw),
     radial-gradient(circle at 90% 8%, rgba(132,40,31,.13), transparent 28vw),
@@ -87,10 +91,42 @@ body {
 }
 
 h1, h2, h3, h4 {
-  font-family: var(--serif);
+  font-family: "Palatino Linotype", "Book Antiqua", "Italiana", Georgia, serif;
   font-weight: 400;
   line-height: 1.05;
-  letter-spacing: -.02em;
+  letter-spacing: -.035em;
+  text-wrap: balance;
+  font-kerning: normal;
+}
+
+.order-item-name,
+.menu-item-name,
+.dish-name,
+.item-name {
+  font-family: "Palatino Linotype", "Book Antiqua", "Italiana", Georgia, serif;
+  font-size: 1.25rem;
+  font-weight: 400;
+  line-height: 1.12;
+  letter-spacing: -.025em;
+}
+
+/* Tipografia uniforme del sito: UI piu caratterizzata, piatti piu editoriali. */
+body,
+button,
+input,
+select,
+textarea {
+  font-family: "Century Gothic", "Trebuchet MS", "DM Sans", sans-serif;
+}
+
+h1, h2, h3, h4,
+.order-item-name,
+.menu-item-name,
+.dish-name,
+.item-name,
+.cart-item-name,
+.extra-name {
+  font-family: Georgia, "Palatino Linotype", "Book Antiqua", "Italiana", serif;
 }
 
 em { font-style: italic; color: var(--wine); }
@@ -3976,4 +4012,16 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 @keyframes slideInRight {
     from { transform: translateX(100%); opacity: 0; }
     to { transform: translateX(0); opacity: 1; }
+}
+
+/* Final typography override: applies consistently to every page component. */
+body, body * {
+  font-family: "Century Gothic", "Trebuchet MS", "DM Sans", sans-serif;
+}
+
+h1, h2, h3, h4,
+.logo-text, .logo strong,
+.order-item-name, .menu-item-name, .dish-name, .item-name,
+.cart-item-name, .extra-name, .dish-photo-dialog h2 {
+  font-family: Georgia, "Palatino Linotype", "Book Antiqua", "Italiana", serif !important;
 }
